@@ -153,6 +153,7 @@ ggheatmap <- function(x, rowlabels=T, xshift=ifelse(rowlabels, 10, 0), xcompress
         scale_x_discrete(expand=c(0,0)) +
         theme(plot.margin = unit(c(0,0,2,0), "mm"))+
         fillscale +
+        theme(text = element_text(size=10)) +
         if(rowlabels) scale_y_discrete(expand=c(0,0)) else scale_y_discrete(expand=c(0,0), breaks=NULL)
 
 
