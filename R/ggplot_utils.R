@@ -37,4 +37,5 @@ makePcaPlot <- function(x = getData(), group = NA, items=rownames(x), title = ""
 }
 
 
-makePcaPlot(getData(30,4,2,distort = 0.7), getGroup(30,2))
+## example
+# makePcaPlot(getData(30,4,2,distort = 0.7))
