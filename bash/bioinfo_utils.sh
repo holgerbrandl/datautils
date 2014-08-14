@@ -7,6 +7,8 @@ devtools::source_url("http://dl.dropbox.com/u/113630701/rlibs/deepseq/ngs_tools.
 createMappingReport()
 ' | R -q --vanilla
 }
+export -f TophatMappingReport
+
 
 #### Bowtie Mapping Report from the logs
 Bowtie2MappingReport(){

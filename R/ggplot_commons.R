@@ -1,11 +1,14 @@
-
 require.auto(ggplot2)
 require.auto(scales)
 
 
 
-plotPDF <- function(filename, expr){ pdf(paste0(filename, ".pdf")); expr; dev.off(); }
-#plotPDF("test", plot(1:10))
+
+scale_fill_redgreed <- function() scale_fill_manual(values = c("red","darkgreen"))
+
+rotXlab <- function() theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+
 
 
 # Multiple plot function
@@ -54,11 +57,11 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
   }
 }
 
-rotXlab <- function() theme(axis.text.x = element_text(angle = 90, hjust = 1))
-
 
 gg2Format="png"
 
+
+## simplified save function for ggpltos
 ggsave2 <- function(gplot=last_plot(), width=8, height=6, prefix="", saveData=FALSE, outputFormat=gg2Format, ...){
     title <- try(gplot$labels[["title"]])
 
@@ -99,22 +102,8 @@ ggsave2 <- function(gplot=last_plot(), width=8, height=6, prefix="", saveData=FA
         write.delim(gplot$data, file= concat(fileBaseName, ".txt"))
     }
 
-
-    ##todo review
-    LAST_GG2_OUTPUT <<- fileName
-
     return(fileName)
 }
-
-### alternate over all open devices when running ggplot
-## disabled because it's causing problems if X11 device is not available
-#ggplot <- function(...){
-#    dev.set(dev.next())
-#    ggplot2::ggplot(...)
-#}
-
-
-scale_fill_redgreed <- function() scale_fill_manual(values = c("red","darkgreen"))
 
 
 ########################################################################################################################
@@ -155,3 +144,12 @@ makePcaPlot <- function(x = getData(), group = NA, items=rownames(x), title = ""
 
 ## example
 # makePcaPlot(getData(30,4,2,distort = 0.7))
+
+
+########################################################################################################################
+### Base-plot utils
+
+
+plotPDF <- function(filename, expr){ pdf(paste0(filename, ".pdf")); expr; dev.off(); }
+#plotPDF("test", plot(1:10))
+
