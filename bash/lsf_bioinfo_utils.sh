@@ -44,36 +44,3 @@ mmCountFastGzReads(){
 export -f mmCountFastGzReads
 
 
-
-### Create a cuffdb on a network of lustre file-systen
-MakeCuffdb() {
-    if [ $# -ne 2 ]; then echo "Usage: MakeCuffdb <gtffile> <genomebuild>"; return; fi
-
-echo '
-devtools::source_url("http://dl.dropbox.com/u/113630701/rlibs/base-commons.R")
-options(width=150)
-
-require.auto(cummeRbund)
-
-createCuffDbTrickyDisk <- function(dbDir, gtfFile, genome, ...){
-    tmpdir <- tempfile()
-    system(paste("cp -r", dbDir, tmpdir))
-    oldWD <- getwd()
-    setwd(tmpdir)
-    cuff <- readCufflinks(rebuild=T, gtf=gtfFile, genome="mm10", ...)
-#    cuff <- readCufflinks(gtf=gtfFile, genome="mm10", rebuild=T)
-
-    system(paste("cp cuffData.db", dbDir))
-    system(paste("rm -r", tmpdir))
-
-    setwd(oldWD)
-    return(cuff)
-}
-
-gtfFile=commandArgs(TRUE)[1]
-genomeBuild=commandArgs(TRUE)[2]
-
-createCuffDbTrickyDisk(getwd(), gtfFile, genomeBuild)
-' | R -q --no-save --no-restore  --args $1 $2
-}
-export -f MakeCuffdb
