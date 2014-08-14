@@ -1,5 +1,6 @@
 
 require.auto(ggplot2)
+require.auto(scales)
 
 
 

@@ -20,25 +20,9 @@ require.auto <-  function(x){
     }
 }
 
-require.auto(plyr)
-require.auto(stringr)
-require.auto(reshape2)
-#require.auto(reshape2, quietly=T, warn.conflicts=F)
-require.auto(scales)
+#qlibrary <- function(libname) {library(as.character(substitute(libname)), quietly=T, warn.conflicts=F, character.only=T )}
 
-require.auto(dplyr)
-
-
-#require.auto(data.table)
-
-options(help_type="html")
-options(width=150)
-
-# for sqldf to avoid the use of tckl
-options(gsubfn.engine = "R")
-
-
-##### set the r mirror
+## set a default cran r mirror
 #cat(".Rprofile: Setting Goettingen repository\n")
 r = getOption("repos") # hard code the UK repo for CRAN 
 r["CRAN"] = "http://ftp5.gwdg.de/pub/misc/cran/"
@@ -46,9 +30,27 @@ options(repos = r)
 rm(r)
 
 
+## load core packages
+require.auto(plyr)
+require.auto(stringr)
+require.auto(reshape2)
+#require.auto(reshape2, quietly=T, warn.conflicts=F)
+
+## load on purpose after plyr
+require.auto(dplyr)
+
+#require.auto(data.table)
+
+## user browser for help
+options(help_type="html")
+
+## plot more characters per line
+options(width=150)
+
+# for sqldf to avoid the use of tckl
+options(gsubfn.engine = "R")
 
 
-#qlibrary <- function(libname) {library(as.character(substitute(libname)), quietly=T, warn.conflicts=F, character.only=T )}
 
 
 
@@ -76,6 +78,81 @@ unlen <- function(x) length(unique(x))
 
 pp <- function(dat) page(dat, method = "print")
 
+
+########################################################################################################################
+#### data.frame manipulation
+
+subsample <- function(df, sampleSize, ...){
+    df[sample(1:nrow(df), min(sampleSize, nrow(df)), ...),]
+}
+
+shuffle <- function(df) df[sample(nrow(df)),]
+
+first <- function(x, n=1) head(x,n)
+
+as.df <- function(dt) as.data.frame(dt)
+
+
+
+rownames2column <- function(df, colname){
+    df <- as.df(df)
+    df$tttt <- rownames(df);
+    rownames(df) <- NULL;
+    rename(df, c(tttt=colname))
+}
+
+
+column2rownames<- function(df, colname){
+#browser()
+    rownames(df) <- ac(df[,colname])
+    df[colname] <- NULL
+    return(df)
+}
+
+## pushing some columns to the right end of a data.frame
+push_right <- function(df, pushColNames){
+    df[,c(setdiff(names(df),pushColNames), pushColNames)]
+}
+
+
+push_left <- function(df, pushColNames){
+    df[,c(pushColNames, setdiff(names(df),pushColNames))]
+}
+
+
+set_names <- function(df, newnames){
+    df<- as.df(df)
+    names(df) <- newnames;
+    return(df)
+}
+
+
+print_head <- function(df, desc=NULL){
+    print(head(df))
+    return(df)
+}
+
+
+fac2char <- function(mydata, convert=names(mydata)[sapply(mydata, is.factor)]){
+    if(length(convert)==0)
+        return(mydata)
+
+    inputColOrder <- names(mydata)
+
+    convertData <- subset(mydata, select= names(mydata)%in%convert)
+    convertData <- as.data.frame(lapply(convertData, as.character), stringsAsFactors = FALSE)
+
+    keepData <-  subset(mydata, select=!(names(mydata)%in%convert))
+    newdata <- cbind(convertData, keepData)
+    newdata <- newdata[,inputColOrder]
+
+    return(newdata)
+}
+
+
+## workaround for biomart
+## Deprecated: load dplyr after biomart to avoid this problem
+#dselect <- function(...) dplyr::select(...)
 
 
 ########################################################################################################################

@@ -1,4 +1,4 @@
-    require.auto(data.table)
+require.auto(data.table)
 
 
 dt.merge <- function(dfA, dfB, by=intersect(names(dfA), names(dfB)) , ...)  {
