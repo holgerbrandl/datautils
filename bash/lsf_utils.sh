@@ -226,28 +226,30 @@ mysub(){
 export -f mysub
 #mysub testjob "echo test; echo  blabla 1>&2;" -q medium
 
-rmEmptyLogFiles(){ find . -maxdepth 1 -name ".log" -type f -empty -print0 | xargs -0 echo rm -f ; }
-export -f rmEmptyLogFiles
+
+## really needed ??
+#rm_emptylogs(){ find . -maxdepth 1 -name ".log" -type f -empty -print0 | xargs -0 echo rm -f ; }
+#export -f rm_emptylogs
 
 
-zipRmLogFiles(){
-    if [ $# -lt 2 ]; then echo "Usage: zipRmLogFiles <tarbasename> [<logfile>]+"; return; fi
+ziprm(){
+    if [ $# -lt 2 ]; then echo "Usage: ziprm <tarbasename> [<file>]+"; return; fi
 
-    tarName=$(date +'%y%m%d')_"$1"_logs.tar.gz; shift
+    tarName=$(date +'%y%m%d')_"$1".tar.gz; shift
     tar czf $tarName $@; rm $@;
 }
-export -f zipRmLogFiles
+export -f ziprm
 
 
 ## lock a node
-lockNode(){
-
+nlock(){
     bsub -J "node_locker" -R span[hosts=1] -n 6 -q long 'echo "locked $HOSTNAME" >> ~/locked_worker.txt; sleep 10h' | joblist /tmp/tmp.gHDskZ7c77
 
     mailme "locked node: $(tail -n1 ~/locked_worker.txt | cut -d' ' -f2)"
 #    ssx $(tail -n1 ~/locked_hosts.txt | cut -d' ' -f2)
 #    jlistKill $tmpJoblistFile
 }
+export -f nlock
 
 #isubNode(){
 #    tmpJoblistFile=$(mktemp)
