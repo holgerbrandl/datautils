@@ -69,7 +69,8 @@ jlistReport(){
         joblistFile=$1
     fi
 
-    echo "reportName='$joblistFile'; source('http://dl.dropboxusercontent.com/u/113630701/rlibs/BjobsReport.R',local=T)" | R --no-save --no-restore 2>&1 > /dev/null
+    echo "Creating report for $joblistFile"
+    echo "reportName='$joblistFile'; devtools::source_url('https://dl.dropboxusercontent.com/u/113630701/datautils/bash/CreateJobReport.R',local=T)" | R --no-save --no-restore 2>&1 > /dev/null
 }
 export -f jlistReport
 
@@ -127,15 +128,15 @@ wait4jobsReport(){
     # wait until all jobs from the list are done
     sleep 2
     while [ -n "$(bjobs 2>&1 | grep -f $joblistFile)" ]; do
-        sleep 15; ## or use bparams output
+        sleep 30; ## or use bparams output
         export curTime=$(date +"%d-%m-%Y_%H:%M:%S")
 #        bjobs -W $(cat $joblistFile ) 2>/dev/null | sed 's/ \+/\t/g' | tail -n +2  | awk -v OFS='\t' '{print $0, ENVIRON["curTime"]}'  >> $joblistFile.cluster_snapshots.txt
         bjobs -W $(cat $joblistFile ) 2>/dev/null | sed 's/ \+/\t/g' | tail -n +2  | awk -v OFS='\t' '{print $0, ENVIRON["curTime"]}'  >> $joblistFile.cluster_snapshots.txt
     done
 
 #    bjobs -W $(cat $joblistFile )  >> $joblistFile.cluster_usage.txt
-    echo "reportName='$joblistFile'; source('http://dl.dropbox.com/u/113630701/rlibs/BjobsReport.R',local=T)" | R --vanilla 2>&1 > /dev/null
-#    echo "source('http://dl.dropbox.com/u/113630701/rlibs/BjobsReport.R',local=T)" | R --vanilla 2>&1 > /dev/null
+    jlistReport $joblistFile
+
 
     # remove the joblist-file
     rm $joblistFile
