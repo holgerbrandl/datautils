@@ -65,7 +65,7 @@ jobData <- mutate(jobData, exec_time=difftime(snapshot_time, start_time, units="
 
 
 ## add the queue limits
-wallLimits <- c(short=1, medium=8, long=96)*3600
+wallLimits <- c(short=1, medium=8, long=96)
 jobData <- mutate(jobData, queueLimit=wallLimits[ac(queue)])
 
 
@@ -83,8 +83,11 @@ if(max(jobData$cpu_used_secs)==0){
 #ggsave2()
 
 
+save(jobData, file=concat(reportName, ".cluster_snapshots.RData"))
+#jobData <- local(get(load(concat(reportName, ".cluster_snapshots.RData"))))
+
 #ggplot(jobData, aes(exec_time_min, cpu_used_secs, group=jobid)) + geom_line(alpha=0.3) + geom_smooth() + ggtitle("accumulated cpu usage")
-md_plot(ggplot(jobData, aes(exec_time_min/60, cpu_used_hours, group=jobid)) + geom_line(alpha=0.3)  + ggtitle("accumulated cpu usage") + geom_vline(aes(xintercept=queueLimit/3600), color="red"))
+md_plot(ggplot(jobData, aes(exec_time_hours, cpu_used_hours, group=jobid)) + geom_line(alpha=0.3)  + ggtitle("accumulated cpu usage") + geom_vline(aes(xintercept=queueLimit), color="red"))
 
 #### ussage per time interval
 jobDataSlim <- with(jobData, data.frame(jobid,  num_cores, cpu_used_secs, exec_time=as.numeric(exec_time)))
@@ -95,9 +98,6 @@ smoothData[is.na(smoothData)] <- 0
 #ggplot(smoothData, aes(exec_time, cpu_usage_in_period, color=jobid)) + geom_line()
 md_plot(ggplot(subset(smoothData, cpu_usage_in_period>0), aes(exec_time/3600, cpu_usage_in_period/(exec_period* as.numeric(as.character(num_cores))), color=num_cores, group=jobid)) + geom_line(alpha=0.3) + xlab("exec time [hours]") + ylab("core normalized cpu usage")) # + scale_color_discrete(name="jobid")
 
-
-save(jobData, file=concat(reportName, ".cluster_snapshots.RData"))
-#jobData <- local(get(load(concat(reportName, ".cluster_snapshots.RData"))))
 
 
 #######################################################################################################################
@@ -117,7 +117,7 @@ md_plot(ggplot(jobSummaries, aes(as.numeric(jobid), pending_time_min/60)) + geom
 if(nrow(jobSummaries)<50){
 md_plot(ggplot(jobSummaries, aes(reorder(jobid, -as.numeric(jobid)), exec_time_hours)) + geom_bar(stat="identity") + ggtitle("job execution times") + coord_flip())
 }else{
-md_plot(ggplot(jobSummaries, aes(as.numeric(jobid), exec_time_hours))  + geom_area() + ggtitle("job execution times")+xlab("job_nr") + geom_hline(mapping=aes(yintercept=queueLimit/3600), color="red"))
+md_plot(ggplot(jobSummaries, aes(as.numeric(jobid), exec_time_hours))  + geom_area() + ggtitle("job execution times")+xlab("job_nr") + geom_hline(mapping=aes(yintercept=queueLimit), color="red"))
 }
 
 #ggplot(jobSummaries, aes(as.numeric(jobidx), exec_time_min/pending_time_min)) + geom_area() + ggtitle("pending vs exec time ratio")+xlab("job_nr")
@@ -135,7 +135,7 @@ md_report(reportNiceName, open=F)
 
 
 
-numKilled=nrow(subset(jobSummaries, exec_time_min*60>queueLimit))
+numKilled=nrow(subset(jobSummaries, exec_time_hours>queueLimit))
 numTotal= nrow(jobSummaries)
 if(numKilled >0){
     system(paste("mailme '",numKilled,"out of ",numTotal," jobs in ", getwd(), " died because of queue length limitation'"))
