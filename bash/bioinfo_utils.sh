@@ -13,8 +13,8 @@ parseAlgnSummary_T2_0_11 <- function(alignSummary){
     data.frame(
         condition=basename(dirname(alignSummary)),
         num_reads=as.numeric(str_match(algnData[2], " ([0-9]*$)")[,2]),
-        mapped_reads=100*as.numeric(str_match(algnData[3], ":[ ]*([0-9]*) ")[,2][1])
-    ) %>% transform(mapping_efficiency=mapped_reads/num_reads)
+        mapped_reads=as.numeric(str_match(algnData[3], ":[ ]*([0-9]*) ")[,2][1])
+    ) %>% transform(mapping_efficiency=100*mapped_reads/num_reads)
 }
 
 
