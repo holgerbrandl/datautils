@@ -120,3 +120,4 @@ createCuffDbTrickyDisk(getwd(), gtfFile, genomeBuild)
 ' | R -q --no-save --no-restore  --args $1 $2
 }
 export -f MakeCuffDB
+
