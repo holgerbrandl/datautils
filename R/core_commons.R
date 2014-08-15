@@ -191,17 +191,8 @@ trimEnd <-function(fileNames, exts=c()){
     fileNames
 }
 
-chopFileExt <-function(fileNames, exts=c()){
-    warning("this method is deprecated. use trimEnd instead")
-    for(fileExt in exts){
-        fileNames <- str_replace(fileNames, paste(".", fileExt, "$",sep=""), "")
-    }
-
-    fileNames
-}
-
-write.delim <- function(df, header=TRUE,...){
-    write.table(df, row.names=FALSE, col.names=header, sep="\t", ...)
+write.delim <- function(df, file, header=TRUE,...){
+    write.table(df, file, row.names=FALSE, col.names=header, sep="\t", ...)
 }
 
 ## writes a table in bed format expecting columns being ordered according to bed spec already
