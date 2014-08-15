@@ -31,7 +31,7 @@ md_new(paste("Job Report:", reportNiceName))
 #require.auto(data.table)
 
 
-praste("processing job report for '", reportName,"'")
+echo("processing job report for '", reportName,"'")
 
 jobData <- read.table(concat(reportName, ".cluster_snapshots.txt"), header=F, fill=T) %>% as.df() %>%
     set_names(c("jobid", "user", "stat", "queue", "from_host", "exec_host", "job_name", "submit_time", "proj_name", "cpu_used", "mem", "swap", "pids", "start_time", "finish_time", "snapshot_time")) %>%
@@ -74,7 +74,7 @@ jobData <- mutate(jobData, queueLimit=wallLimits[ac(queue)])
 #with(jobData, as.data.frame(table(is.na(cpu_used_secs))))
 
 if(max(jobData$cpu_used_secs)==0){
-    stop(praste("stopping job report generation for", reportName, "because no cpu time has been consumed"))
+    stop(echo("stopping job report generation for", reportName, "because no cpu time has been consumed"))
 }
 
 
