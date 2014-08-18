@@ -121,3 +121,7 @@ createCuffDbTrickyDisk(getwd(), gtfFile, genomeBuild)
 }
 export -f MakeCuffDB
 
+CountSeqs(){
+    grep ">" $1 | wc -l
+}
+export -f CountSeqs
