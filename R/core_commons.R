@@ -149,6 +149,9 @@ fac2char <- function(mydata, convert=names(mydata)[sapply(mydata, is.factor)]){
     return(newdata)
 }
 
+## replace R within pipe change just use ... %>% do(replaceNA(0)) %>% ...
+replaceNA <- function(x, withValue) { x[is.na(x)] <- withValue }
+
 
 ## workaround for biomart
 ## Deprecated: load dplyr after biomart to avoid this problem
