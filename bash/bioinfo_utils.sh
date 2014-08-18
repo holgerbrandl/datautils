@@ -125,3 +125,11 @@ CountSeqs(){
     grep ">" $1 | wc -l
 }
 export -f CountSeqs
+
+IndexBams(){
+    for bamFile in $1; do
+        sem -j5 -no-notice samtools index $bamFile;
+    done
+    sem -no-notice --wait
+}
+export -f IndexBams
