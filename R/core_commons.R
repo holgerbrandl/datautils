@@ -198,15 +198,6 @@ write.delim <- function(df, file, header=TRUE,...){
     write.table(df, file, row.names=FALSE, col.names=header, sep="\t", ...)
 }
 
-## writes a table in bed format expecting columns being ordered according to bed spec already
-write.bed <- function(bedData, file){
-    write.table(bedData, file=file, quote=FALSE, sep ="\t", na="NA", row.names=FALSE, col.names=FALSE)
-}
-#options(scipen=100) ## necessary to disable scientific number formats for long integers
-
-
-
-
 rmSomeElements <- function(vec, toDel) vec[!(vec %in% toDel)]
 
 rmLastElement <- function(vec) vec[-length(vec)]

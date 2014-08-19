@@ -16,12 +16,6 @@ read.fasta <- function(fileName){
     return(fastaDataDF)
 }
 
-getSeqLengthFromFasta <- function(fileName){
-    assembly <- mutate(read.fasta(fileName), seq_len=nchar(Sequence))
-    assembly$Sequence = NULL
-    return(assembly)
-}
-
 
 write.fasta <- function(seq_names, sequences, file){
     fastaData <- AAStringSet(sequences)
@@ -29,3 +23,29 @@ write.fasta <- function(seq_names, sequences, file){
     writeXStringSet(fastaData, file=file, format="fasta", width=80)
 }
 
+
+getSeqLengthFromFasta <- function(fileName){
+    assembly <- mutate(read.fasta(fileName), seq_len=nchar(Sequence))
+    assembly$Sequence = NULL
+    return(assembly)
+}
+
+
+## necessary to disable scientific number formats for long integers
+options(scipen=100)
+
+## writes a table in bed format expecting columns being ordered according to bed spec already
+write.bed <- function(bedData, file){
+    write.table(bedData, file=file, quote=FALSE, sep ="\t", na="NA", row.names=FALSE, col.names=FALSE)
+}
+
+#write.bed <- function(bedData, file){
+#    oldScipen<-getOption("scipen")
+#
+#     ## necessary to disable scientific number formats for long integers
+#    options(scipen=100)
+#
+#    write.table(bedData, file=file, quote=FALSE, sep ="\t", na="NA", row.names=FALSE, col.names=FALSE)
+#
+#    options(oldScipen)
+#}
