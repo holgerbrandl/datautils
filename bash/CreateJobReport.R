@@ -108,16 +108,16 @@ jobSummaries <- transform(jobSummaries, jobid=reorder(jobid, as.numeric(jobid)))
 
 #ggplot(jobSummaries, aes(pending_time_min)) + geom_histogram() + ggtitle("pending times") + coord_flip()
 if(nrow(jobSummaries)<50){
-md_plot(ggplot(jobSummaries, aes(reorder(jobid, -as.numeric(jobid)), pending_time_min/60)) + geom_bar(stat="identity") + ggtitle("pending times") + coord_flip()) + xlab("job id")
+md_plot(ggplot(jobSummaries, aes(reorder(jobid, -as.numeric(jobid)), pending_time_min/60)) + geom_bar(stat="identity") + ggtitle("pending times") + coord_flip() + xlab("job id"))
 }else{
 md_plot(ggplot(jobSummaries, aes(as.numeric(jobid), pending_time_min/60)) + geom_area() + ggtitle("pending times")+xlab("job_nr") + ylab("pending time [h]"))
 }
 #ggsave2(p=reportName)
 
 if(nrow(jobSummaries)<50){
-md_plot(ggplot(jobSummaries, aes(reorder(jobid, -as.numeric(jobid)), exec_time_hours)) + geom_bar(stat="identity") + ggtitle("job execution times") + coord_flip()) + xlab("job id")
+md_plot(ggplot(jobSummaries, aes(reorder(jobid, -as.numeric(jobid)), exec_time_hours)) + geom_bar(stat="identity") + ggtitle("job execution times") + coord_flip() + xlab("job id"))
 }else{
-md_plot(ggplot(jobSummaries, aes(as.numeric(jobid), exec_time_hours))  + geom_area() + ggtitle("job execution times")+xlab("job_nr") + geom_hline(mapping=aes(yintercept=queueLimit), color="red"))
+md_plot(ggplot(jobSummaries, aes(as.numeric(jobid), exec_time_hours))  + geom_area() + ggtitle("job execution times")+ xlab("job_nr") + geom_hline(mapping=aes(yintercept=queueLimit), color="red"))
 }
 
 #ggplot(jobSummaries, aes(as.numeric(jobidx), exec_time_min/pending_time_min)) + geom_area() + ggtitle("pending vs exec time ratio")+xlab("job_nr")
@@ -125,6 +125,8 @@ md_plot(ggplot(jobSummaries, aes(exec_time_min, pending_time_min)) + geom_point(
 
 write.delim(jobSummaries, file=concat(reportName, ".jobSummaries.txt"))
 # jobSummaries <- read.delim("jobSummaries.txt")
+
+jobSummaries %>% mutate(pending_time_hours=pending_time_min/60) %>% select(jobid, job_name, cpu_used_hours, pending_time_hours, exec_time_hours) %>% md_table("Job Summaries")
 
 md_report(reportNiceName, open=F)
 
