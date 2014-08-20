@@ -122,7 +122,9 @@ createCuffDbTrickyDisk(getwd(), gtfFile, genomeBuild)
 export -f MakeCuffDB
 
 CountSeqs(){
-    grep ">" $1 | wc -l
+    for fasta in $*; do
+        grep ">" $fasta | wc -l | sed 's/^/'$fasta':\t/g'
+    done
 }
 export -f CountSeqs
 
