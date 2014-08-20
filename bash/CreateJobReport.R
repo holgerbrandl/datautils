@@ -108,14 +108,14 @@ jobSummaries <- transform(jobSummaries, jobid=reorder(jobid, as.numeric(jobid)))
 
 #ggplot(jobSummaries, aes(pending_time_min)) + geom_histogram() + ggtitle("pending times") + coord_flip()
 if(nrow(jobSummaries)<50){
-md_plot(ggplot(jobSummaries, aes(reorder(jobid, -as.numeric(jobid)), pending_time_min/60)) + geom_bar(stat="identity") + ggtitle("pending times") + coord_flip())
+md_plot(ggplot(jobSummaries, aes(reorder(jobid, -as.numeric(jobid)), pending_time_min/60)) + geom_bar(stat="identity") + ggtitle("pending times") + coord_flip()) + xlab("job id")
 }else{
 md_plot(ggplot(jobSummaries, aes(as.numeric(jobid), pending_time_min/60)) + geom_area() + ggtitle("pending times")+xlab("job_nr") + ylab("pending time [h]"))
 }
 #ggsave2(p=reportName)
 
 if(nrow(jobSummaries)<50){
-md_plot(ggplot(jobSummaries, aes(reorder(jobid, -as.numeric(jobid)), exec_time_hours)) + geom_bar(stat="identity") + ggtitle("job execution times") + coord_flip())
+md_plot(ggplot(jobSummaries, aes(reorder(jobid, -as.numeric(jobid)), exec_time_hours)) + geom_bar(stat="identity") + ggtitle("job execution times") + coord_flip()) + xlab("job id")
 }else{
 md_plot(ggplot(jobSummaries, aes(as.numeric(jobid), exec_time_hours))  + geom_area() + ggtitle("job execution times")+xlab("job_nr") + geom_hline(mapping=aes(yintercept=queueLimit), color="red"))
 }
