@@ -126,7 +126,7 @@ md_plot(ggplot(jobSummaries, aes(exec_time_min, pending_time_min)) + geom_point(
 write.delim(jobSummaries, file=concat(reportName, ".jobSummaries.txt"))
 # jobSummaries <- read.delim("jobSummaries.txt")
 
-jobSummaries %>% mutate(pending_time_hours=pending_time_min/60) %>% select(jobid, job_name, cpu_used_hours, pending_time_hours, exec_time_hours) %>% md_table("Job Summaries")
+jobSummaries %>% mutate(pending_time_hours=pending_time_min/60) %>% select(jobid, exec_host, job_name, cpu_used_hours, pending_time_hours, exec_time_hours) %>% md_table("Job Summaries")
 
 md_report(paste0(reportNiceName, "_batch_report"), open=F)
 
