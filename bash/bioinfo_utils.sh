@@ -102,7 +102,7 @@ createCuffDbTrickyDisk <- function(dbDir, gtfFile, genome, ...){
     system(paste("cp -r", dbDir, tmpdir))
     oldWD <- getwd()
     setwd(tmpdir)
-    cuff <- readCufflinks(rebuild=T, gtf=gtfFile, genome="mm10", ...)
+    cuff <- readCufflinks(rebuild=T, gtf=gtfFile, genome, ...)
 #    cuff <- readCufflinks(gtf=gtfFile, genome="mm10", rebuild=T)
 
     system(paste("cp cuffData.db", dbDir))
