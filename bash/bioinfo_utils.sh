@@ -52,8 +52,8 @@ export -f TophatMappingReport
 Bowtie2MappingReport(){
 
 echo '
-
-devtools::source_url("http://dl.dropbox.com/u/113630701/rlibs/base-commons.R")
+devtools::source_url("https://dl.dropboxusercontent.com/u/113630701/datautils/R/core_commons.R")
+devtools::source_url("https://dl.dropboxusercontent.com/u/113630701/datautils/R/ggplot_commons.R")
 
 logSuffix=".logs"
 parseAlgnSummary <- function(alignSummary){
@@ -93,8 +93,7 @@ MakeCuffDB() {
     if [ $# -ne 2 ]; then echo "Usage: MakeCuffDB <gtffile> <genomebuild>"; return; fi
 
 echo '
-devtools::source_url("http://dl.dropbox.com/u/113630701/rlibs/base-commons.R")
-options(width=150)
+devtools::source_url("https://dl.dropboxusercontent.com/u/113630701/datautils/R/core_commons.R")
 
 require.auto(cummeRbund)
 
