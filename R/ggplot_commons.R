@@ -9,6 +9,7 @@ scale_fill_redgreed <- function() scale_fill_manual(values = c("red","darkgreen"
 rotXlab <- function() theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 
+  require(grid)
 
 
 # Multiple plot function
@@ -22,7 +23,6 @@ rotXlab <- function() theme(axis.text.x = element_text(angle = 90, hjust = 1))
 # 3 will go all the way across the bottom.
 #
 multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
-  require(grid)
 
   # Make a list from the ... arguments and plotlist
   plots <- c(list(...), plotlist)
