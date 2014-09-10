@@ -10,6 +10,8 @@ head(iris)
 #> some markup
 #> * or list
 #> * elements
+#>
+#> test
 ggplot(iris, aes(Species, Sepal.Length, fill=Species)) + geom_boxplot() + scale_fill_discrete(guide=F)
 
 
