@@ -1,9 +1,20 @@
+#> {message=F, echo=F}
 require(dplyr)
-require(gplot)
+require(ggplot2)
 
-##> test
+###> test heading
+
+#> ... followed by some markup
+head(iris)
+
+#> some markup
 ggplot(iris, aes(Species, Sepal.Length, fill=Species)) + geom_boxplot() + scale_fill_discrete(guide=F)
 
 
+#> {fig.width=14}
+## just chunk definition without markdown text or header
 
-# source /Users/brandl/Dropbox/Public/datautils/R/rknit/rknit.sh ; rknit /Users/brandl/Dropbox/Public/datautils/R/rknit/rknit_example.R
+ggplot(iris, aes(Species, Sepal.Length, fill=Species)) + geom_boxplot() + scale_fill_discrete(guide=F)
+
+# source /Users/brandl/Dropbox/Public/datautils/R/rknit/rknit.sh ;
+# rknit /Users/brandl/Dropbox/Public/datautils/R/rknit/rknit_example.R
