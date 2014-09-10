@@ -1,9 +1,12 @@
 
 
-## just knit R documents as they are, no markdown is required (but supported to some extent)
+##
 rknit(){
-    ## rscript=/projects/project-raphael/Rcode/misc/DivisionPerpendicularity.R
-    ## rscript=/home/brandl/mnt/mack/project-raphael/Rcode/misc/DivisionPerpendicularity.R
+    if [ $# -ne 1 ]; then
+        echo -e "Usage: rknit <script.R>\nJust knit R documents as they are, no markdown is required (but supported to some extent)"
+        return
+    fi
+
     ## rscript=/Users/brandl/Dropbox/Public/datautils/R/rknit/rknit_example.R
     rscript=$1
 
