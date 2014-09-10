@@ -27,6 +27,6 @@ rknit(){
 
     echo '```' >> $tmdRmd
 
-    echo 'require(knitr); options(width=150); opts_knit$set(cache = TRUE); knit2html("'$tmdRmd'", output="'$(basename $rscript .R)'")' | R --vanilla -q
+    echo 'require(knitr); options(width=150); opts_chunk$set(cache = TRUE, fig.width=10, width=100); knit2html("'$tmdRmd'", output="'$(basename $rscript .R)'")' | R --vanilla -q
 }
 

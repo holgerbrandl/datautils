@@ -2,12 +2,14 @@
 require(dplyr)
 require(ggplot2)
 
-###> test heading
+##> test heading
 
 #> ... followed by some markup
 head(iris)
 
 #> some markup
+#> * or list
+#> * elements
 ggplot(iris, aes(Species, Sepal.Length, fill=Species)) + geom_boxplot() + scale_fill_discrete(guide=F)
 
 
