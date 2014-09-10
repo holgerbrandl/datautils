@@ -19,7 +19,7 @@ rknit(){
     echo '
 <style type="text/css">
     body {
-        max-width: 80%;
+        max-width: 90%;
     }
 </style>
 ```{r}
