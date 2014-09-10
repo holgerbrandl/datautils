@@ -27,7 +27,7 @@ rknit(){
 
 #    cat $rscript | grep -Fv '#!' | Rscript --vanilla  - 'require(stringr); require(dplyr); readLines(file("stdin")) %>% str_replace("^#([#]*)> ([^{]*)([{]+.+[}])?", "```\n\\1 \\2\n```{r \\3}") %>% collapsewriteLines(stdout())' # >> $tmdRmd
 #    cat $rscript | grep -Fv '#!' | Rscript --vanilla -e 'source("/Users/brandl/Dropbox/Public/datautils/R/rknit/rknit_preprocessor.R")'  >> $tmdRmd
-    cat $rscript | grep -Fv '#!' | Rscript --vanilla -e 'devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/master/R/rknit/rknit_preprocessor.R")'  >> $tmdRmd
+    cat $rscript | sed 's/^#>$//g'| grep -Fv '#!' | Rscript --vanilla -e 'devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/master/R/rknit/rknit_preprocessor.R")' | grep -v "^#>" >> $tmdRmd
 
     echo '```' >> $tmdRmd
 
