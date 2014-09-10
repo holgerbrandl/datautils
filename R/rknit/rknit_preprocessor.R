@@ -13,4 +13,4 @@ mdRegex <- "^#([#]*)> ([^{]*)([{]+(.+)[}])?"
 
 readLines(file("/Users/brandl/Dropbox/Public/datautils/R/rknit/rknit_example.R")) %>%
 #readLines(file("stdin")) %>%
-    str_replace(mdRegex, "```\n\\1\\2\n```{r \\4}") %>% paste(collapse="\n") %>% cat()
+    str_replace(mdRegex, "```\n\\1 \\2\n```{r \\4}") %>% paste(collapse="\n") %>% cat()
