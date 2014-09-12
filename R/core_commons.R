@@ -98,7 +98,7 @@ rownames2column <- function(df, colname){
     df <- as.df(df)
     df$tttt <- rownames(df);
     rownames(df) <- NULL;
-    rename(df, c(tttt=colname))
+    plyr::rename(df, c(tttt=colname))
 }
 
 

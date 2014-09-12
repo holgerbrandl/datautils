@@ -181,3 +181,25 @@ BlastProgress(){
     done
 }
 export -f BlastProgress
+
+
+## just retains sequences whose id is in id-file (format: 1id per line)
+FilterFastaByIDFile(){
+python -c '
+from Bio import SeqIO
+import sys
+
+#http://stackoverflow.com/questions/3925614/how-do-you-read-a-file-into-a-list-in-python
+with open(sys.argv[1]) as f:
+    some_list = f.read().splitlines()
+
+for record in SeqIO.parse(sys.stdin, "fasta"):
+#    recordID=record.description.split(" ")[1]
+    recordID=record.id
+#    print "processing" + recordID
+
+    # http://stackoverflow.com/questions/3437059/does-python-have-a-string-contains-method
+    if recordID in some_list: print record.format("fasta")
+' $1;
+}
+export -f FilterFastaByIDFile
