@@ -29,13 +29,13 @@ rknit(){
 #    cat $rscript | grep -Fv '#!' | Rscript --vanilla -e 'source("/Users/brandl/Dropbox/Public/datautils/R/rknit/rknit_preprocessor.R")'  >> $tmpRmd
 #    cat $rscript | sed 's/^#>$//g'| grep -Fv '#!' | Rscript --vanilla -e 'devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/master/R/rknit/rknit_preprocessor.R")' | grep -v "^#>" >> $tmpRmd
 
-    cat $rscript | sed 's/^#>$//g' | grep -Fv '#!'| grep -v '^#+$' | Rscript --vanilla -e 'devtools::source_url("https://dl.dropboxusercontent.com/u/113630701/datautils/R/rknit/rknit_preprocessor.R")' >> $tmpRmd
+    cat $rscript | sed 's/^#>$//g' | grep -Fv '#!'| grep -Ev '^#+$' | Rscript --vanilla -e 'devtools::source_url("https://dl.dropboxusercontent.com/u/113630701/datautils/R/rknit/rknit_preprocessor.R")' >> $tmpRmd
 
     echo '```' >> $tmpRmd
 
     echo 'require(knitr); options(width=150); opts_chunk$set(cache = TRUE, fig.width=10, width=100); knit2html("'$tmpRmd'", output="'$(basename $rscript .R)'")' | R --vanilla -q
 
-#    rm $(basename $rscript .R) $tmpRmd
+    rm $(basename $rscript .R) $tmpRmd
 }
 
 
