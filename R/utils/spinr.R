@@ -33,7 +33,7 @@ options(width=150)
     ls()
 
     opts_chunk$set(cache = TRUE, fig.width=10, width=120)
-    knit2html(basename(mdScript))
+    knit2html(basename(mdScript), header=cssHeader)
 
     #file.remove(mdScript)
 #}
