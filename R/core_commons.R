@@ -129,6 +129,7 @@ set_names <- function(df, newnames){
 
 print_head <- function(df, desc=NULL){
     print(head(df))
+    print(nrow(df))
     return(df)
 }
 

@@ -32,6 +32,7 @@ options(width=150)
     '
     ls()
 
+    ## custom title http://stackoverflow.com/questions/14124022/setting-html-meta-elements-with-knitr
     opts_chunk$set(cache = TRUE, fig.width=10, width=120)
     knit2html(basename(mdScript), header=cssHeader)
 
