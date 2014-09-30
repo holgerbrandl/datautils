@@ -16,6 +16,8 @@ spinr(){
 
 #    echo 'devtools::source_url("https://dl.dropboxusercontent.com/u/113630701/datautils/R/utils/spinr.R"); spinr("'$rscript'")' | R --vanilla -q
     echo 'rScript="'$rscript'"; devtools::source_url("https://dl.dropboxusercontent.com/u/113630701/datautils/R/utils/spinr.R")' | R --vanilla -q
+
+    rm *md
 }
 
 

@@ -15,28 +15,27 @@ options(width=150)
 #rScript='/home/brandl/mnt/mack/project-raphael/Rcode/misc/Test.R'
 
 #spinr <- function(rScript){
-    print(Sys.getenv("TISSMORH_SCRIPTS"))
-    spin(rScript, knit=F)
+spin(rScript, knit=F)
 
-    mdScript <- str_replace(rScript, "[.]R$", ".Rmd")
+mdScript <- str_replace(rScript, "[.]R$", ".Rmd")
 
-    system(paste("mv", mdScript, "tmp.Rmd"))
-    system(paste("cat tmp.Rmd | grep -Ev '^#+$' | grep -Fv '#!/usr/bin/env Rscript' >", basename(mdScript)))
+system(paste("mv", mdScript, "tmp.Rmd"))
+system(paste("cat tmp.Rmd | grep -Ev '^#+$' | grep -Fv '#!/usr/bin/env Rscript' >", basename(mdScript)))
 
-    cssHeader='
-    <style type="text/css">
-      body {
-          max-width: 90%;
-      }
-    </style>
-    '
-    ls()
+cssHeader='
+<style type="text/css">
+  body {
+      max-width: 90%;
+  }
+</style>
+'
 
-    ## custom title http://stackoverflow.com/questions/14124022/setting-html-meta-elements-with-knitr
-    opts_chunk$set(cache = TRUE, fig.width=10, width=120)
-    knit2html(basename(mdScript), header=cssHeader)
+## custom title http://stackoverflow.com/questions/14124022/setting-html-meta-elements-with-knitr
+opts_chunk$set(cache = TRUE, fig.width=10, width=120)
+knit2html(basename(mdScript), header=cssHeader)
 
-    #file.remove(mdScript)
+file.remove(mdScript)
+file.remove("tmp.Rmd")
 #}
 
 # spinr("/home/brandl/mnt/mack/project-raphael/Rcode/misc/DivisionPerpendicularity.R")
