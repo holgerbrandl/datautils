@@ -23,6 +23,4 @@ spinr(){
 
 #' cd /home/brandl/mnt/mack/project-raphael/reports/spin_report
 #' source <(curl https://dl.dropboxusercontent.com/u/113630701/datautils/R/utils/spinr.sh)
-#' spinr /home/brandl/mnt/mack/project-raphael/Rcode/misc/DivisionPerpendicularity.R
-#' spinr /home/brandl/mnt/mack/project-raphael/Rcode/misc/Test.R
 

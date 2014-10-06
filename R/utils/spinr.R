@@ -21,6 +21,7 @@ mdScript <- str_replace(rScript, "[.]R$", ".Rmd")
 
 system(paste("mv", mdScript, "tmp.Rmd"))
 system(paste("cat tmp.Rmd | grep -Ev '^#+$' | grep -Fv '#!/usr/bin/env Rscript' >", basename(mdScript)))
+file.remove("tmp.Rmd")
 
 cssHeader='
 <style type="text/css">
@@ -34,8 +35,7 @@ cssHeader='
 opts_chunk$set(cache = TRUE, fig.width=10, width=120)
 knit2html(basename(mdScript), header=cssHeader)
 
-file.remove(mdScript)
-file.remove("tmp.Rmd")
+file.remove(basename(mdScript))
 #}
 
 # spinr("/home/brandl/mnt/mack/project-raphael/Rcode/misc/DivisionPerpendicularity.R")
