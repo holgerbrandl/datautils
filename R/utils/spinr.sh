@@ -20,6 +20,28 @@ spinr(){
     rm *md
 }
 
+spinsnip(){
+    if [ $# -ne 1 ]; then
+         >&2 echo "Usage: spinsnip <report name>"
+        return
+    fi
+
+    reportName=$1
+    tmpR=$reportName.R
+
+    echo "processing $tmpR..."
+    head $tmpR
+
+    ## http://stackoverflow.com/questions/11454343/pipe-output-to-bash-function
+    cat > $tmpR
+
+    spinr $tmpR
+    rm $tmpR
+}
+
+#testsnip(){
+#        cat > test.txt
+#}
 
 #' cd /home/brandl/mnt/mack/project-raphael/reports/spin_report
 #' source <(curl https://dl.dropboxusercontent.com/u/113630701/datautils/R/utils/spinr.sh)
