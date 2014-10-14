@@ -30,10 +30,9 @@ spinsnip(){
     tmpR=$reportName.R
 
     echo "processing $tmpR..."
-    head $tmpR
 
     ## http://stackoverflow.com/questions/11454343/pipe-output-to-bash-function
-    cat > $tmpR
+    cat | sed 's/#>/#'"'"'/g'  > $tmpR
 
     spinr $tmpR
     rm $tmpR
