@@ -27,12 +27,13 @@ spinsnip(){
     fi
 
     reportName=$1
-    tmpR=$reportName.R
-
-    echo "processing $tmpR..."
+    tmpR=$(tr " " "_" $reportName).R
 
     ## http://stackoverflow.com/questions/11454343/pipe-output-to-bash-function
     cat | sed 's/#>/#'"'"'/g'  > $tmpR
+
+    echo "spining $tmpR..."
+
 
     spinr $tmpR
     rm $tmpR
