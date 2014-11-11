@@ -102,7 +102,7 @@ createCuffDbTrickyDisk <- function(dbDir, gtfFile, genome, ...){
     system(paste("cp -r", dbDir, tmpdir))
     oldWD <- getwd()
     setwd(tmpdir)
-    cuff <- readCufflinks(rebuild=T, gtf=gtfFile, genome, ...)
+    cuff <- readCufflinks(rebuild=T, gtf=gtfFile, genome=genome, ...)
 
     system(paste("cp cuffData.db", dbDir))
     system(paste("rm -r", tmpdir))
@@ -111,6 +111,7 @@ createCuffDbTrickyDisk <- function(dbDir, gtfFile, genome, ...){
     return(cuff)
 }
 
+#gtfFile="mm10_ensGene_pc.gtf"; genomeBuild="mm10"
 gtfFile=commandArgs(TRUE)[1]
 genomeBuild=commandArgs(TRUE)[2]
 
