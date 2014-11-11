@@ -1,6 +1,55 @@
 
-#http://wiki.bash-hackers.org/howto/getopts_tutorial
+## create fastq report for all fastq and fastq.gz files in the current directory
+dge_fastqc(){
 
+while getopts "o:" curopt; do
+    case $curopt in
+    o) outputDir=$OPTARG;
+    esac
+done
+shift $(($OPTIND - 1))
+
+fastqFiles=$*
+
+#if [ -z "$fastqFiles" ]; then
+if [ $# -lt 1 ]; then
+     echo "Usage: dge_fastqc [-o <output_directory>] [<fastq.gz file>]+" >&2 ; return;
+fi
+
+## use default directory if not specified
+if [ -z "$outputDir" ]; then
+     outputDir="fastqc_reports"
+fi
+
+if [ ! -d "$outputDir" ]; then
+    echo "creating output directory '$outputDir'"
+    mkdir $outputDir
+fi
+
+
+for fastqFile in $fastqFiles ; do
+    echo "fastqcing $fastqFile"
+
+    if [ ! -f $fastqFile ]; then
+        continue;
+    fi
+    
+
+    mysub "fastqc__$(basename $fastqFile)" "fastqc -j /sw/bin/java -o $outputDir -f fastq $fastqFile" -q medium  | joblist .fastqc_jobs
+done
+
+
+wait4jobs .fastqc_jobs
+
+mailme "fastqc done for $outputDir"
+
+# todo create some summary report here
+}
+export -f dge_fastqc
+
+
+
+#http://wiki.bash-hackers.org/howto/getopts_tutorial
 dge_tophat_se(){
 
 # http://stackoverflow.com/questions/18414054/bash-getopts-reading-optarg-for-optional-flags
@@ -13,19 +62,17 @@ done
 shift $(($OPTIND - 1))
 
 
-if [ -z "$IGENOME" ] || [ $# -eq 1 ];
+fastqFiles=$*
+
+if [ -z "$IGENOME" ] || [ -z "$fastqFiles" ];
      then echo "Usage: dge_tophat_se -i <path to igenome> [<fastq.gz file>]+" >&2 ; return;
 fi
 
-fastqFiles=$*
 
-echo "running tophat using igenome $IGENOME for the following files"
-echo $
 
-export bowtie_gindex="$IGENOME_BASE/Sequence/Bowtie2Index/genome"
-export gtfFile="$IGENOME_BASE/Annotation/Genes/genes.gtf"
+export bowtie_gindex="$IGENOME/Sequence/Bowtie2Index/genome"
+export gtfFile="$IGENOME/Annotation/Genes/genes.gtf"
 #head $gtfFile
-
 
 if [ ! -f $gtfFile ]; then
     >&2 echo "gtf '$gtfFile' does not exis"; return;
@@ -34,6 +81,9 @@ fi
 if [ -z "$(which tophat)" ]; then
     >&2 echo "no tomcat binary in PATH"; return;
 fi
+
+
+echo "running tophat using igenome '$IGENOME' for the following files"
 
 #fastqFiles=$(ls $baseDir/treps_pooled/*fastq.gz)
 
