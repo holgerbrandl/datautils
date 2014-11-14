@@ -1,6 +1,6 @@
 require.auto(ggplot2)
 require.auto(scales)
-
+require(grid)
 
 
 
@@ -9,7 +9,6 @@ scale_fill_redgreed <- function() scale_fill_manual(values = c("red","darkgreen"
 rotXlab <- function() theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 
-  require(grid)
 
 
 # Multiple plot function

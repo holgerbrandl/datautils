@@ -1,5 +1,6 @@
 ## a thin wrapper around spin to make it more useful with more custom output
 
+require(plyr)
 require(knitr)
 require(stringr)
 

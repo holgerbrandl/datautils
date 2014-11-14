@@ -1,8 +1,8 @@
 
 
 spinr(){
-    if [ $# -ne 1 ]; then
-        echo -e "Usage: spinr <script.R>\nJust knit R documents as they are, no markdown is required (but supported to some extent)"
+    if [ $# -lt 1 ]; then
+        echo -e "Usage: spinr <script.R> [<other args>*]\nJust knit R documents as they are, no markdown is required (but supported to some extent)"
         return
     fi
 
