@@ -190,6 +190,7 @@ rmerge <- function(LDF, by, ...){
 
 
 
+trim_ext <- function(fileNames, ...) trimEnd(fileNames, ...)
 trimEnd <-function(fileNames, exts=c()){
     for(fileExt in exts){
         fileNames <- str_replace(fileNames, paste(fileExt, "$",sep=""), "")
