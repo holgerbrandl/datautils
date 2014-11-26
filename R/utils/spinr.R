@@ -27,6 +27,10 @@ cssHeader='
 
 ## custom title http://stackoverflow.com/questions/14124022/setting-html-meta-elements-with-knitr
 opts_chunk$set(cache = TRUE, fig.width=10, width=120)
+
+## tell knitr to stop on errors https://github.com/yihui/knitr/issues/344 and http://yihui.name/knitr/options
+opts_knit$set(stop_on_error = 2L)
+
 knit2html(basename(rmdScript), header=cssHeader)
 
 file.remove(basename(rmdScript))
