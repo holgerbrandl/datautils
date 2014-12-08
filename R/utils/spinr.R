@@ -34,5 +34,4 @@ opts_knit$set(stop_on_error = 2L)
 knit2html(basename(rmdScript), header=cssHeader)
 
 file.remove(basename(rmdScript))
-file.remove(basename(str_replace(rScript, "[.]R$", ".md")
-))
+file.remove(basename(str_replace(rScript, "[.]R$", ".md")))
