@@ -32,9 +32,29 @@ guess_mart <- function(gene_id){
 }
 #guess_mart("ENSCAFG00000000043")
 
+getGeneInfo <- function(gene_ids){
+    martName <- guess_mart(gene_ids[1])
+
+    cacheFile <- paste0("geneInfo.",martName, ".RData")
+
+    if(!file.exists(cacheFile)){
+        require(biomaRt)
+
+        mousemart = useDataset(martName, mart=useMart("ensembl"))
+        geneInfo <- getBM(attributes=c('ensembl_gene_id', 'external_gene_name', 'description', 'gene_biotype'), mart=mousemart);
+        save(geneInfo, file=cacheFile)
+        unloadNamespace('biomaRt')
+    }else{
+        geneInfo <- local(get(load(cacheFile)))
+    }
+
+    return(geneInfo)
+}
 
 
-### Hit List Interscection Utilitities (see e.g Helin project for examples)
+
+########################################################################################################################
+### Hit list interscection utilities (see e.g Helin project for examples)
 
 
 
@@ -59,6 +79,7 @@ s1_ne_s2 <- function(s1, s2, ...) c(extractHits(s1, s2, s1Overexpressed=F, ...),
 #hitdata <- rbind(hitdata, data.frame(ensembl_gene_id=AeqBexpr$gene_id, set="aRG==bRG"))
 
 
+## varargs: http://stackoverflow.com/questions/3057341/how-to-use-rs-ellipsis-feature-when-writing-your-own-function
 rintersect <- function(...){
     LDF <- list(...)
     rec_intersect <- LDF[[1]]
