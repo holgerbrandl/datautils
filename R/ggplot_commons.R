@@ -62,7 +62,7 @@ gg2Format="png"
 
 ## simplified save function for ggpltos
 ggsave2 <- function(gplot=last_plot(), width=8, height=6, prefix="", saveData=FALSE, outputFormat=gg2Format, ...){
-    title <- try(gplot$labels[["title"]])
+    title <- ac(try(gplot$labels[["title"]]))
 
     if(is.null(title)){
         varMapping <- gplot$labels
@@ -156,6 +156,8 @@ plotPDF <- function(filename, expr){ pdf(paste0(filename, ".pdf")); expr; dev.of
 ## create a custom color palette for a fixed set of values
 ## scale_fill_manual(values = create_palette(unique(csWithTopoT1$t1_type)), drop = FALSE)
 create_palette <- function(x, pal = 'Set1'){
+  require.auto(RColorBrewer)
+
   ux <- sort(unique(x))
   n <-length(ux)
   setNames(brewer.pal(name = pal, n = n)[1:n], ux)
