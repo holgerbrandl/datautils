@@ -1,9 +1,8 @@
 
 #require(cummeRbund)
 
-
 getExpressedGenes <- function(cuff, ...){
-    fpkmMat<-repFpkmMatrix(genes(cuff))
+    fpkmMat<-cummeRbund::repFpkmMatrix(genes(cuff))
 
     rownames(filterByExpression(fpkmMat, ...))
 }
@@ -20,6 +19,7 @@ filterByExpression <- function(fpkmMat, minFPKM=1, logMode=F){
 
 guess_mart <- function(gene_id){
     an_id <-gene_id[1]
+
     if(str_detect(an_id, "ENSCAFG")){
         return("cfamiliaris_gene_ensembl")
     }else if(str_detect(an_id, "ENSMUSG")){
@@ -31,6 +31,7 @@ guess_mart <- function(gene_id){
     }
 }
 #guess_mart("ENSCAFG00000000043")
+
 
 getGeneInfo <- function(gene_ids){
     martName <- guess_mart(gene_ids[1])
@@ -93,6 +94,10 @@ s1_eq_s2 <- function(s1, s2, gene_background=all_genes, ...){
 ## varargs: http://stackoverflow.com/questions/3057341/how-to-use-rs-ellipsis-feature-when-writing-your-own-function
 rintersect <- function(...){
     LDF <- list(...)
+    rintersect.list(LDF)
+}
+
+rintersect.list <- function(LDF){
     rec_intersect <- LDF[[1]]
     for (i in 2:length(LDF)) {
         rec_intersect <- intersect(rec_intersect, LDF[[i]])
@@ -100,4 +105,44 @@ rintersect <- function(...){
     rec_intersect
 }
 
+
+########################################################################################################################
+### enrichment analysis
+
+
+## http://www.bioconductor.org/packages/release/bioc/vignettes/RDAVIDWebService/inst/doc/RDavidWS-vignette.pdf
+## e.g. getClusterReport --> plot2D
+
+DEF_DAVID_ONTOLOGIES=ontologies=c("GOTERM_CC_FAT", "GOTERM_MF_FAT", "GOTERM_BP_FAT", "PANTHER_PATHWAY", "REACTOME_PATHWAY", "KEGG_PATHWAY", "GOTERM_CC_FAT", "GOTERM_MF_FAT", "GOTERM_BP_FAT")
+
+davidAnnotationChart <- function( someGenes, ontologies=DEF_DAVID_ONTOLOGIES ){
+
+    require(RDAVIDWebService) ## just works if installed on non-network-drive (e.g. /tmp/)
+
+    ## expexted to have a column with gene_id
+#    echo("processing list with", length(someGenes), "genes")
+#    someGenes <- degs$ensembl_gene_id
+
+
+    if(length(someGenes)>1500){
+        someGenes <- sample(someGenes) %>% head(1500)
+    }
+
+    david<-DAVIDWebService$new(email="brandl@mpi-cbg.de")
+
+#    getTimeOut(david)
+    setTimeOut(david, 80000) ## http://www.bioconductor.org/packages/release/bioc/vignettes/RDAVIDWebService/inst/doc/RDavidWS-vignette.pdf
+
+    result<-addList(david, someGenes, idType="ENSEMBL_GENE_ID", listName=paste0("list_", sample(10000)[1]), listType="Gene")
+
+    david %>% setAnnotationCategories(ontologies)
+
+    annoChart <-getFunctionalAnnotationChart(david)
+
+#    clusterReport <-getClusterReport(david)
+
+    unloadNamespace('RDAVIDWebService')
+
+    return(annoChart %>% subset(select=-Genes))
+}
 
