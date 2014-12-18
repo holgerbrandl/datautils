@@ -1,5 +1,5 @@
 
-require(cummeRbund)
+#require(cummeRbund)
 
 
 getExpressedGenes <- function(cuff, ...){
@@ -67,9 +67,20 @@ extractHits <- function(s1, s2, s1Overexpressed=T, degData=degs){
 }
 
 
+## genes that are significantly higher expressed in sample1 compared to sample2
 s1_gt_s2 <- function(s1, s2, ...) extractHits(s1, s2, s1Overexpressed=T, ...)
+
+## genes that are significantly less expressed in sample1 compared to sample2
 s1_lt_s2 <- function(s1, s2, ...) extractHits(s1, s2, s1Overexpressed=F, ...)
-s1_ne_s2 <- function(s1, s2, ...) c(extractHits(s1, s2, s1Overexpressed=F, ...), extractHits(s1, s2, s1Overexpressed=T, ...))
+
+## undirected, just differentially expressed
+s1_de_s2 <- function(s1, s2, ...) c(extractHits(s1, s2, s1Overexpressed=F, ...), extractHits(s1, s2, s1Overexpressed=T, ...))
+
+## not differentially expressed
+s1_eq_s2 <- function(s1, s2, gene_background=all_genes, ...){
+    c(extractHits(s1, s2, s1Overexpressed=F, ...), extractHits(s1, s2, s1Overexpressed=T, ...)) %>%
+        setdiff(all_genes, .)
+}
 
 
 ## todo add helper to test for equality (s1 and s2 not differentially expressed)
