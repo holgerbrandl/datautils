@@ -152,3 +152,12 @@ makePcaPlot <- function(x = getData(), group = NA, items=rownames(x), title = ""
 plotPDF <- function(filename, expr){ pdf(paste0(filename, ".pdf")); expr; dev.off(); }
 #plotPDF("test", plot(1:10))
 
+
+## create a custom color palette for a fixed set of values
+## scale_fill_manual(values = create_palette(unique(csWithTopoT1$t1_type)), drop = FALSE)
+create_palette <- function(x, pal = 'Set1'){
+  ux <- sort(unique(x))
+  n <-length(ux)
+  setNames(brewer.pal(name = pal, n = n)[1:n], ux)
+}
+
