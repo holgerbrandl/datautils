@@ -24,6 +24,8 @@ guess_mart <- function(gene_id){
         return("cfamiliaris_gene_ensembl")
     }else if(str_detect(an_id, "ENSMUSG")){
         return("mmusculus_gene_ensembl")
+    }else if(str_detect(an_id, "ENSDARG")){
+        return("drerio_gene_ensembl")
     }else if(str_detect(an_id, "ENSG")){
         return("hsapiens_gene_ensembl")
     }else{
