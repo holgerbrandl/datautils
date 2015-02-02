@@ -24,7 +24,7 @@ if(!exists("reportName")){
 }
 
 reportNiceName <- str_replace_all(reportName, "^[.]", "")
-#' # Job Report:  `reportNiceName`
+#> # Job Report:  `reportNiceName`
 
 
 echo("processing job report for '", reportName,"'")
@@ -107,9 +107,9 @@ jobSummaries <- transform(jobSummaries, jobid=reorder(jobid, as.numeric(jobid)))
 
 #ggplot(jobSummaries, aes(pending_time_min)) + geom_histogram() + ggtitle("pending times") + coord_flip()
 if(nrow(jobSummaries)<50){
-ggplot(jobSummaries, aes(reorder(jobid, -as.numeric(jobid)), pending_time_min/60)) + geom_bar(stat="identity") + ggtitle("pending times") + coord_flip() + xlab("job id")
+    ggplot(jobSummaries, aes(reorder(jobid, -as.numeric(jobid)), pending_time_min/60)) + geom_bar(stat="identity") + ggtitle("pending times") + coord_flip() + xlab("job id")
 }else{
-ggplot(jobSummaries, aes(as.numeric(jobid), pending_time_min/60)) + geom_area() + ggtitle("pending times")+xlab("job_nr") + ylab("pending time [h]")
+    ggplot(jobSummaries, aes(as.numeric(jobid), pending_time_min/60)) + geom_area() + ggtitle("pending times")+xlab("job_nr") + ylab("pending time [h]")
 }
 #ggsave2(p=reportName)
 
