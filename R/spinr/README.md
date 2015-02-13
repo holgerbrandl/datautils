@@ -1,39 +1,33 @@
 A tiny wrapper around knitr::spin to use it from the terminal
 ===
 
-To prepare a shell source in the script
-source <(curl https://dl.dropboxusercontent.com/u/113630701/datautils/bash/bioinfo_utils.sh 2>&1 2>/dev/null)
 
+Installation
+---
 
-To use them just source them when needed.
-
-Use the issue tracker to suggest changes or to report problems
-
-Bash
-===
-
-LSF Cluster Utils:
+Download it using
 ```
-source <(curl https://dl.dropboxusercontent.com/u/113630701/datautils/bash/lsf_utils.sh 2>&1 2>/dev/null)
+wget -P ~/bin https://raw.githubusercontent.com/holgerbrandl/datautils/master/R/spinr/spin.R
 ```
+and add it to your PATH if necessary.
 
-Tools to simplify bio-dataprocessing in bash
+To prepare a shell just source in the script which will simply define 2 bash functions.
 ```
+source <(curl https://raw.githubusercontent.com/holgerbrandl/datautils/master/R/spinr/spin_utils.sh 2>&1 2>/dev/null)
 ```
 
+Usage
+---
 
-R
-===
-
-The R bits are split up into tools for
-* general data handling
-* plotting using ggplot2
-* bioinformatics using various bioconductor packages
-
+You can spin R scripts with
 ```
-devtools::source_url("https://dl.dropboxusercontent.com/u/113630701/datautils/R/core_commons.R")
-devtools::source_url("https://dl.dropboxusercontent.com/u/113630701/datautils/R/ggplot_commons.R")
-devtools::source_url("https://dl.dropboxusercontent.com/u/113630701/datautils/R/bio/bioinfo_commons.R")
-devtools::source_url("https://dl.dropboxusercontent.com/u/113630701/datautils/R/datatable_commons.R")
+spinr MyScript.R
 ```
+or rsnippets with
+```
+echo "require(ggplot); ggplot(iris, aes(Sepal.Length, Sepal.Width)) + geom_point()" | spinsnip "my_report" "
+```
+
+
+
 

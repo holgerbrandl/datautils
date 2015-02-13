@@ -2,16 +2,18 @@
 spinr(){
     ## download if not yet there
     if [ -z "$(which spin.R)" ]; then
-        wget -P ~/ https://raw.githubusercontent.com/holgerbrandl/themoviedbapi/v1.0/LICENCE.txt
+        >&2 echo "spin.R is not installed. See https://github.com/holgerbrandl/datautils/tree/master/R/spinr for details"
     fi
 
     ~/spin.R $*
 }
+export -f spinr
 
 
 spinsnip(){
     if [ $# -lt 1 ]; then
          >&2 echo "Usage: spinsnip <report name> [other args]*"
+         >&2 echo "The R snippet to be spinned will be read from standard input."
         return
     fi
 
@@ -28,6 +30,7 @@ spinsnip(){
 
     rm $tmpR
 }
+export -f spinsnip
 
 ## usage example
 # echo '
