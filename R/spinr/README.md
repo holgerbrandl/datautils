@@ -1,4 +1,4 @@
-spin.R: A shell-wrapper for knitr::spin
+spin.R - A shell-wrapper for knitr::spin
 ===
 
 
@@ -8,7 +8,7 @@ Installation
 Download a local copy and add it to your path using
 ```
 targetDirectory=~/bin
-wget -P $targetDirectory https://raw.githubusercontent.com/holgerbrandl/datautils/master/R/spinr/spin.R
+wget -P $targetDirectory --no-check-certificate https://raw.githubusercontent.com/holgerbrandl/datautils/master/R/spinr/spin.R
 chmod +x $targetDirectory/spin.R
 export PATH=$targetDirectory:$PATH
 ```
