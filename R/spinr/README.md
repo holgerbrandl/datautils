@@ -7,7 +7,10 @@ Installation
 
 Download it using
 ```
-wget -P ~/bin https://raw.githubusercontent.com/holgerbrandl/datautils/master/R/spinr/spin.R
+targetDirectory=~/bin
+wget -P $targetDirectory https://raw.githubusercontent.com/holgerbrandl/datautils/master/R/spinr/spin.R
+chmod +x $targetDirectory/spin.R
+export PATH=$targetDirectory:$PATH
 ```
 and add it to your PATH if necessary.
 

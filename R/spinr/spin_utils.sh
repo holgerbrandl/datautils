@@ -1,11 +1,12 @@
 
 spinr(){
-    ## download if not yet there
+    ## test if present in PATH
     if [ -z "$(which spin.R)" ]; then
         >&2 echo "spin.R is not installed. See https://github.com/holgerbrandl/datautils/tree/master/R/spinr for details"
     fi
+    chmod +x
 
-    ~/spin.R $*
+    spin.R $*
 }
 export -f spinr
 
