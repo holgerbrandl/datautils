@@ -4,7 +4,6 @@ spinr(){
     if [ -z "$(which spin.R)" ]; then
         >&2 echo "spin.R is not installed. See https://github.com/holgerbrandl/datautils/tree/master/R/spinr for details"
     fi
-    chmod +x
 
     spin.R $*
 }
