@@ -28,7 +28,7 @@ spinr MyScript.R
 ```
 or rsnippets with
 ```
-echo "require(ggplot); ggplot(iris, aes(Sepal.Length, Sepal.Width)) + geom_point()" | spinsnip "my_report" "
+echo "require(ggplot2); ggplot(iris, aes(Sepal.Length, Sepal.Width)) + geom_point()" | spinsnip "my_report"
 ```
 
 
