@@ -158,7 +158,10 @@ replaceNA <- function(x, withValue) { x[is.na(x)] <- withValue; x }
 ## Deprecated: load dplyr after biomart to avoid this problem
 #dselect <- function(...) dplyr::select(...)
 
-trimOutliers <- function(values, range=quantile(values, c(0.05, 0.95)))  pmax(range[1], pmin(range[2], values))
+## outlier handling
+trim_outliers <- function(values, range=quantile(values, c(0.05, 0.95)))  pmax(range[1], pmin(range[2], values))
+
+limit_range <- function(values, range)  pmax(range[1], pmin(range[2], values))
 
 
 
