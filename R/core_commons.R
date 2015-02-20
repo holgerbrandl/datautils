@@ -39,6 +39,8 @@ require.auto(reshape2)
 ## load on purpose after plyr
 require.auto(dplyr)
 
+require.auto(magrittr)
+
 #require.auto(data.table)
 
 ## user browser for help
