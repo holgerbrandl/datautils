@@ -1,5 +1,26 @@
+########################################################################################################################
+## set a default cran r mirror  and customize environment
 
+#cat(".Rprofile: Setting Goettingen repository\n")
+r = getOption("repos") # hard code the UK repo for CRAN 
+r["CRAN"] = "http://ftp5.gwdg.de/pub/misc/cran/"
+options(repos = r)
+rm(r)
+
+
+## user browser for help
+options(help_type="html")
+
+## plot more characters per line
+options(width=150)
+
+# for sqldf to avoid the use of tckl
+options(gsubfn.engine = "R")
+
+
+########################################################################################################################
 ## automatic package installation
+
 require.auto <-  function(x){
     x <- as.character(substitute(x))
 
@@ -20,17 +41,10 @@ require.auto <-  function(x){
     }
 }
 
-#qlibrary <- function(libname) {library(as.character(substitute(libname)), quietly=T, warn.conflicts=F, character.only=T )}
 
-## set a default cran r mirror
-#cat(".Rprofile: Setting Goettingen repository\n")
-r = getOption("repos") # hard code the UK repo for CRAN 
-r["CRAN"] = "http://ftp5.gwdg.de/pub/misc/cran/"
-options(repos = r)
-rm(r)
-
-
+########################################################################################################################
 ## load core packages
+
 require.auto(plyr)
 require.auto(stringr)
 require.auto(reshape2)
@@ -38,62 +52,48 @@ require.auto(reshape2)
 
 ## load on purpose after plyr
 require.auto(dplyr)
-
 require.auto(magrittr)
 
 #require.auto(data.table)
-
-## user browser for help
-options(help_type="html")
-
-## plot more characters per line
-options(width=150)
-
-# for sqldf to avoid the use of tckl
-options(gsubfn.engine = "R")
-
-
 
 
 
 
 ########################################################################################################################
-#### Small aliases
+#### Convenience aliases
 
 
-#praste <- function(...) print(paste(...))
 echo <- function(...) print(paste(...))
-
 
 ac <- function(...) as.character(...)
 
-qns <- function() quit(save="no")
-
-
 # string concatenation without space gaps (could/should use paste0 instead)
-concat <- function(...) paste(..., sep="")
-
-
-se<-function(x)	sd(x, na.rm=TRUE) / sqrt(sum(!is.na(x)))
+## Deprecated: use paste0 instead
+#concat <- function(...) paste(..., sep="")
 
 unlen <- function(x) length(unique(x))
 
 pp <- function(dat) page(dat, method = "print")
 
+as.df <- function(dt) as.data.frame(dt)
+
 
 ########################################################################################################################
 #### data.frame manipulation
 
-subsample <- function(df, sampleSize, ...){
-    df[sample(1:nrow(df), min(sampleSize, nrow(df)), ...),]
-}
+## Deprecated: use dplyr::sample_n instead
+#subsample <- function(df, sampleSize, ...){
+#    df[sample(1:nrow(df), min(sampleSize, nrow(df)), ...),]
+#}
 
 shuffle <- function(df) df[sample(nrow(df)),]
 
 first <- function(x, n=1) head(x,n)
 
-as.df <- function(dt) as.data.frame(dt)
 
+
+#vec2df <- function(namedVec) namedVec %>% {data.frame(name=names(.), value=., row.names=NULL)}
+vec2df <- function(namedVec) data.frame(name=names(namedVec), value=namedVec, row.names=NULL)
 
 
 rownames2column <- function(df, colname){
@@ -160,12 +160,27 @@ replaceNA <- function(x, withValue) { x[is.na(x)] <- withValue; x }
 ## Deprecated: load dplyr after biomart to avoid this problem
 #dselect <- function(...) dplyr::select(...)
 
-## outlier handling
-trim_outliers <- function(values, range=quantile(values, c(0.05, 0.95)))  pmax(range[1], pmin(range[2], values))
 
-limit_range <- function(values, range)  pmax(range[1], pmin(range[2], values))
+########################################################################################################################
+#### Result Caching for long running
 
+cache_it <- function(expr, cacheName){
+    cacheFile <- paste0(".", cacheName, ".RData")
 
+    if(file.exists(cacheFile)){
+        # print("using cache")
+        local(get(load(cacheFile)))
+    } else {
+        # print("evaluating expression")
+        result <- eval(expr)
+        save(result, file=cacheFile)
+        result
+    }
+}
+
+## Examples
+#mydata <- quote(iris %>% filter(Species=="setosa")) %>% cache_it("tt")
+#mydata <- quote( { print("evaluation expr"); iris %>% filter(Species=="setosa") } ) %>% cache_it("tt")
 
 ########################################################################################################################
 #### File System
@@ -214,9 +229,8 @@ rmLastElement <- function(vec) vec[-length(vec)]
 
 
 ########################################################################################################################
-#### File System
-
 ## Memory management
+
 
 # improved list of objects
 lsos <- function (pos = 1, pattern, order.by,
@@ -244,8 +258,19 @@ lsos <- function (pos = 1, pattern, order.by,
     arrange(out, Size)
 }
 
-# shorthand
+# shorthand that just shows top 1 results
 lsosh <- function(..., n=10) {
     lsos(..., order.by="Size", decreasing=TRUE, head=TRUE, n=n)
 }
 
+########################################################################################################################
+### Statistics
+
+
+## outlier handling
+trim_outliers <- function(values, range=quantile(values, c(0.05, 0.95)))  pmax(range[1], pmin(range[2], values))
+
+## use trim_outliers instead
+#limit_range <- function(values, range)  pmax(range[1], pmin(range[2], values))
+
+se<-function(x)	sd(x, na.rm=TRUE) / sqrt(sum(!is.na(x)))
