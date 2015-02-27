@@ -164,6 +164,8 @@ replaceNA <- function(x, withValue) { x[is.na(x)] <- withValue; x }
 ########################################################################################################################
 #### Result Caching for long running
 
+## related: http://cran.r-project.org/web/packages/R.cache/R.cache.pdf
+
 cache_it <- function(expr, cacheName){
     cacheFile <- paste0(".", cacheName, ".RData")
 
