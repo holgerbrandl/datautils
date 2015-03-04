@@ -81,10 +81,6 @@ as.df <- function(dt) as.data.frame(dt)
 ########################################################################################################################
 #### data.frame manipulation
 
-## Deprecated: use dplyr::sample_n instead
-#subsample <- function(df, sampleSize, ...){
-#    df[sample(1:nrow(df), min(sampleSize, nrow(df)), ...),]
-#}
 
 shuffle <- function(df) df[sample(nrow(df)),]
 
