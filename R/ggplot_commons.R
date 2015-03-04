@@ -1,13 +1,11 @@
 require.auto(ggplot2)
 require.auto(scales)
-require(grid)
-
+require.auto(grid)
 
 
 scale_fill_redgreed <- function() scale_fill_manual(values = c("red","darkgreen"))
 
 rotXlab <- function() theme(axis.text.x = element_text(angle = 90, hjust = 1))
-
 
 
 
@@ -85,12 +83,12 @@ ggsave2 <- function(gplot=last_plot(), width=8, height=6, prefix="", saveData=FA
     }
 
 
-    fileBaseName <- ifelse(nchar(prefix)>0, concat(prefix, " - ", title), title)
+    fileBaseName <- ifelse(nchar(prefix)>0, paste0(prefix, " - ", title), title)
 
     ## clean up weired characters
     fileBaseName <- str_replace_all(fileBaseName, "[$%/?]", "_")
 
-    fileName = concat(fileBaseName, concat(".", outputFormat))
+    fileName = paste0(fileBaseName, paste0(".", outputFormat))
 
     ## remove line-breaks and trim spaces
     fileName = str_replace_all(str_replace_all(fileName, "\\n", ""), "[ ]{2,}", " ")
@@ -98,7 +96,7 @@ ggsave2 <- function(gplot=last_plot(), width=8, height=6, prefix="", saveData=FA
     ggsave(fileName, width=width, height=height, ...)
 
     if(saveData){
-        write.delim(gplot$data, file= concat(fileBaseName, ".txt"))
+        write.delim(gplot$data, file= paste0(fileBaseName, ".txt"))
     }
 
     return(fileName)
