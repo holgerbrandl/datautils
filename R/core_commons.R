@@ -163,7 +163,7 @@ replaceNA <- function(x, withValue) { x[is.na(x)] <- withValue; x }
 
 ## related: http://cran.r-project.org/web/packages/R.cache/R.cache.pdf
 
-cache_it <- function(expr, cacheName=paste0("cache_", substr(digest(expr), 1,6))){
+cache_it <- function(expr, cacheName=paste0("cache_", substr(digest::digest(expr), 1,6))){
     cacheFile <- paste0(".", cacheName, ".RData")
 
     if(file.exists(cacheFile)){

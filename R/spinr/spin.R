@@ -15,7 +15,7 @@ suppressMessages(library(docopt))
 # retrieve and parse the command-line arguments
 doc <- '
 Use knitr to spin R documents
-Usage: spin.R [options] <r_script> [<script_args>...]
+Usage: spin.R [options] <r_script> [<quoted_script_args>]
 
 Options:
 -c        Cache results
@@ -26,6 +26,7 @@ Options:
 '
 #!docopt(doc, "-w test  a b c ")$keep
 #docopt(doc, "-w test  a b c ")$"-w"
+#docopt(doc, "$DGE_HOME/dge_analysis.R \"--undirected --qcutoff 0.05 --minfpkm 2 ..\"")
 
 spin_opts <- docopt(doc)
 #print(spin_opts)
@@ -51,7 +52,7 @@ options(width=150)
 #https://groups.google.com/forum/#!topic/knitr/ojcnq5Nm298
 
 ## better table css: http://www.stat.ubc.ca/~jenny/STAT545A/topic10_tablesCSS.html
-commandArgs <- function(trailingOnly = FALSE){ return(as.character(spin_opts$script_args)) }
+commandArgs <- function(trailingOnly = FALSE){ return(as.character(spin_opts$quoted_script_args)) }
 #print("trimmed args are")
 #print(commandArgs())
 #print("end args")
