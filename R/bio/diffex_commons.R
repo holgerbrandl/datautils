@@ -136,7 +136,7 @@ rintersect.list <- function(LDF){
 ## http://www.bioconductor.org/packages/release/bioc/vignettes/RDAVIDWebService/inst/doc/RDavidWS-vignette.pdf
 ## e.g. getClusterReport --> plot2D
 
-DEF_DAVID_ONTOLOGIES=ontologies=c("GOTERM_CC_FAT", "GOTERM_MF_FAT", "GOTERM_BP_FAT", "PANTHER_PATHWAY", "REACTOME_PATHWAY", "KEGG_PATHWAY", "GOTERM_CC_FAT", "GOTERM_MF_FAT", "GOTERM_BP_FAT")
+DEF_DAVID_ONTOLOGIES=ontologies=c("GOTERM_CC_FAT", "GOTERM_MF_FAT", "GOTERM_BP_FAT", "PANTHER_PATHWAY", "PANTHER_FAMILY", "PANTHER_PATHWAY", "KEGG_PATHWAY", "REACTOME_PATHWAY")
 
 davidAnnotationChart <- function( someGenes, ontologies=DEF_DAVID_ONTOLOGIES ){
 
@@ -152,6 +152,10 @@ davidAnnotationChart <- function( someGenes, ontologies=DEF_DAVID_ONTOLOGIES ){
     }
 
     david<-DAVIDWebService$new(email="brandl@mpi-cbg.de")
+
+#    ## list all ontologies
+#    getAllAnnotationCategoryNames(david)
+
 
 #    getTimeOut(david)
     setTimeOut(david, 80000) ## http://www.bioconductor.org/packages/release/bioc/vignettes/RDAVIDWebService/inst/doc/RDavidWS-vignette.pdf
