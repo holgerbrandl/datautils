@@ -26,7 +26,7 @@ Options:
 '
 #!docopt(doc, "-w test  a b c ")$keep
 #docopt(doc, "-w test  a b c ")$"-w"
-#docopt(doc, "$DGE_HOME/dge_analysis.R \"--undirected --qcutoff 0.05 --minfpkm 2 ..\"")
+#spin_opts <- docopt(doc, "$DGE_HOME/dge_analysis.R \"--undirected --qcutoff 0.05 --minfpkm 2 ..\"")
 
 spin_opts <- docopt(doc)
 #print(spin_opts)
