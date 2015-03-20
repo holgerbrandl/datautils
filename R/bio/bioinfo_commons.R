@@ -39,6 +39,8 @@ getSeqLengthFromFasta <- function(fileName){
 #    write.table(bedData, file=file, quote=FALSE, sep ="\t", na="NA", row.names=FALSE, col.names=FALSE)
 #}
 
+write_bed <- function(bedData, file) write.bed(bedData, file)
+
 write.bed <- function(bedData, file){
     oldScipen<-getOption("scipen")
 
