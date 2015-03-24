@@ -126,6 +126,8 @@ set_names <- function(df, newnames){
 }
 
 
+head_html <- function(df, n=5) head(df, n) %>% knitr::kable(format="html") %>% print()
+
 print_head <- function(df, desc=NULL){
     print(head(df))
     print(nrow(df))
