@@ -55,6 +55,10 @@ require.auto(dplyr)
 require.auto(magrittr)
 require.auto(tidyr)
 
+## needed for caching
+require.auto(digest)
+
+## moved into datatable_commons because replaced almost everywhere with dplyr
 #require.auto(data.table)
 
 
@@ -64,7 +68,7 @@ require.auto(tidyr)
 #### Convenience aliases
 
 
-echo <- function(...) print(paste(...))
+echo <- function(...) cat(paste(...), fill=T)
 
 ac <- function(...) as.character(...)
 
