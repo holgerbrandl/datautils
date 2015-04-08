@@ -149,7 +149,7 @@ makePcaPlot <- function(x = getData(), group = NA, items=rownames(x), title = ""
 ### Base-plot utils
 
 
-plotPDF <- function(filename, expr){ pdf(paste0(filename, ".pdf")); expr; dev.off(); }
+plotPDF <- function(fileBaseName, expr, ...){ pdf(paste0(fileBaseName, ".pdf"), ...); expr; dev.off(); }
 #plotPDF("test", plot(1:10))
 
 

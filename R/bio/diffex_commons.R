@@ -32,6 +32,20 @@ guess_mart <- function(gene_id){
         stop(paste("could not guess mart from ", an_id))
     }
 }
+
+guess_pathview_species <- function(gene_id){
+    an_id <-gene_id[1]
+
+   if(str_detect(an_id, "ENSMUSG")){
+        return("mmu")
+    }else if(str_detect(an_id, "ENSDARG")){
+        return("dre")
+    }else if(str_detect(an_id, "ENSG")){
+        return("hsa")
+    }else{
+        stop(paste("could not guess mart from ", an_id))
+    }
+}
 #guess_mart("ENSCAFG00000000043")
 
 
