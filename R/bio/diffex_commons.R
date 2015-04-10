@@ -33,6 +33,10 @@ guess_mart <- function(gene_id){
     }
 }
 
+get_ensembl_build <- function(){
+    biomaRt::listMarts() %>% as.data.frame() %>% filter(biomart=="ensembl") %>% with(str_match(version, " ([0-9]*) ")) %>% subset(select=2)
+}
+
 guess_pathview_species <- function(gene_id){
     an_id <-gene_id[1]
 
