@@ -230,6 +230,13 @@ mysub(){
     jobName=$(echo $1| tr ' ' '_'); shift
     jobCmd=$1; shift
 
+    #todo continue here (maybe refac into independent library?)
+#    if ! [ -x "$(command -v bsub)" ]; then
+#       bsub  -J $jobName $@ "( $jobCmd ) 2>$jobName.err.log 1>$jobName.out.log"
+#    else
+#       eval $jobCmd 2>$jobName.err.log 1>$jobName.out.log
+#    fi
+
     bsub  -J $jobName $@ "( $jobCmd ) 2>$jobName.err.log 1>$jobName.out.log"
 }
 export -f mysub
