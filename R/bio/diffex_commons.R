@@ -193,7 +193,7 @@ davidAnnotationChart <- function( someGenes, ontologies=DEF_DAVID_ONTOLOGIES ){
     annoChart <- as.data.frame(unclass(annoChart))
 
     # http://stackoverflow.com/questions/25271856/cannot-coerce-class-typeof-is-double-to-a-data-frame
-    if(nrow(annoChart) >0) annoChart <-  annoChart %>%  dplyr::select(select=-Genes)
+#    if(nrow(annoChart) >0) annoChart <-  annoChart %>%  dplyr::select(select=-Genes)
 
     return(annoChart)
 }
