@@ -57,13 +57,21 @@ commandArgs <- function(trailingOnly = FALSE){ return(as.character(spin_opts$quo
 #print(commandArgs())
 #print("end args")
 
+
+## todo use temp-file-name here to allow for cocurring spin.R in same directory
+## copy R-script to working directory and forget about the original one
+#file.copy(r_script, basename(r_script))
+system(paste("cat ", r_script," | grep -Ev '^#+$' | grep -Fv '#!/usr/bin/env Rscript' >", basename(r_script)))
+r_script <- basename(r_script)
+
 spin(r_script, knit=F)
+file.remove(basename(r_script))
 
 rmdScript <- str_replace(r_script, "[.]R$", ".Rmd")
 
-system(paste("mv", rmdScript, "tmp.Rmd"))
-system(paste("cat tmp.Rmd | grep -Ev '^#+$' | grep -Fv '#!/usr/bin/env Rscript' >", basename(rmdScript)))
-file.remove("tmp.Rmd")
+# system(paste("mv", rmdScript, "tmp.Rmd"))
+#system(paste("cat tmp.Rmd | grep -Ev '^#+$' | grep -Fv '#!/usr/bin/env Rscript' >", basename(rmdScript)))
+#file.remove("tmp.Rmd")
 
 cssHeader='
 <style type="text/css">
