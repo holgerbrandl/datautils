@@ -162,7 +162,7 @@ davidAnnotationChart <- function( someGenes, ontologies=DEF_DAVID_ONTOLOGIES ){
 
     ## expexted to have a column with gene_id
 #    echo("processing list with", length(someGenes), "genes")
-#    someGenes <- degs$ensembl_gene_id
+#    someGenes <- degs$ensembl_gene_id[1:100]
 
 
     if(length(someGenes)>1500){
