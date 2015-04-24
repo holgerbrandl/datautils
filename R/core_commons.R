@@ -123,11 +123,15 @@ push_left <- function(df, pushColNames){
 }
 
 
-set_names <- function(df, newnames){
-    df<- as.df(df)
+#http://astrostatistics.psu.edu/datasets/R/html/base/html/formals.html
+set_names <- function(df, ...){
+#browser()
+    newnames <- as.character(unlist(list(...)))
     names(df) <- newnames;
     return(df)
 }
+#iris %>% set_names(c("setosa", "hallo")) %>% head
+#iris %>% set_names("setosa", "hallo") %>% head
 
 
 head_html <- function(df, n=5) head(df, n) %>% knitr::kable(format="html") %>% print()
@@ -165,7 +169,7 @@ replaceNA <- function(x, withValue) { x[is.na(x)] <- withValue; x }
 
 
 ########################################################################################################################
-#### Result Caching for long running
+#### Result Caching for long running tasks
 
 ## related: http://cran.r-project.org/web/packages/R.cache/R.cache.pdf
 
