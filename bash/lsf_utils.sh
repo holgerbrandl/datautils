@@ -230,16 +230,17 @@ mysub(){
     jobName=$(echo $1| tr ' ' '_'); shift
     jobCmd=$1; shift
 
-    #todo continue here (maybe refac into independent library?)
-#    if ! [ -x "$(command -v bsub)" ]; then
-#       bsub  -J $jobName $@ "( $jobCmd ) 2>$jobName.err.log 1>$jobName.out.log"
-#    else
-#       eval $jobCmd 2>$jobName.err.log 1>$jobName.out.log
-#    fi
-
-    bsub  -J $jobName $@ "( $jobCmd ) 2>$jobName.err.log 1>$jobName.out.log"
+    ## use bsub if available, otherwise fall back to simple eval and ignore other arguments
+    if [ -n "$(command -v bsub)" ]; then
+#       echo "submitting job ${jobName}"
+       bsub  -J $jobName $@ "( $jobCmd ) 2>$jobName.err.log 1>$jobName.out.log"
+    else
+       echo "using eval instead of bsub for ${jobName}"
+       eval $jobCmd 2>$jobName.err.log 1>$jobName.out.log
+    fi
 }
 export -f mysub
+#mysub "test" "ls"
 #mysub testjob "echo test; echo  blabla 1>&2;" -q medium
 
 
