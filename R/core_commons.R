@@ -127,6 +127,10 @@ push_left <- function(df, pushColNames){
 set_names <- function(df, ...){
 #browser()
     newnames <- as.character(unlist(list(...)))
+
+    ## automatically convert matrices to data.frames (otherwise the names set would fail
+    if(is.matrix(df)) df %<>% as.data.frame()
+
     names(df) <- newnames;
     return(df)
 }
