@@ -160,6 +160,9 @@ create_palette <- function(x, pal = 'Set1'){
 
   ux <- sort(unique(x))
   n <-length(ux)
+
+  if(n==0) return(c())
+
   setNames(brewer.pal(name = pal, n = n)[1:n], ux)
 }
 
