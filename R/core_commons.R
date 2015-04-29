@@ -127,7 +127,7 @@ push_left <- function(df, pushColNames){
 set_names <- function(df, ...){
 #browser()
     newnames <- as.character(unlist(list(...)))
-    names(df) <- newnames;
+    colnames(df) <- newnames;
     return(df)
 }
 #iris %>% set_names(c("setosa", "hallo")) %>% head
