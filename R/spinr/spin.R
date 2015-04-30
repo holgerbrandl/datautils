@@ -6,9 +6,6 @@
 #https://github.com/edwindj/docopt.R
 #http://www.slideshare.net/EdwindeJonge1/docopt-user2014
 
-## a thin wrapper around spin to make it more useful with more custom output
-#devtools::source_url("https://dl.dropboxusercontent.com/u/113630701/datautils/R/core_commons.R")
-
 # load the docopt library
 suppressMessages(library(docopt))
 

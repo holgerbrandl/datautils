@@ -72,12 +72,12 @@ jlistReport(){
 #    ## add spin.R
 #    export PATH=/projects/bioinfo/holger/bioinfo_templates/misc:$PATH
 #    source $(which spin_utils.sh)
-    wget wget https://dl.dropboxusercontent.com/u/113630701/datautils/bash/CreateJobReport.R
+    wget https://raw.githubusercontent.com/holgerbrandl/datautils/v1.9/bash/CreateJobReport.R
     chmod u+x CreateJobReport.R
     CreateJobReport.R $joblistFile
 
 #    echo "Creating report for $joblistFile"
-#    echo "reportName='$joblistFile'; devtools::source_url('https://dl.dropboxusercontent.com/u/113630701/datautils/bash/CreateJobReport.R',local=T)" | spinsnip $(echo $joblistFile | tr -d ".")
+#    echo "reportName='$joblistFile'; devtools::source_url('https://raw.githubusercontent.com/holgerbrandl/datautils/v1.9/bash/CreateJobReport.R',local=T)" | spinsnip $(echo $joblistFile | tr -d ".")
     rm CreateJobReport.R
 }
 export -f jlistReport

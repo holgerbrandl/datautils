@@ -2,8 +2,8 @@
 ## Tophat Mapping Report from the logs
 TophatMappingReport(){
 echo '
-devtools::source_url("https://dl.dropboxusercontent.com/u/113630701/datautils/R/core_commons.R")
-devtools::source_url("https://dl.dropboxusercontent.com/u/113630701/datautils/R/ggplot_commons.R")
+devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v1.9/R/core_commons.R")
+devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v1.9/R/ggplot_commons.R")
 
 
 parseAlgnSummary_T2_0_11 <- function(alignSummary){
@@ -53,8 +53,8 @@ export -f TophatMappingReport
 #Bowtie2MappingReport(){
 #
 #echo '
-#devtools::source_url("https://dl.dropboxusercontent.com/u/113630701/datautils/R/core_commons.R")
-#devtools::source_url("https://dl.dropboxusercontent.com/u/113630701/datautils/R/ggplot_commons.R")
+#devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v1.9/R/core_commons.R")
+#devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v1.9/R/ggplot_commons.R")
 #
 #logSuffix=".logs"
 #parseAlgnSummary <- function(alignSummary){
@@ -94,7 +94,7 @@ MakeCuffDB() {
     if [ $# -ne 2 ]; then echo "Usage: MakeCuffDB <gtffile> <genomebuild>"; return; fi
 
 echo '
-devtools::source_url("https://dl.dropboxusercontent.com/u/113630701/datautils/R/core_commons.R")
+devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v1.9/R/core_commons.R")
 
 require.auto(cummeRbund)
 

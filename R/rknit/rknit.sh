@@ -29,7 +29,7 @@ rknit(){
 #    cat $rscript | grep -Fv '#!' | Rscript --vanilla -e 'source("/Users/brandl/Dropbox/Public/datautils/R/rknit/rknit_preprocessor.R")'  >> $tmpRmd
 #    cat $rscript | sed 's/^#>$//g'| grep -Fv '#!' | Rscript --vanilla -e 'devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/master/R/rknit/rknit_preprocessor.R")' | grep -v "^#>" >> $tmpRmd
 
-    cat $rscript | sed 's/^#>$//g' | grep -Fv '#!'| grep -Ev '^#+$' | Rscript --vanilla -e 'devtools::source_url("https://dl.dropboxusercontent.com/u/113630701/datautils/R/rknit/rknit_preprocessor.R")' >> $tmpRmd
+    cat $rscript | sed 's/^#>$//g' | grep -Fv '#!'| grep -Ev '^#+$' | Rscript --vanilla -e 'devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v1.9/R/rknit/rknit_preprocessor.R")' >> $tmpRmd
 
     echo '```' >> $tmpRmd
 
