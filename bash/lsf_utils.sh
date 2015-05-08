@@ -230,13 +230,16 @@ mysub(){
     jobName=$(echo $1| tr ' ' '_'); shift
     jobCmd=$1; shift
 
+    ## create hidden log file directory if not present
+    if [ ! -d .logs ]; then mkdir .logs; fi
+
     ## use bsub if available, otherwise fall back to simple eval and ignore other arguments
     if [ -n "$(command -v bsub)" ]; then
 #       echo "submitting job ${jobName}"
-       bsub  -J $jobName $@ "( $jobCmd ) 2>$jobName.err.log 1>$jobName.out.log"
+       bsub  -J $jobName $@ "( $jobCmd ) 2>.logs/${jobName}.err.log 1>.logs/${jobName}.out.log"
     else
        echo "using eval instead of bsub for ${jobName}"
-       eval $jobCmd 2>$jobName.err.log 1>$jobName.out.log
+       eval $jobCmd 2>.logs/${jobName}.err.log 1>.logs/${jobName}.out.log
     fi
 }
 export -f mysub
