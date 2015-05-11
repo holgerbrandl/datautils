@@ -224,11 +224,16 @@ export -f retouch
 #
 #    bsub -e $jobName.err.log -o $jobName.out.log -J $jobName $@ "$jobCmd"
 #}
+
 mysub(){
     if [ $# -lt 2 ]; then echo "Usage: mysub <jobname> <script> [<additional bsub arguments>]"; return; fi
 
     jobName=$(echo $1| tr ' ' '_'); shift
     jobCmd=$1; shift
+
+    # if dry run is defined just output submission call into $DRY_RUN
+    # export DRY_RUN="dry_run.txt"
+    if [ -n "$DRY_RUN" ]; then echo "${jobName}:\t\t$jobCmd" >> $DRY_RUN; return; fi
 
     ## create hidden log file directory if not present
     if [ ! -d .logs ]; then mkdir .logs; fi
