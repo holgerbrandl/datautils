@@ -18,7 +18,7 @@ spinsnip(){
     fi
 
     reportName=$1
-    tmpR=$(echo $reportName | tr " " "_").R
+    tmpR=$(mktemp -d)/$(echo $reportName | tr " " "_").R
 
     ## http://stackoverflow.com/questions/11454343/pipe-output-to-bash-function
     cat | sed 's/#>/#'"'"'/g'  > $tmpR
@@ -28,7 +28,8 @@ spinsnip(){
     shift
     spinr $tmpR $*
 
-    rm $tmpR
+#    rm -r $(dirname $tmpR)
+    rm ${tmpR}
 }
 export -f spinsnip
 

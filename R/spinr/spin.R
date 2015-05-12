@@ -55,7 +55,7 @@ commandArgs <- function(trailingOnly = FALSE){ return(as.character(spin_opts$quo
 #print("end args")
 
 
-## todo use temp-file-name here to allow for cocurring spin.R in same directory
+## todo use temp-file-name here to allow for cocurring spin.R in same directory --> pointless because results would be overwritten
 ## copy R-script to working directory and forget about the original one
 #file.copy(r_script, basename(r_script))
 system(paste("cat ", r_script," | grep -Ev '^#+$' | grep -Fv '#!/usr/bin/env Rscript' >", basename(r_script)))
