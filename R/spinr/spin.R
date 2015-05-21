@@ -22,6 +22,7 @@ Options:
 --keep    Keep generated Rmd and md files
 '
 #!docopt(doc, "-w test  a b c ")$keep
+#spin_opts <- docopt(doc, "fastqc")
 #docopt(doc, "-w test  a b c ")$"-w"
 #spin_opts <- docopt(doc, "$DGE_HOME/dge_analysis.R \"--undirected --qcutoff 0.05 --minfpkm 2 ..\"")
 
