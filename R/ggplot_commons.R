@@ -62,7 +62,7 @@ gg2Format="png"
 
 ## simplified save function for ggpltos
 ggsave2 <- function(gplot=last_plot(), width=8, height=6, prefix="", saveData=FALSE, outputFormat=gg2Format, ...){
-    title <- ac(try(gplot$labels[["title"]]))
+    title <- try(gplot$labels[["title"]])
 
     if(is.null(title)){
         varMapping <- gplot$labels
@@ -80,7 +80,7 @@ ggsave2 <- function(gplot=last_plot(), width=8, height=6, prefix="", saveData=FA
 
         rawFacetDesc <- format(gplot$facet)
         if(rawFacetDesc!="facet_null()"){
-            title <- paste(title, "by", str_replace_all(str_match(rawFacetDesc, "facet_.*[(](.*))")[,2], "~", "and"))
+            title <- paste(title, "by", str_replace_all(str_match(rawFacetDesc, "facet_.*[(](.*)[)]")[,2], "~", "and"))
         }
     }
 
