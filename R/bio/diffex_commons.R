@@ -79,7 +79,6 @@ retainExprGenes <- function(df, id_col="ensembl_gene_id", ...){
 
 
 
-
 getGeneInfo <- function(gene_ids){
     martName <- guess_mart(gene_ids[1])
 
