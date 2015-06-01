@@ -28,6 +28,8 @@ guess_mart <- function(gene_id){
         return("drerio_gene_ensembl")
     }else if(str_detect(an_id, "ENSG")){
         return("hsapiens_gene_ensembl")
+    }else if(str_detect(an_id, "FBgn")){
+        return("dmelanogaster_gene_ensembl")
     }else{
         stop(paste("could not guess mart from ", an_id))
     }
@@ -40,12 +42,16 @@ get_ensembl_build <- function(){
 guess_pathview_species <- function(gene_id){
     an_id <-gene_id[1]
 
+   ## see http://www.genome.jp/kegg-bin/find_org_www?mode=abbr&obj=mode.map
+
    if(str_detect(an_id, "ENSMUSG")){
         return("mmu")
     }else if(str_detect(an_id, "ENSDARG")){
         return("dre")
     }else if(str_detect(an_id, "ENSG")){
         return("hsa")
+    }else if(str_detect(an_id, "FBgn")){
+        return("dme")
     }else{
         stop(paste("could not guess mart from ", an_id))
     }
