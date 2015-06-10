@@ -239,7 +239,7 @@ mysub(){
     if [ ! -d .logs ]; then mkdir .logs; fi
 
     ## use bsub if available, otherwise fall back to simple eval and ignore other arguments
-    if [ -n "$(command -v bsub)" ]; then
+    if [ -n "$(command -v bsub)" ] && [ -z "$LOCAL_RUN" ]; then
 #       echo "submitting job ${jobName}"
        bsub  -J $jobName $@ "( $jobCmd ) 2>.logs/${jobName}.err.log 1>.logs/${jobName}.out.log"
     else
