@@ -15,6 +15,7 @@ Use knitr to spin R documents
 Usage: spin.R [options] <r_script> [<quoted_script_args>]
 
 Options:
+--toc     Add a table of contents
 -c        Cache results
 -e        Show Code
 -w        Show warnings
@@ -100,7 +101,15 @@ opts_chunk$set(
     width=200
 )
 
-knit2html(basename(rmdScript), header=cssHeader)
+knitOptions <- c()
+
+## optionally render toc
+## see http://stackoverflow.com/questions/25872558/generating-a-table-of-contents-toc-when-using-knitrs-spin
+if(spin_opts$toc){
+   knitOptions= c("toc", markdown::markdownHTMLOptions(TRUE))
+}
+
+knit2html(basename(rmdScript), header=cssHeader, options = knitOptions)
 
 ## also remove the .md and the .Rmd files
 if(is.logical(keep_markdown_files) & !keep_markdown_files){

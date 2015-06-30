@@ -26,7 +26,7 @@ spinsnip(){
     echo "spining $tmpR..."
 
     shift
-    spinr $tmpR $*
+    spinr -e $tmpR $*
 
 #    rm -r $(dirname $tmpR)
     rm ${tmpR}

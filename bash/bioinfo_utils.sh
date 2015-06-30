@@ -136,8 +136,8 @@ export -f CountFastqGzReads
 
 
 IndexBams(){
-    for bamFile in $1; do
-        sem -j5 -no-notice samtools index $bamFile;
+    for bamFile in $@; do
+        sem -j5 samtools index $bamFile;
     done
     sem -no-notice --wait
 }
