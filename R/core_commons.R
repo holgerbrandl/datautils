@@ -35,7 +35,7 @@ require.auto <-  function(x){
         eval(parse(text=paste("require(", x, ",  quietly=T)", sep="")))
     } else {
         source("http://bioconductor.org/biocLite.R")
-        biocLite(character(), ask=FALSE) # update dependencies, if any.
+#        biocLite(character(), ask=FALSE) # update dependencies, if any.
         eval(parse(text=paste("biocLite('", x, "')", sep="")))
         eval(parse(text=paste("require(", x, ",  quietly=T)", sep="")))
     }
