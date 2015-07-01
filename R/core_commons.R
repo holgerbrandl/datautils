@@ -107,6 +107,9 @@ rownames2column <- function(df, colname){
 
 column2rownames<- function(df, colname){
 #browser()
+    ## force into df to avoid dplyr problems
+    df <- as.df(df)
+
     rownames(df) <- ac(df[,colname])
     df[colname] <- NULL
     return(df)
