@@ -6,6 +6,7 @@ require.auto(grid)
 scale_fill_redgreed <- function() scale_fill_manual(values = c("red","darkgreen"))
 
 rot_x_lab <- function() theme(axis.text.x = element_text(angle = 90, hjust = 1))
+rot_x_45 <- function() theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ## DEPRACTED because of naming
 rotXlab <- function() theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
