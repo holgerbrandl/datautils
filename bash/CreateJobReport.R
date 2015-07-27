@@ -3,8 +3,8 @@
 #sessionInfo()
 
 
-devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v1.9/R/core_commons.R")
-devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v1.9/R/ggplot_commons.R")
+devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v1.12/R/core_commons.R")
+devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v1.12/R/ggplot_commons.R")
 
 require.auto(lubridate)
 
@@ -29,7 +29,7 @@ reportNiceName <- str_replace_all(reportName, "^[.]", "")
 
 echo("processing job report for '", reportName,"'")
 
-jobData <- read.table(concat(reportName, ".cluster_snapshots.txt"), header=F, fill=T) %>% as.df() %>%
+jobData <- read.table(paste0(reportName, ".cluster_snapshots.txt"), header=F, fill=T) %>% as.df() %>%
     set_names(c("jobid", "user", "stat", "queue", "from_host", "exec_host", "job_name", "submit_time", "proj_name", "cpu_used", "mem", "swap", "pids", "start_time", "finish_time", "snapshot_time")) %>%
     transform(jobid=factor(jobid)) %>%
     arrange(jobid) %>%
@@ -41,7 +41,7 @@ jobData <- read.table(concat(reportName, ".cluster_snapshots.txt"), header=F, fi
 #parse_date_time(ac("00:04:55.18"), c("%d:%H%M%S"))
 ## parse the submission time
 curYear=str_match(ac(jobData$snapshot_time[1]), "-([0-9]*)_")[,2]
-convertTimes <- function(someDate) parse_date_time(concat(curYear, ac(someDate)), c("%Y/%m/%d-%H%M%S"))
+convertTimes <- function(someDate) parse_date_time(paste0(curYear, ac(someDate)), c("%Y/%m/%d-%H%M%S"))
 convertedTimes <- colwise(convertTimes, .(submit_time, start_time, finish_time))(jobData)
 jobData <- cbind(subset(jobData, select=!(names(jobData) %in% names(convertedTimes))), convertedTimes)
 
@@ -79,7 +79,7 @@ if(max(jobData$cpu_used_secs)==0){
 #ggsave2()
 
 
-save(jobData, file=concat(reportName, ".cluster_snapshots.RData"))
+save(jobData, file=paste0(reportName, ".cluster_snapshots.RData"))
 #jobData <- local(get(load(concat(reportName, ".cluster_snapshots.RData"))))
 
 #ggplot(jobData, aes(exec_time_min, cpu_used_secs, group=jobid)) + geom_line(alpha=0.3) + geom_smooth() + ggtitle("accumulated cpu usage")
@@ -122,7 +122,7 @@ if(nrow(jobSummaries)<50){
 #ggplot(jobSummaries, aes(as.numeric(jobidx), exec_time_min/pending_time_min)) + geom_area() + ggtitle("pending vs exec time ratio")+xlab("job_nr")
 ggplot(jobSummaries, aes(exec_time_min, pending_time_min)) + geom_point() + ggtitle("pending vs exec time") + geom_abline()
 
-write.delim(jobSummaries, file=concat(reportName, ".jobSummaries.txt"))
+write.delim(jobSummaries, file=paste0(reportName, ".jobSummaries.txt"))
 # jobSummaries <- read.delim("jobSummaries.txt")
 
 require(knitr)
