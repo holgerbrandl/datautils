@@ -72,7 +72,7 @@ jlistReport(){
 #    ## add spin.R
 #    export PATH=/projects/bioinfo/holger/bioinfo_templates/misc:$PATH
 #    source $(which spin_utils.sh)
-    wget --no-check-certificate https://raw.githubusercontent.com/holgerbrandl/datautils/v1.9/bash/CreateJobReport.R
+    wget --no-check-certificate https://raw.githubusercontent.com/holgerbrandl/datautils/master/bash/CreateJobReport.R
     chmod u+x CreateJobReport.R
     CreateJobReport.R $joblistFile
 
