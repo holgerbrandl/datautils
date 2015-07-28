@@ -98,7 +98,7 @@ wait4jobs(){
     done
 
     # remove the joblist-file
-    rm $joblistFile
+#    rm $joblistFile
 }
 export -f wait4jobs
 
@@ -147,7 +147,7 @@ wait4jobsReport(){
 
 
     # remove the joblist-file
-    rm $joblistFile
+#    rm $joblistFile
 }
 export -f wait4jobsReport
 
