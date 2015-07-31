@@ -16,6 +16,7 @@ if(!exists("reportName")){
         reportName=".jobs"
         # reportName=".ipsjobs"
         # reportName=".trinjob"
+        # reportName=".blastn"
         # reportName=".failchunksblastx"
     #    stop("Usage: RemoveContaminants.R <assemblyBaseName>")
     }else{
@@ -34,16 +35,20 @@ jobData <- read.table(paste0(reportName, ".cluster_snapshots.txt"), header=F, fi
     transform(jobid=factor(jobid)) %>%
     arrange(jobid) %>%
     subset(stat=="RUN") %>%
-    transform(num_cores=str_match(exec_host, "([0-9]+)[*]n")[,2])
+    transform(num_cores=str_match(exec_host, "([0-9]+)[*]n")[,2]) %>% mutate(num_cores=ifelse(is.na(num_cores), 1, num_cores))
 
+jobData %>% select(submit_time, start_time, finish_time) %>% head
+#    filter(finish_time!="-") %>% head
 
 #parse_date_time(ac("00:00:00.00"), c("%d:%H:%M.%S"))
 #parse_date_time(ac("00:04:55.18"), c("%d:%H%M%S"))
 ## parse the submission time
 curYear=str_match(ac(jobData$snapshot_time[1]), "-([0-9]*)_")[,2]
 convertTimes <- function(someDate) parse_date_time(paste0(curYear, ac(someDate)), c("%Y/%m/%d-%H%M%S"))
-convertedTimes <- colwise(convertTimes, .(submit_time, start_time, finish_time))(jobData)
-jobData <- cbind(subset(jobData, select=!(names(jobData) %in% names(convertedTimes))), convertedTimes)
+#convertedTimes <- colwise(convertTimes, .(submit_time, start_time, finish_time))(jobData)
+#jobData <- cbind(subset(jobData, select=!(names(jobData) %in% names(convertedTimes))), convertedTimes)
+
+jobData %<>% mutate_each(funs(convertTimes), submit_time, start_time, finish_time)
 
 
 jobData <- transform(jobData, snapshot_time=parse_date_time(ac(snapshot_time), c("%d-%m-%y_%H%M%S")))
