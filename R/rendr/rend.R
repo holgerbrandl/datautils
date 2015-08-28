@@ -11,8 +11,8 @@ suppressMessages(library(docopt))
 
 # retrieve and parse the command-line arguments
 doc <- '
-Use knitr to spin R documents
-Usage: spin.R [options] <r_script> [<quoted_script_args>]
+Use rmarkdown to render R and Rmd into html documents
+Usage: rend.R [options] <r_script> [<quoted_script_args>]
 
 Options:
 --toc     Add a table of contents
