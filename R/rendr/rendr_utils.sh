@@ -5,7 +5,7 @@ rendr(){
         >&2 echo "rendr.R is not installed. See https://github.com/holgerbrandl/datautils/tree/master/R/rendr for details"
     fi
 
-    spin.R $*
+    rend.R $*
 }
 export -f rendr
 
@@ -13,7 +13,7 @@ export -f rendr
 rendr_snippet(){
     if [ $# -lt 1 ]; then
          >&2 echo "Usage: rendr_snippet <report name> [other args]*"
-         >&2 echo "The R snippet to be spinned will be read from standard input."
+         >&2 echo "The R snippet to be rendered will be read from standard input."
         return
     fi
 
