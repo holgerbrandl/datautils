@@ -1,0 +1,74 @@
+#!/usr/bin/env Rscript
+
+# similar http://stackoverflow.com/questions/10943695/what-is-the-knitr-equivalent-of-r-cmd-sweave-myfile-rnw
+
+#http://stackoverflow.com/questions/3433603/parsing-command-line-arguments-in-r-scripts
+#https://github.com/edwindj/docopt.R
+#http://www.slideshare.net/EdwindeJonge1/docopt-user2014
+
+# load the docopt library
+suppressMessages(library(docopt))
+
+# retrieve and parse the command-line arguments
+doc <- '
+Use knitr to spin R documents
+Usage: spin.R [options] <r_script> [<quoted_script_args>]
+
+Options:
+--toc     Add a table of contents
+-c        Cache results
+-e        Show Code
+-w        Show warnings
+-m        Show Messages
+--keep    Keep generated Rmd and md files
+'
+
+spin_opts <- docopt(doc)
+
+r_script <- spin_opts$r_script
+keep_markdown_files <- as.logical(spin_opts$keep)
+
+if(keep_markdown_files){
+    print("keeping markdown files")
+}
+
+if(!file.exists(r_script)){
+     stop(paste("file does not exist\n", doc))
+}
+
+require(plyr)
+require(knitr)
+require(stringr)
+
+options(width=150)
+
+#https://groups.google.com/forum/#!topic/knitr/ojcnq5Nm298
+
+commandArgs <- function(trailingOnly = FALSE){ return(as.character(spin_opts$quoted_script_args)) }
+
+#system(paste("cat ", r_script," | grep -Ev '^#+$' | grep -Fv '#!/usr/bin/env Rscript' >", basename(r_script)))
+#r_script <- basename(r_script)
+
+
+## custom title http://stackoverflow.com/questions/14124022/setting-html-meta-elements-with-knitr
+opts_chunk$set(
+    cache = spin_opts$c,
+    message= spin_opts$m,
+    warning= spin_opts$w,
+    echo= spin_opts$e,
+    fig.width=15,
+    width=200
+)
+
+rmarkdown::render(input=r_script,
+    output_format=rmarkdown::html_document(toc = spin_opts$toc, keep_md=keep_markdown_files),
+    output_dir=getwd(),
+    output_options=list(toc="yes")
+)
+
+## also remove the .md and the .Rmd files
+if(is.logical(keep_markdown_files) & !keep_markdown_files){
+#    file.remove(basename(rmdScript))
+#    file.remove(basename(str_replace(r_script, "[.]R$", ".md")))
+}
+
