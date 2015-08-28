@@ -7,7 +7,7 @@ rendr(){
 
     spin.R $*
 }
-export -f spinr
+export -f rendr
 
 
 rendr_snippet(){
@@ -31,7 +31,7 @@ rendr_snippet(){
 #    rm -r $(dirname $tmpR)
     rm ${tmpR}
 }
-export -f spinsnip
+export -f rendr_snippet
 
 ## usage example
 # echo '
