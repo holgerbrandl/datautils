@@ -1,20 +1,15 @@
 
-rendr(){
-    ## test if present in PATH
-    if [ -z "$(which rendr.R)" ]; then
-        >&2 echo "rendr.R is not installed. See https://github.com/holgerbrandl/datautils/tree/master/R/rendr for details"
-    fi
-
-    rend.R $*
-}
-export -f rendr
-
-
 rendr_snippet(){
     if [ $# -lt 1 ]; then
          >&2 echo "Usage: rendr_snippet <report name> [other args]*"
          >&2 echo "The R snippet to be rendered will be read from standard input."
         return
+    fi
+
+
+    ## test if present in PATH
+    if [ -z "$(which rendr.R)" ]; then
+        >&2 echo "rendr.R is not installed. See https://github.com/holgerbrandl/datautils/tree/master/R/rendr for details"
     fi
 
     reportName=$1
@@ -26,7 +21,7 @@ rendr_snippet(){
     echo "rendering $tmpR..."
 
     shift
-    rendr -e $tmpR $*
+    rend.R -e $tmpR $*
 
 #    rm -r $(dirname $tmpR)
     rm ${tmpR}
@@ -38,4 +33,4 @@ export -f rendr_snippet
 # > # test report
 # 1+1;
 # ggplot(iris, aes(Sepal.Width) + geom_histogram()
-# ' | spinsnip some_report
+# ' | rendr_snippet some_report
