@@ -13,7 +13,7 @@ rendr_snippet(){
     fi
 
     reportName=$1
-    tmpR=$(mktemp -d mktemp -d /tmp/rendr.XXXX)/$(echo $reportName | tr " " "_").R
+    tmpR=$(mktemp -d /tmp/rendr.XXXX)/$(echo $reportName | tr " " "_").R
 
     ## http://stackoverflow.com/questions/11454343/pipe-output-to-bash-function
     cat | sed 's/#>/#'"'"'/g'  > $tmpR
