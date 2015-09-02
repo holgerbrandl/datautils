@@ -23,10 +23,10 @@ Options:
 --keep    Keep generated Rmd and md files
 '
 
-spin_opts <- docopt(doc)
+opts <- docopt(doc)
 
-r_script <- spin_opts$r_script
-keep_markdown_files <- as.logical(spin_opts$keep)
+r_script <- opts$r_script
+keep_markdown_files <- as.logical(opts$keep)
 
 if(keep_markdown_files){
     print("keeping markdown files")
@@ -44,7 +44,7 @@ options(width=150)
 
 #https://groups.google.com/forum/#!topic/knitr/ojcnq5Nm298
 
-commandArgs <- function(trailingOnly = FALSE){ return(as.character(spin_opts$quoted_script_args)) }
+commandArgs <- function(trailingOnly = FALSE){ return(as.character(opts$quoted_script_args)) }
 
 #system(paste("cat ", r_script," | grep -Ev '^#+$' | grep -Fv '#!/usr/bin/env Rscript' >", basename(r_script)))
 #r_script <- basename(r_script)
@@ -52,16 +52,16 @@ commandArgs <- function(trailingOnly = FALSE){ return(as.character(spin_opts$quo
 
 ## custom title http://stackoverflow.com/questions/14124022/setting-html-meta-elements-with-knitr
 opts_chunk$set(
-    cache = spin_opts$c,
-    message= spin_opts$m,
-    warning= spin_opts$w,
-    echo= spin_opts$e,
+    cache = opts$c,
+    message= opts$m,
+    warning= opts$w,
+    echo= opts$e,
     fig.width=15,
     width=200
 )
 
 rmarkdown::render(input=r_script,
-    output_format=rmarkdown::html_document(toc = spin_opts$toc, keep_md=keep_markdown_files),
+    output_format=rmarkdown::html_document(toc = opts$toc, keep_md=keep_markdown_files),
     output_dir=getwd(),
     output_options=list(toc="yes")
 )
