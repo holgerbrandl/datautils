@@ -80,7 +80,7 @@ opts_chunk$set(
 )
 
 rmarkdown::render(input=tmpScript,output_file=str_replace(basename(r_script), ".R", ".html"),
-    output_format=rmarkdown::html_document(toc = opts$toc, keep_md=T, pandoc_args=paste("--include-in-header=", tempfile)),
+    output_format=rmarkdown::html_document(toc = opts$toc, keep_md=T, pandoc_args=paste0("--include-in-header=", jsAddons)),
     output_dir=getwd(),
     output_options=list(toc="yes")
 )
