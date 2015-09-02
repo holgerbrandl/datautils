@@ -13,7 +13,4 @@ $(document).ready(function () {
             $(this).text("Hide Code")
         }
     });
-
-
-//$(".r").filter("pre:first")
 });
