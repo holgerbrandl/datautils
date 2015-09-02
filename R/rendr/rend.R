@@ -50,6 +50,11 @@ file.copy(r_script, tmpScript)
 cat(metadata, file = tmpScript, append = TRUE)
 
 
+jsAddons <- tempfile(fileext=".js")
+#cat("<script src='https://raw.githubusercontent.com/holgerbrandl/datautils/master/R/rendr/toggle_code_sections.js' type='application/javascript'></script>", file=jsAddons)
+cat("<script src='https://code.jquery.com/jquery-2.1.4.min.js' type='application/javascript'></script>", file=jsAddons)
+cat("<script src='http://cdn.rawgit.com/holgerbrandl/datautils/master/R/rendr/toggle_code_sections.js' type='application/javascript'></script>", file=jsAddons, append=T)
+
 #require(plyr)
 require(knitr)
 require(stringr)
@@ -74,9 +79,8 @@ opts_chunk$set(
     width=200
 )
 
-browser()
 rmarkdown::render(input=tmpScript,output_file=str_replace(basename(r_script), ".R", ".html"),
-    output_format=rmarkdown::html_document(toc = opts$toc, keep_md=T),
+    output_format=rmarkdown::html_document(toc = opts$toc, keep_md=T, pandoc_args=paste("--include-in-header=", tempfile)),
     output_dir=getwd(),
     output_options=list(toc="yes")
 )
