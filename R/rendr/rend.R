@@ -25,18 +25,32 @@ Options:
 
 opts <- docopt(doc)
 
+
 r_script <- opts$r_script
 keep_markdown_files <- as.logical(opts$keep)
 
-if(keep_markdown_files){
-    print("keeping markdown files")
-}
+
 
 if(!file.exists(r_script)){
      stop(paste("file does not exist\n", doc))
 }
 
-require(plyr)
+
+## postfix a default empty yaml header
+tmpScript <- tempfile(fileext=".R")
+
+metadata <- paste('\n',
+  '#\'---\n',
+  '#\'title: ""\n',
+  '#\'author: ""\n',
+  '#\'date: ""\n',
+  '#\'---\n'
+, sep = "")
+file.copy(r_script, tmpScript)
+cat(metadata, file = tmpScript, append = TRUE)
+
+
+#require(plyr)
 require(knitr)
 require(stringr)
 
@@ -60,8 +74,9 @@ opts_chunk$set(
     width=200
 )
 
-rmarkdown::render(input=r_script,
-    output_format=rmarkdown::html_document(toc = opts$toc, keep_md=keep_markdown_files),
+browser()
+rmarkdown::render(input=tmpScript,output_file=str_replace(basename(r_script), ".R", ".html"),
+    output_format=rmarkdown::html_document(toc = opts$toc, keep_md=T),
     output_dir=getwd(),
     output_options=list(toc="yes")
 )
