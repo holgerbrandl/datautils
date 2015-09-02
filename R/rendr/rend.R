@@ -30,7 +30,6 @@ r_script <- opts$r_script
 keep_markdown_files <- as.logical(opts$keep)
 
 
-
 if(!file.exists(r_script)){
      stop(paste("file does not exist\n", doc))
 }
@@ -50,16 +49,26 @@ file.copy(r_script, tmpScript)
 cat(metadata, file = tmpScript, append = TRUE)
 
 
+# see http://stackoverflow.com/questions/17341122/link-and-execute-external-javascript-file-hosted-on-github
+
 jsAddons <- tempfile(fileext=".js")
 #cat("<script src='https://raw.githubusercontent.com/holgerbrandl/datautils/master/R/rendr/toggle_code_sections.js' type='application/javascript'></script>", file=jsAddons)
 cat("<script src='https://code.jquery.com/jquery-2.1.4.min.js' type='application/javascript'></script>", file=jsAddons)
 cat("<script src='http://cdn.rawgit.com/holgerbrandl/datautils/master/R/rendr/toggle_code_sections.js' type='application/javascript'></script>", file=jsAddons, append=T)
 
+
+## does not work yet
+#cat("<style type='text/css'>
+#.container-fluid {
+#    max-width: 100% ;
+##    color: blue;
+#}
+#</style>", file=jsAddons, append=T)
+
 #require(plyr)
 require(knitr)
 require(stringr)
 
-options(width=150)
 
 #https://groups.google.com/forum/#!topic/knitr/ojcnq5Nm298
 
@@ -75,19 +84,9 @@ opts_chunk$set(
     message= opts$m,
     warning= opts$w,
     echo= opts$e,
-    fig.width=15,
-    width=200
+    out.width='100%'
 )
 
 rmarkdown::render(input=tmpScript,output_file=str_replace(basename(r_script), ".R", ".html"),
     output_format=rmarkdown::html_document(toc = opts$toc, keep_md=T, pandoc_args=paste0("--include-in-header=", jsAddons)),
-    output_dir=getwd(),
-    output_options=list(toc="yes")
-)
-
-## also remove the .md and the .Rmd files
-if(is.logical(keep_markdown_files) & !keep_markdown_files){
-#    file.remove(basename(rmdScript))
-#    file.remove(basename(str_replace(r_script, "[.]R$", ".md")))
-}
-
+    output_dir=getwd())
