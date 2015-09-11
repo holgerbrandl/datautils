@@ -127,6 +127,8 @@ if(nrow(jobSummaries)<50){
 #ggplot(jobSummaries, aes(as.numeric(jobidx), exec_time_min/pending_time_min)) + geom_area() + ggtitle("pending vs exec time ratio")+xlab("job_nr")
 ggplot(jobSummaries, aes(exec_time_min, pending_time_min)) + geom_point() + ggtitle("pending vs exec time") + geom_abline()
 
+jobSummaries %<>% mutate(exceeded_queue_limit=exec_time_hours>queueLimit)
+
 write.delim(jobSummaries, file=paste0(reportName, ".jobSummaries.txt"))
 # jobSummaries <- read.delim("jobSummaries.txt")
 
@@ -139,9 +141,9 @@ jobSummaries %>% mutate(pending_time_hours=pending_time_min/60) %>% select(jobid
 ## todo finish send mail if wall time was exceeded
 
 
-
-numKilled=nrow(subset(jobSummaries, exec_time_hours>queueLimit))
+numKilled=nrow(subset(jobSummaries, exceeded_queue_limit))
 numTotal= nrow(jobSummaries)
+
 if(numKilled >0){
     system(paste("mailme '",numKilled,"out of ",numTotal," jobs in ", getwd(), " died because of queue length limitation'"))
 }
