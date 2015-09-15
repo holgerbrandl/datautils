@@ -8,8 +8,9 @@ rendr_snippet(){
 
 
     ## test if present in PATH
-    if [ -z "$(which rendr.R)" ]; then
-        >&2 echo "rendr.R is not installed. See https://github.com/holgerbrandl/datautils/tree/master/R/rendr for details"
+    if [ -z "$(which rend.R  2>/dev/null)" ]; then
+        echo "rendr.R is not installed. See https://github.com/holgerbrandl/datautils/tree/master/R/rendr for details" >&2
+        return
     fi
 
     reportName=$1
