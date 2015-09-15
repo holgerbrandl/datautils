@@ -38,6 +38,12 @@ if(!file.exists(r_script)){
 ## postfix a default empty yaml header
 tmpScript <- tempfile(fileext=".R")
 
+
+## remove sheband and comment-only lines from source document
+#file.copy(r_script, tmpScript)
+system(paste("cat ", r_script," | grep -Ev '^#+$' | grep -Fv '#!/usr/bin/env Rscript' >", tmpScript))
+
+## add yaml header (will be ignored if already present
 metadata <- paste('\n',
   '#\'---\n',
   '#\'title: ""\n',
@@ -45,7 +51,6 @@ metadata <- paste('\n',
   '#\'date: ""\n',
   '#\'---\n'
 , sep = "")
-file.copy(r_script, tmpScript)
 cat(metadata, file = tmpScript, append = TRUE)
 
 
