@@ -115,19 +115,42 @@ extractHits <- function(s1, s2, s1Overexpressed=T, degData=degs){
 
 
 ## genes that are significantly higher expressed in sample1 compared to sample2
-s1_gt_s2 <- function(s1, s2, ...) extractHits(s1, s2, s1Overexpressed=T, ...)
+s1_gt_s2 <- function(deData, s1, s2) extractHits(deData, s1, s2, s1Overexpressed=T)
 
 ## genes that are significantly less expressed in sample1 compared to sample2
-s1_lt_s2 <- function(s1, s2, ...) extractHits(s1, s2, s1Overexpressed=F, ...)
+s1_lt_s2 <- function(deData, s1, s2) extractHits(deData, s1, s2, s1Overexpressed=F)
 
 ## undirected, just differentially expressed
-s1_de_s2 <- function(s1, s2, ...) c(extractHits(s1, s2, s1Overexpressed=F, ...), extractHits(s1, s2, s1Overexpressed=T, ...))
+s1_de_s2 <- function(deData, s1, s2){
+    c(extractHits(deData, s1, s2, s1Overexpressed=F), extractHits(deData, s1, s2, s1Overexpressed=T));
+}
 
 ## not differentially expressed
-s1_eq_s2 <- function(s1, s2, gene_background=all_genes, ...){
-    c(extractHits(s1, s2, s1Overexpressed=F, ...), extractHits(s1, s2, s1Overexpressed=T, ...)) %>%
+s1_eq_s2 <- function(deData, s1, s2, gene_background=all_genes){
+    c(
+        extractHits(deData, s1, s2, s1Overexpressed=F, ...),
+        extractHits(deData, s1, s2, s1Overexpressed=T, ...)
+    ) %>%
         setdiff(all_genes, .)
 }
+
+
+diff_intersect <- function(degs, refSample, compareSamples, intersectMethod, ...){
+    ## Example: diff_intersect(degs, "VZ", c("ISVZ", "OSVZ", "CP"), s1_gt_s2)
+
+#    compareSamples = list(...)
+#    compareSamples <- list(); refSample="VZ"
+    rec_intersect <- intersectMethod(refSample, compareSamples[1], ...)
+
+    for (i in 2:length(compareSamples)) {
+        rec_intersect <- intersect(rec_intersect, intersectMethod(refSample, compareSamples[i], ...))
+    }
+
+    return(rec_intersect)
+}
+
+
+
 
 
 ## todo add helper to test for equality (s1 and s2 not differentially expressed)
@@ -138,10 +161,12 @@ s1_eq_s2 <- function(s1, s2, gene_background=all_genes, ...){
 
 
 ## varargs: http://stackoverflow.com/questions/3057341/how-to-use-rs-ellipsis-feature-when-writing-your-own-function
+## DEPRECATED
 rintersect <- function(...){
     LDF <- list(...)
     rintersect.list(LDF)
 }
+
 
 rintersect.list <- function(LDF){
     rec_intersect <- LDF[[1]]
