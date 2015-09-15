@@ -87,6 +87,11 @@ opts_chunk$set(
     out.width='100%'
 )
 
+## alternatively we could use tmpScript <- tempfile(fileext=".R", tmpdir=".") but it would require addtional cleanup
+knitr::opts_knit$set(
+    root.dir = getwd()
+)
+
 rmarkdown::render(input=tmpScript,output_file=str_replace(basename(r_script), ".R", ".html"),
     output_format=rmarkdown::html_document(toc = opts$toc, keep_md=T, pandoc_args=paste0("--include-in-header=", jsAddons)),
     output_dir=getwd())
