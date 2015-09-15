@@ -105,10 +105,10 @@ getGeneInfo <- function(gene_ids){
 
 
 
-extractHits <- function(s1, s2, s1Overexpressed=T, degData=degs){
+extractHits <- function(deData, s1, s2, s1Overexpressed=T){
   # note one of the two sets will always be empty; Example:  s1="small_cyst"; s2="liver_polar_stage1"
-  forward <- subset(degData, sample_1==s1 & sample_2==s2 & sample_1_overex==s1Overexpressed)$ensembl_gene_id %>% ac()
-  reverse <- subset(degData, sample_1==s2 & sample_2==s1 & sample_1_overex==!s1Overexpressed)$ensembl_gene_id %>% ac()
+  forward <- subset(deData, sample_1==s1 & sample_2==s2 & sample_1_overex==s1Overexpressed)$ensembl_gene_id %>% ac()
+  reverse <- subset(deData, sample_1==s2 & sample_2==s1 & sample_1_overex==!s1Overexpressed)$ensembl_gene_id %>% ac()
 
   return(c(forward, reverse))
 }
@@ -135,18 +135,37 @@ s1_eq_s2 <- function(deData, s1, s2, gene_background=all_genes){
 }
 
 
-diff_intersect <- function(degs, refSample, compareSamples, intersectMethod, ...){
+diff_intersect <- function(deData, sample_1, sample_twoes, .intersect_method, ...){
     ## Example: diff_intersect(degs, "VZ", c("ISVZ", "OSVZ", "CP"), s1_gt_s2)
 
-#    compareSamples = list(...)
-#    compareSamples <- list(); refSample="VZ"
-    rec_intersect <- intersectMethod(refSample, compareSamples[1], ...)
+#   rec_intersect sample_twoes = list(...)
+#    sample_twoes <- list(); sample_1="VZ"
+    rec_intersect <- .intersect_method(deData, sample_1, sample_twoes[1], ...)
 
-    for (i in 2:length(compareSamples)) {
-        rec_intersect <- intersect(rec_intersect, intersectMethod(refSample, compareSamples[i], ...))
+    for (i in 2:length(sample_twoes)) {
+        rec_intersect <- intersect(rec_intersect, .intersect_method(deData, sample_1, sample_twoes[i], ...))
     }
 
-    return(rec_intersect)
+
+    ## try to add a list id column
+    if(identical(.intersect_method, s1_gt_s2)){
+       list_id = paste(sample_1, ">", paste(sample_twoes, collapse=","))
+    }else if(identical(.intersect_method, s1_lt_s2)){
+       list_id = paste(sample_1, "<", paste(sample_twoes, collapse=","))
+    }else if(identical(.intersect_method, s1_de_s2)){
+        list_id = paste(sample_1, "!=", paste(sample_twoes, collapse=","))
+    }else if(identical(.intersect_method, s1_eq_s2)){
+         list_id = paste(sample_1, "==", paste(sample_twoes, collapse=","))
+    }else{
+      list_id = paste(sample_1, "vs", paste(sample_twoes, collapse=","))
+       warning("could not determine list id type. using generic id")
+    }
+
+    ## todo maybe it's better to return an empty table here and use factors to indicate the level without genes
+    ## to make sure that we don't loose an empty list, use NA as placeholder
+    if(length(rec_intersect)==0) rec_intersect=NA;
+
+    data_frame(gene_id=rec_intersect, list_id=list_id);
 }
 
 
