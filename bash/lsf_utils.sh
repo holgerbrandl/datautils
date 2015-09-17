@@ -72,13 +72,19 @@ jlistReport(){
 #    ## add spin.R
 #    export PATH=/projects/bioinfo/holger/bioinfo_templates/misc:$PATH
 #    source $(which spin_utils.sh)
-    wget --no-check-certificate https://raw.githubusercontent.com/holgerbrandl/datautils/master/bash/CreateJobReport.R
-    chmod u+x CreateJobReport.R
-    CreateJobReport.R $joblistFile
 
-#    echo "Creating report for $joblistFile"
-#    echo "reportName='$joblistFile'; devtools::source_url('https://raw.githubusercontent.com/holgerbrandl/datautils/v1.9/bash/CreateJobReport.R',local=T)" | spinsnip $(echo $joblistFile | tr -d ".")
-    rm CreateJobReport.R
+
+#    if [ -n "$(which rend.R)" ]; then
+    if [ -n "$(type rendr_snippet)" ]; then
+        curl https://raw.githubusercontent.com/holgerbrandl/datautils/master/bash/CreateJobReport.R 2>&1 2>/dev/null | rendr_snippet ${joblistFile}.report $joblistFile
+    else
+        ## fall back to plain execution of the report. This will just create a generic Rplots.pdf
+        wget --no-check-certificate https://raw.githubusercontent.com/holgerbrandl/datautils/master/bash/CreateJobReport.R
+        chmod u+x CreateJobReport.R
+        CreateJobReport.R $joblistFile
+
+        rm CreateJobReport.R
+    fi
 }
 export -f jlistReport
 
