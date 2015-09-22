@@ -21,7 +21,10 @@ options(gsubfn.engine = "R")
 ########################################################################################################################
 ## automatic package installation
 
-require.auto <-  function(x){
+## @Deprecated use require_auto instead
+require.auto <-  function(x) require_auto(x)
+
+require_auto <-  function(x){
     x <- as.character(substitute(x))
 
     if(isTRUE(x %in% .packages(all.available=TRUE))) {
@@ -36,7 +39,7 @@ require.auto <-  function(x){
     } else {
         source("http://bioconductor.org/biocLite.R")
 #        biocLite(character(), ask=FALSE) # update dependencies, if any.
-        eval(parse(text=paste("biocLite('", x, "')", sep="")))
+        eval(parse(text=paste("biocLite('", x, "', ask=FALSE)", sep="")))
         eval(parse(text=paste("require(", x, ",  quietly=T)", sep="")))
     }
 }
