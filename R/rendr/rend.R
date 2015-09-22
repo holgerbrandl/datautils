@@ -17,7 +17,8 @@ Usage: rend.R [options] <r_script> [<quoted_script_args>]
 Options:
 --toc     Add a table of contents
 -c        Cache results
--e        Show Code
+-e        Add collapsed code chunks
+-E        Add uncollapsed code chunks
 -w        Show warnings
 -m        Show Messages
 --keep    Keep generated Rmd and md files
@@ -37,21 +38,21 @@ if(!file.exists(r_script)){
 
 ## postfix a default empty yaml header
 tmpScript <- tempfile(fileext=".R")
+#tmpScript <- "tt.R"
 
 
 ## remove sheband and comment-only lines from source document
 #file.copy(r_script, tmpScript)
-system(paste("cat ", r_script," | grep -Ev '^#+$' | grep -Fv '#!/usr/bin/env Rscript' >", tmpScript))
 
 ## add yaml header (will be ignored if already present
-metadata <- paste('\n',
+metadata <- paste0(
   '#\'---\n',
   '#\'title: ""\n',
   '#\'author: ""\n',
   '#\'date: ""\n',
-  '#\'---\n'
-, sep = "")
-cat(metadata, file = tmpScript, append = TRUE)
+  '#\'---\n')
+cat(metadata, file = tmpScript)
+system(paste("cat ", r_script," | grep -Ev '^#+$' | grep -Fv '#!/usr/bin/env Rscript' >>", tmpScript))
 
 
 # see http://stackoverflow.com/questions/17341122/link-and-execute-external-javascript-file-hosted-on-github
@@ -59,7 +60,10 @@ cat(metadata, file = tmpScript, append = TRUE)
 jsAddons <- tempfile(fileext=".js")
 #cat("<script src='https://raw.githubusercontent.com/holgerbrandl/datautils/master/R/rendr/toggle_code_sections.js' type='application/javascript'></script>", file=jsAddons)
 cat("<script src='https://code.jquery.com/jquery-2.1.4.min.js' type='application/javascript'></script>", file=jsAddons)
-cat("<script src='http://cdn.rawgit.com/holgerbrandl/datautils/master/R/rendr/toggle_code_sections.js' type='application/javascript'></script>", file=jsAddons, append=T)
+
+if(opts$e){
+    cat("<script src='http://cdn.rawgit.com/holgerbrandl/datautils/master/R/rendr/toggle_code_sections.js' type='application/javascript'></script>", file=jsAddons, append=T)
+}
 
 
 ## does not work yet
@@ -88,7 +92,7 @@ opts_chunk$set(
     cache = opts$c,
     message= opts$m,
     warning= opts$w,
-    echo= opts$e,
+    echo= opts$e | opts$E,
     out.width='100%'
 )
 
