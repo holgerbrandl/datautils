@@ -44,15 +44,17 @@ tmpScript <- tempfile(fileext=".R")
 ## remove sheband and comment-only lines from source document
 #file.copy(r_script, tmpScript)
 
+system(paste("cat ", r_script," | grep -Ev '^#+$' | grep -Fv '#!/usr/bin/env Rscript' >", tmpScript))
+
 ## add yaml header (will be ignored if already present
-metadata <- paste0(
-  '#\'---\n',
-  '#\'title: ""\n',
-  '#\'author: ""\n',
-  '#\'date: ""\n',
-  '#\'---\n')
-cat(metadata, file = tmpScript)
-system(paste("cat ", r_script," | grep -Ev '^#+$' | grep -Fv '#!/usr/bin/env Rscript' >>", tmpScript))
+metadata <- paste0('#\n',
+  '#\' ---\n',
+  '#\' title: ""\n',
+  '#\' author: ""\n',
+  '#\' date: ""\n',
+  '#\' ---\n\n')
+cat("\n", file = tmpScript, append=TRUE)
+cat(metadata, file = tmpScript, append=TRUE)
 
 
 # see http://stackoverflow.com/questions/17341122/link-and-execute-external-javascript-file-hosted-on-github
