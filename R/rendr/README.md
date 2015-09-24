@@ -8,7 +8,7 @@ Installation
 Download a local copy and add it to your path using
 ```
 targetDirectory=~/bin
-wget -P $targetDirectory --no-check-certificate https://raw.githubusercontent.com/holgerbrandl/datautils/master/R/rendr/rend.R
+wget -NP $targetDirectory --no-check-certificate https://raw.githubusercontent.com/holgerbrandl/datautils/master/R/rendr/rend.R
 chmod +x $targetDirectory/rend.R
 export PATH=$targetDirectory:$PATH
 ```
