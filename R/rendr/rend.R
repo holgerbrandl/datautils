@@ -106,3 +106,11 @@ knitr::opts_knit$set(
 rmarkdown::render(input=tmpScript,output_file=str_replace(basename(r_script), ".R", ".html"),
     output_format=rmarkdown::html_document(toc = opts$toc, keep_md=T, pandoc_args=paste0("--include-in-header=", jsAddons)),
     output_dir=getwd())
+
+if(!keep_markdown_files){
+    unlink(str_replace(basename(r_script), ".R", ".md"))
+}
+
+## delete figures directory since all plots should be embedded anyway
+echo("deleteing", paste0(str_replace(basename(r_script), ".R", ""), "_files"))
+unlink(paste0(str_replace(basename(r_script), ".R", ""), "_files"), recursive=T)
