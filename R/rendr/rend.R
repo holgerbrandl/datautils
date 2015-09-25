@@ -48,10 +48,10 @@ tmpScript <- tempfile(fileext=".R")
 ## remove sheband and comment-only lines from source document
 #file.copy(r_script, tmpScript)
 
-system(paste("cat ", r_script," | grep -Ev '^#+$' | grep -Fv '#!/usr/bin/env Rscript' >", tmpScript))
+system(paste("cat ", r_script," | sed 's/_TODAY_/'$(date +\"%m-%d-%Y\")'/g' | grep -Ev '^#+$' | grep -Fv '#!/usr/bin/env Rscript' >", tmpScript))
 
 ## add yaml header (will be ignored if already present
-metadata <- paste0('#\n',
+metadata <- paste0('#\'\n\n',
   '#\' ---\n',
   '#\' title: ""\n',
   '#\' author: ""\n',
