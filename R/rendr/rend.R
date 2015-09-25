@@ -7,7 +7,11 @@
 #http://www.slideshare.net/EdwindeJonge1/docopt-user2014
 
 # load the docopt library
-suppressMessages(library(docopt))
+suppressMessages(if (!require("docopt")) install.packages("docopt"))
+suppressMessages(if (!require("knitr")) install.packages("knitr"))
+suppressMessages(if (!require("stringr")) install.packages("stringr"))
+suppressMessages(if (!require("rmarkdown")) install.packages("rmarkdown"))
+
 
 # retrieve and parse the command-line arguments
 doc <- '
@@ -75,10 +79,6 @@ if(opts$e){
 ##    color: blue;
 #}
 #</style>", file=jsAddons, append=T)
-
-#require(plyr)
-require(knitr)
-require(stringr)
 
 
 #https://groups.google.com/forum/#!topic/knitr/ojcnq5Nm298
