@@ -107,31 +107,40 @@ getGeneInfo <- function(gene_ids){
 
 extractHits <- function(deData, s1, s2, s1Overexpressed=T){
   # note one of the two sets will always be empty; Example:  s1="small_cyst"; s2="liver_polar_stage1"
-  forward <- subset(deData, sample_1==s1 & sample_2==s2 & sample_1_overex==s1Overexpressed)$ensembl_gene_id %>% ac()
-  reverse <- subset(deData, sample_1==s2 & sample_2==s1 & sample_1_overex==!s1Overexpressed)$ensembl_gene_id %>% ac()
+  forward <- subset(deData, sample_1==s1 & sample_2==s2 & sample_1_overex==s1Overexpressed)  %$% ac(gene_id)
+  reverse <- subset(deData, sample_1==s2 & sample_2==s1 & sample_1_overex==!s1Overexpressed) %$% ac(gene_id)
 
   return(c(forward, reverse))
 }
 
 
 ## genes that are significantly higher expressed in sample1 compared to sample2
-s1_gt_s2 <- function(deData, s1, s2) extractHits(deData, s1, s2, s1Overexpressed=T)
+s1_gt_s2 <- function(deData, sample_1, sample_2){
+    extractHits(deData, sample_1, sample_2, s1Overexpressed=T) %>%
+        data_frame(gene_id=., list_id = paste(sample_1, ">", sample_2))
+
+}
 
 ## genes that are significantly less expressed in sample1 compared to sample2
-s1_lt_s2 <- function(deData, s1, s2) extractHits(deData, s1, s2, s1Overexpressed=F)
+s1_lt_s2 <- function(deData, sample_1, sample_2){
+    extractHits(deData, sample_1, sample_2, s1Overexpressed=F) %>%
+        data_frame(gene_id=., list_id = paste(sample_1, "<", sample_2))
+}
 
 ## undirected, just differentially expressed
-s1_de_s2 <- function(deData, s1, s2){
-    c(extractHits(deData, s1, s2, s1Overexpressed=F), extractHits(deData, s1, s2, s1Overexpressed=T));
+s1_de_s2 <- function(deData, sample_1, sample_2){
+    c(extractHits(deData, sample_1, s2, s1Overexpressed=F), extractHits(deData, s1, sample_2, s1Overexpressed=T)) %>%
+        data_frame(gene_id=., list_id = paste(sample_1, "!=", sample_2))
 }
 
 ## not differentially expressed
-s1_eq_s2 <- function(deData, s1, s2, gene_background=all_genes){
+s1_eq_s2 <- function(deData, sample_1, sample_2, gene_background=all_genes){
     c(
-        extractHits(deData, s1, s2, s1Overexpressed=F, ...),
-        extractHits(deData, s1, s2, s1Overexpressed=T, ...)
+        extractHits(deData, sample_1, sample_2, s1Overexpressed=F, ...),
+        extractHits(deData, sample_1, sample_2, s1Overexpressed=T, ...)
     ) %>%
-        setdiff(all_genes, .)
+        setdiff(gene_background, .) %>%
+        mutate(list_id = paste(sample_1, "==", sample_2))
 }
 
 
@@ -140,10 +149,11 @@ diff_intersect <- function(deData, sample_1, sample_twoes, .intersect_method, ..
 
 #   rec_intersect sample_twoes = list(...)
 #    sample_twoes <- list(); sample_1="VZ"
-    rec_intersect <- .intersect_method(deData, sample_1, sample_twoes[1], ...)
+#browser()
+    rec_intersect <- .intersect_method(deData, sample_1, sample_twoes[1], ...)$gene_id
 
     for (i in 2:length(sample_twoes)) {
-        rec_intersect <- intersect(rec_intersect, .intersect_method(deData, sample_1, sample_twoes[i], ...))
+        rec_intersect <- intersect(rec_intersect, .intersect_method(deData, sample_1, sample_twoes[i], ...)$gene_id)
     }
 
 
