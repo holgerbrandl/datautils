@@ -41,7 +41,8 @@ if(!file.exists(r_script)){
 
 
 ## postfix a default empty yaml header
-tmpScript <- tempfile(fileext=".R")
+## todo maybe we should rather run it in the script-home-dir to ensure that additional resources (e.g. pngs are picked up correctly)
+tmpScript <- tempfile(fileext=".R", tmpdir=getwd())
 #tmpScript <- "tt.R"
 
 
