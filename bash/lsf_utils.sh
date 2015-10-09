@@ -220,6 +220,17 @@ retouch(){
 }
 export -f retouch
 
+keepDirAlive(){
+    targetDir=$1
+     while true; do
+        echo "touching $targetDir"; sleep 10000
+        retouch $1
+    done
+}
+#usage keepDirAlive /tmp/local_r_packages &; disown
+
+## kill processes by partial name
+## http://stackoverflow.com/questions/8987037/how-to-kill-all-processes-with-a-given-partial-name
 
 # old output redirection scheme
 #mysub(){
