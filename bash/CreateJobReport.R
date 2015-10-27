@@ -25,7 +25,7 @@ if(!exists("reportName")){
 }
 
 reportNiceName <- str_replace_all(reportName, "^[.]", "")
-#> # Job Report:  `reportNiceName`
+#> # Job Report:  `r reportNiceName`
 
 
 echo("processing job report for '", reportName,"'")
