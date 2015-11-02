@@ -81,7 +81,7 @@ jlistReport(){
         ## fall back to plain execution of the report. This will just create a generic Rplots.pdf
         wget --no-check-certificate https://raw.githubusercontent.com/holgerbrandl/datautils/master/bash/CreateJobReport.R
         chmod u+x CreateJobReport.R
-        CreateJobReport.R $joblistFile
+        ./CreateJobReport.R $joblistFile
 
         rm CreateJobReport.R
     fi
