@@ -141,10 +141,11 @@ jobSummaries %>% mutate(pending_time_hours=pending_time_min/60) %>% select(jobid
 ## todo finish send mail if wall time was exceeded
 
 
-numKilled=nrow(subset(jobSummaries, exceeded_queue_limit))
+numKilled=nrow(filter(jobSummaries, exceeded_queue_limit))
 numTotal= nrow(jobSummaries)
 
 if(numKilled >0){
     system(paste("mailme '",numKilled,"out of ",numTotal," jobs in ", getwd(), " died because of queue length limitation'"))
+    filter(jobSummaries, exceeded_queue_limit) %$% writeLines(jobid, con=paste0(reportName, ".killed_jobs.txt"))
 }
 
