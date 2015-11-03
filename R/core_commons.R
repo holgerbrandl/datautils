@@ -22,7 +22,28 @@ options(gsubfn.engine = "R")
 ## automatic package installation
 
 ## @Deprecated use require_auto instead
-require.auto <-  function(x) require_auto(x)
+require.auto <-  function(x){
+    warning("require.auto is deprecated. Use require_auto instead")
+
+    x <- as.character(substitute(x))
+
+    if(isTRUE(x %in% .packages(all.available=TRUE))) {
+        eval(parse(text=paste("require(", x, ",  quietly=T)", sep="")))
+    } else {
+        #        update.packages(ask=F) # update dependencies, if any.
+        eval(parse(text=paste("install.packages('", x, "')", sep="")))
+    }
+
+    if(isTRUE(x %in% .packages(all.available=TRUE))) {
+        eval(parse(text=paste("require(", x, ",  quietly=T)", sep="")))
+    } else {
+        source("http://bioconductor.org/biocLite.R")
+        #        biocLite(character(), ask=FALSE) # update dependencies, if any.
+        eval(parse(text=paste("biocLite('", x, "', ask=FALSE)", sep="")))
+        eval(parse(text=paste("require(", x, ",  quietly=T)", sep="")))
+    }
+}
+
 
 require_auto <-  function(x){
     x <- as.character(substitute(x))
@@ -54,21 +75,21 @@ check_version = function(pkg_name, min_version) {
 ########################################################################################################################
 ## load core packages
 
-require.auto(plyr)
-require.auto(stringr)
-require.auto(reshape2)
-#require.auto(reshape2, quietly=T, warn.conflicts=F)
+require_auto(plyr)
+require_auto(stringr)
+require_auto(reshape2)
+#require_auto(reshape2, quietly=T, warn.conflicts=F)
 
 ## load on purpose after plyr
-require.auto(dplyr)
-require.auto(magrittr)
-require.auto(tidyr)
+require_auto(dplyr)
+require_auto(magrittr)
+require_auto(tidyr)
 
 ## needed for caching
-require.auto(digest)
+require_auto(digest)
 
 ## moved into datatable_commons because replaced almost everywhere with dplyr
-#require.auto(data.table)
+#require_auto(data.table)
 
 
 
