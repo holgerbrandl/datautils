@@ -22,8 +22,8 @@ options(gsubfn.engine = "R")
 ## automatic package installation
 
 ## @Deprecated use require_auto instead
-require.auto <-  function(x){
-    warning("require.auto is deprecated. Use require_auto instead")
+require_auto <-  function(x){
+    warning("require_auto is deprecated. Use require_auto instead")
 
     x <- as.character(substitute(x))
 

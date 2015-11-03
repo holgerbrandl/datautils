@@ -217,7 +217,7 @@ DEF_DAVID_ONTOLOGIES=ontologies=c("GOTERM_CC_FAT", "GOTERM_MF_FAT", "GOTERM_BP_F
 
 davidAnnotationChart <- function( someGenes, ontologies=DEF_DAVID_ONTOLOGIES ){
 
-    require.auto(RDAVIDWebService) ## just works if installed on non-network-drive (e.g. /tmp/)
+    require_auto(RDAVIDWebService) ## just works if installed on non-network-drive (e.g. /tmp/)
 
     ## expexted to have a column with gene_id
 #    echo("processing list with", length(someGenes), "genes")

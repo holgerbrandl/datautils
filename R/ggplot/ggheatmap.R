@@ -2,8 +2,8 @@
 #library(ggplot2)
 #library(reshape2)
 
-require.auto(ggdendro)
-require.auto(grid)
+require_auto(ggdendro)
+require_auto(grid)
 
 ## Adopted from  http://cwcode.wordpress.com/2013/01/30/ggheatmap-version-2/
 
@@ -164,7 +164,7 @@ ggheatmap <- function(x, rowlabels=T, xshift=ifelse(rowlabels, 10, 0), xcompress
 
 
 if(F){ #### DEBUG
-require.auto(mvtnorm)
+require_auto(mvtnorm)
 sigma=matrix(0,10,10)
 sigma[1:4,1:4] <- 0.6
 sigma[6:10,6:10] <- 0.8

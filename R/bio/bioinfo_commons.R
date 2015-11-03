@@ -1,8 +1,8 @@
 #library(BiocGenerics, quietly=T, warn.conflicts=F )
 #library(Biostrings, quietly=T)
-#require.auto(BiocGenerics )x
+#require_auto(BiocGenerics )x
 
-require.auto(Biostrings)
+require_auto(Biostrings)
 
 
 read.fasta <- function(fileName){
