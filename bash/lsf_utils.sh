@@ -255,10 +255,14 @@ mysub(){
     ## create hidden log file directory if not present
     if [ ! -d .logs ]; then mkdir .logs; fi
 
+    ## also log job command and queuing arguments for reference
+    echo ${jobCmd} > .logs/${jobName}.cmd
+    echo $@ > .logs/${jobName}.lsfargs
+
     ## use bsub if available, otherwise fall back to simple eval and ignore other arguments
     if [ -n "$(command -v bsub)" ] && [ -z "$LOCAL_RUN" ]; then
 #       echo "submitting job ${jobName}"
-       bsub  -J $jobName $@ "( $jobCmd ) 2>.logs/${jobName}.err.log 1>.logs/${jobName}.out.log"
+       bsub  -J $jobName $@ "( $jobCmd ) 2>.logs/${jobName}.err.log 1>.logs/${jobName}.out.log" | joblist .logs/${jobName}.jobid
     else
        echo "using eval instead of bsub for ${jobName}"
        eval $jobCmd 2>.logs/${jobName}.err.log 1>.logs/${jobName}.out.log
