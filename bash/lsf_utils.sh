@@ -199,7 +199,7 @@ bjloop(){
         ## http://theunixshell.blogspot.de/2012/12/print-first-80-characters-in-line.html
         bjobs -w | head -n 50 | cut -c1-100
         bjobs | awk '{print $3}' | sort | uniq -c | head -n2
-        sleep 2
+        sleep 5
     done
 }
 
