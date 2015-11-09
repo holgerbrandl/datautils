@@ -3,8 +3,8 @@
 #sessionInfo()
 
 
-devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v1.14/R/core_commons.R")
-devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v1.14/R/ggplot_commons.R")
+devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v1.18/R/core_commons.R")
+devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v1.18/R/ggplot_commons.R")
 
 require.auto(lubridate)
 
@@ -34,8 +34,22 @@ jobData <- read.table(paste0(reportName, ".cluster_snapshots.txt"), header=F, fi
     set_names(c("jobid", "user", "stat", "queue", "from_host", "exec_host", "job_name", "submit_time", "proj_name", "cpu_used", "mem", "swap", "pids", "start_time", "finish_time", "snapshot_time")) %>%
     transform(jobid=factor(jobid)) %>%
     arrange(jobid) %>%
-    subset(stat=="RUN") %>%
-    transform(num_cores=str_match(exec_host, "([0-9]+)[*]n")[,2]) %>% mutate(num_cores=ifelse(is.na(num_cores), 1, num_cores))
+    subset(stat=="RUN")
+
+if(nrow(jobData)==0){
+    system(paste("mailme 'no jobs were run in  ",normalizePath(reportName),"'"))
+    stop(-1)
+}
+
+#jobData %>% count(jobid) %>% nrow
+
+
+## extract multi-threading number
+jobData %<>%    transform(num_cores=str_match(exec_host, "([0-9]+)[*]n")[,2]) %>% mutate(num_cores=ifelse(is.na(num_cores), 1, num_cores))
+
+
+
+jobData %>% count(exec_host)
 
 jobData %>% select(submit_time, start_time, finish_time) %>% head
 #    filter(finish_time!="-") %>% head
