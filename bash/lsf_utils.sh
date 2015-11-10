@@ -256,6 +256,11 @@ mysub(){
     if [ ! -d .logs ]; then mkdir .logs; fi
 
     ## also log job command and queuing arguments for reference
+
+    if [ -f ".logs/${jobName}.cmd" ]; then
+        echo "could not run '$jobName' becayse log entry already exists" 1>&2; return;
+    fi
+
     echo ${jobCmd} > .logs/${jobName}.cmd
     echo $@ > .logs/${jobName}.lsfargs
 
