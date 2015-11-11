@@ -129,6 +129,7 @@ export -f blockScript
 
 
 
+# note this should be the default. There's no point in NOT doing it
 wait4jobsReport(){
     ## use default joblist-filename or user-provided name
     if [ $# -ne 1 ]; then
