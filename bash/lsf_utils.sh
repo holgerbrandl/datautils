@@ -264,13 +264,14 @@ mysub(){
 
     echo ${jobCmd} > .logs/${jobName}.cmd
     echo $@ > .logs/${jobName}.lsfargs
+    echo "" > .logs/${jobName}.jobid // reset the id file
 
     ## use bsub if available, otherwise fall back to simple eval and ignore other arguments
     if [ -n "$(command -v bsub)" ] && [ -z "$LOCAL_RUN" ]; then
 #       echo "submitting job ${jobName}"
        bsub  -J $jobName $@ "( $jobCmd ) 2>.logs/${jobName}.err.log 1>.logs/${jobName}.out.log" | joblist .logs/${jobName}.jobid 2>&1
     else
-       echo "using eval instead of bsub for ${jobName}"
+       echo "using eval instead of bsub for ${jobName}" >&2
        eval $jobCmd 2>.logs/${jobName}.err.log 1>.logs/${jobName}.out.log
     fi
 }
