@@ -38,6 +38,7 @@ jobData <- read.table(paste0(reportName, ".cluster_snapshots.txt"), header=F, fi
 
 if(nrow(jobData)==0){
     system(paste("mailme 'no jobs were run in  ",normalizePath(reportName),"'"))
+    warning(paste("no jobs were run in  ",normalizePath(reportName)))
     stop(-1)
 }
 
@@ -146,7 +147,7 @@ jobSummaries %<>% mutate(exceeded_queue_limit=exec_time_hours>queueLimit)
 write.delim(jobSummaries, file=paste0(reportName, ".jobSummaries.txt"))
 # jobSummaries <- read.delim("jobSummaries.txt")
 
-require_auto(knitr)
+require_auit(knitr)
 jobSummaries %>% mutate(pending_time_hours=pending_time_min/60) %>% select(jobid, exec_host, job_name, cpu_used_hours, pending_time_hours, exec_time_hours) %>% kable()
 
 
