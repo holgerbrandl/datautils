@@ -259,10 +259,10 @@ mysub(){
     ## also log job command and queuing arguments for reference
 
     if [ -f ".logs/${jobName}.cmd" ]; then
-        echo "could not run '$jobName' becayse log entry already exists" 1>&2; return;
+        echo "could not run '$jobName' because log entry already exists" 1>&2; return;
     fi
 
-    echo ${jobCmd} > .logs/${jobName}.cmd
+    echo "${jobCmd}" > .logs/${jobName}.cmd
     echo $@ > .logs/${jobName}.lsfargs
 #    echo "" > .logs/${jobName}.jobid
 
