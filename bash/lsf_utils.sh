@@ -264,7 +264,7 @@ mysub(){
 
     echo ${jobCmd} > .logs/${jobName}.cmd
     echo $@ > .logs/${jobName}.lsfargs
-    echo "" > .logs/${jobName}.jobid // reset the id file
+#    echo "" > .logs/${jobName}.jobid
 
     ## use bsub if available, otherwise fall back to simple eval and ignore other arguments
     if [ -n "$(command -v bsub)" ] && [ -z "$LOCAL_RUN" ]; then
