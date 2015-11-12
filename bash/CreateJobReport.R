@@ -3,8 +3,8 @@
 #sessionInfo()
 
 
-devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v1.18/R/core_commons.R")
-devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v1.18/R/ggplot_commons.R")
+devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v1.19/R/core_commons.R")
+devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v1.19/R/ggplot_commons.R")
 
 require.auto(lubridate)
 
