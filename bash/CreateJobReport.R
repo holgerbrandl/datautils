@@ -6,7 +6,7 @@
 devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v1.20/R/core_commons.R")
 devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v1.20/R/ggplot_commons.R")
 
-require.auto(lubridate)
+require_auto(lubridate)
 
 
 if(!exists("reportName")){
@@ -146,7 +146,7 @@ jobSummaries %<>% mutate(exceeded_queue_limit=exec_time_hours>queueLimit)
 write.delim(jobSummaries, file=paste0(reportName, ".jobSummaries.txt"))
 # jobSummaries <- read.delim("jobSummaries.txt")
 
-require(knitr)
+require_auto(knitr)
 jobSummaries %>% mutate(pending_time_hours=pending_time_min/60) %>% select(jobid, exec_host, job_name, cpu_used_hours, pending_time_hours, exec_time_hours) %>% kable()
 
 
