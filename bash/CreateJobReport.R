@@ -91,6 +91,7 @@ jobData <- mutate(jobData, queueLimit=wallLimits[ac(queue)])
 
 if(max(jobData$cpu_used_secs)==0){
     stop(echo("stopping job report generation for", reportName, "because no cpu time has been consumed"))
+    quit()
 }
 
 
