@@ -115,3 +115,4 @@ if(!keep_markdown_files){
 ## delete figures directory since all plots should be embedded anyway
 #echo("deleteing", paste0(str_replace(basename(r_script), ".R", ""), "_files"))
 unlink(paste0(str_replace(basename(r_script), ".R", ""), "_files"), recursive=T)
+unlink(tmpScript)
