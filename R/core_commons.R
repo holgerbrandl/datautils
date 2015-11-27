@@ -176,6 +176,29 @@ fac2char <- function(mydata, convert=names(mydata)[sapply(mydata, is.factor)]){
 replaceNA <- function(x, withValue) { x[is.na(x)] <- withValue; x }
 
 
+
+safe_ifelse <- function(cond, yes, no) {
+  class.y <- class(yes)
+  if ("factor" %in% class.y) {  # Note the small condition change here
+    levels.y = levels(yes)
+  }
+  X <- ifelse(cond,yes,no)
+  if ("factor" %in% class.y) {  # Note the small condition change here
+    X = as.factor(X)
+    levels(X) = levels.y
+  } else {
+    class(X) <- class.y
+  }
+  return(X)
+}
+
+## for na instead use mutate_each with:
+empty_as_na <- function(x) safe_ifelse(x=="", NA, x)
+## see http://stackoverflow.com/questions/24172111/change-the-blank-cells-to-na/33952598#33952598
+
+
+
+
 ## workaround for biomart
 ## Deprecated: load dplyr after biomart to avoid this problem
 #dselect <- function(...) dplyr::select(...)
