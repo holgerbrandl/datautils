@@ -11,6 +11,21 @@ suppressMessages(if (!require("docopt")) install.packages("docopt"))
 suppressMessages(if (!require("knitr")) install.packages("knitr"))
 suppressMessages(if (!require("stringr")) install.packages("stringr"))
 suppressMessages(if (!require("rmarkdown")) install.packages("rmarkdown"))
+suppressMessages(if (!require("dplyr")) install.packages("dplyr"))
+
+## test invokation that mimics actual workflow: R --args -e "fsdf.R" "hello sdf" -e
+
+## find the first r document and split up the arguments
+allArgs = commandArgs(T)
+rdocsInArgs = allArgs %>% str_detect(".R$")
+
+if(any(rdocsInArgs)){
+    rmdDocIndex <- allArgs %>% str_detect(".R$")  %>% which %>% min
+    rendrArgs <- allArgs[0:rmdDocIndex]
+    scriptArgs <- allArgs[-(0:rmdDocIndex)]
+}else{
+    rendrArgs <- allArgs
+}
 
 
 # retrieve and parse the command-line arguments
@@ -28,7 +43,7 @@ Options:
 --keep    Keep generated Rmd and md files
 '
 
-opts <- docopt(doc)
+opts <- docopt(doc, args=rendrArgs)
 
 
 r_script <- opts$r_script
@@ -49,7 +64,10 @@ tmpScript <- tempfile(fileext=".R", tmpdir=dirname(normalizePath(r_script)))
 ## remove sheband and comment-only lines from source document
 #file.copy(r_script, tmpScript)
 
-system(paste("cat ", r_script," | sed 's/_TODAY_/'$(date +\"%m-%d-%Y\")'/g' | grep -Ev '^#+$' | grep -Fv '#!/usr/bin/env Rscript' >", tmpScript))
+#system(paste("cat ", r_script," | sed 's/_TODAY_/'$(date +\"%m-%d-%Y\")'/g' | grep -Ev '^#+$' | grep -Fv '#!/usr/bin/env Rscript' >", tmpScript))
+
+## see /Users/brandl/Dropbox/Public/datautils/R/rendr/test/header_after_md_text_fix.sh
+system(paste("cat ", r_script," | sed 's/_TODAY_/'$(date +\"%m-%d-%Y\")'/g' | sed 's/#\\x27 #/#\\x27\\'$'\\n#\\x27 #/g' | grep -Fv '#!/usr/bin/env Rscript' >", tmpScript))
 
 ## add yaml header (will be ignored if already present
 metadata <- paste0('#\'\n\n',
@@ -84,7 +102,8 @@ if(opts$e){
 
 #https://groups.google.com/forum/#!topic/knitr/ojcnq5Nm298
 
-commandArgs <- function(trailingOnly = FALSE){ return(as.character(opts$quoted_script_args)) }
+commandArgs <- function(trailingOnly = TRUE){ scriptArgs } ## note trailingOnly is simply ignored
+
 
 #system(paste("cat ", r_script," | grep -Ev '^#+$' | grep -Fv '#!/usr/bin/env Rscript' >", basename(r_script)))
 #r_script <- basename(r_script)
@@ -105,12 +124,12 @@ knitr::opts_knit$set(
 )
 
 rmarkdown::render(input=tmpScript,output_file=str_replace(basename(r_script), ".R", ".html"),
-    output_format=rmarkdown::html_document(toc = opts$toc, keep_md=T, pandoc_args=paste0("--include-in-header=", jsAddons)),
+    output_format=rmarkdown::html_document(toc = opts$toc, keep_md=keep_markdown_files, pandoc_args=paste0("--include-in-header=", jsAddons)),
     output_dir=getwd())
 
-if(!keep_markdown_files){
-    unlink(str_replace(basename(r_script), ".R", ".md"))
-}
+#if(!keep_markdown_files){
+#    unlink(str_replace(basename(r_script), ".R", ".md"))
+#}
 
 ## delete figures directory since all plots should be embedded anyway
 #echo("deleteing", paste0(str_replace(basename(r_script), ".R", ""), "_files"))
