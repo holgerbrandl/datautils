@@ -52,3 +52,6 @@ write.bed <- function(bedData, file){
     ## restore old scipen value
     options(scipen=oldScipen)
 }
+
+## reload to fix rename overloading
+unloadNamespace('dplyr'); require(dplyr)
