@@ -11,16 +11,16 @@ suppressMessages(if (!require("docopt")) install.packages("docopt"))
 suppressMessages(if (!require("knitr")) install.packages("knitr"))
 suppressMessages(if (!require("stringr")) install.packages("stringr"))
 suppressMessages(if (!require("rmarkdown")) install.packages("rmarkdown"))
-suppressMessages(if (!require("dplyr")) install.packages("dplyr"))
+#suppressMessages(if (!require("dplyr")) install.packages("dplyr"))
 
 ## test invokation that mimics actual workflow: R --args -e "fsdf.R" "hello sdf" -e
 
 ## find the first r document and split up the arguments
 allArgs = commandArgs(T)
-rdocsInArgs = allArgs %>% str_detect(".R$")
+rdocsInArgs = str_detect(allArgs, ".R$")
 
 if(any(rdocsInArgs)){
-    rmdDocIndex <- allArgs %>% str_detect(".R$")  %>% which %>% min
+    rmdDocIndex <- min(which(rdocsInArgs))
     rendrArgs <- allArgs[0:rmdDocIndex]
     scriptArgs <- allArgs[-(0:rmdDocIndex)]
 }else{
