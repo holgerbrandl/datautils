@@ -11,6 +11,7 @@ suppressMessages(if (!require("docopt")) install.packages("docopt"))
 suppressMessages(if (!require("knitr")) install.packages("knitr"))
 suppressMessages(if (!require("stringr")) install.packages("stringr"))
 suppressMessages(if (!require("rmarkdown")) install.packages("rmarkdown"))
+# disabled because user script will fail if they load plyr before dplyr
 #suppressMessages(if (!require("dplyr")) install.packages("dplyr"))
 
 ## test invokation that mimics actual workflow: R --args -e "fsdf.R" "hello sdf" -e
