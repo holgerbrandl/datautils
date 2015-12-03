@@ -35,7 +35,17 @@ guess_mart <- function(gene_id){
     }
 }
 
+
+map_ens_archive_to_build <- function(archiveName="mar2015"){
+    biomaRt::listMarts(host = paste0(archiveName,".archive.ensembl.org"), path = "/biomart/martservice") %>%
+        as.data.frame() %>%
+        filter(biomart=="ENSEMBL_MART_ENSEMBL") %>%
+         with(str_extract(version, "([0-9]{2})"))
+}
+
+
 get_ensembl_build <- function(){
+    warning("DEPRECATED Since it assumes that the default ensembl is used which is never a good idea")
     biomaRt::listMarts() %>% as.data.frame() %>% filter(biomart=="ensembl") %>% with(str_match(version, " ([0-9]*) ")) %>% subset(select=2)
 }
 
