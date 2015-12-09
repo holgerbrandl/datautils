@@ -56,9 +56,15 @@ if(!file.exists(r_script)){
 }
 
 
-## postfix a default empty yaml header
-## todo maybe we should rather run it in the script-home-dir to ensure that additional resources (e.g. pngs are picked up correctly)
-tmpScript <- tempfile(fileext=".R", tmpdir=dirname(normalizePath(r_script)))
+## Create a temporary script in the current working directory to ensure that created resources plots etc can be inlined
+## To allow for additional resoucrces from the scripts directory to be inlined into the final documents, the directory
+## of the script is exposed as a variable called RENDR_SCRIPT_DIR
+## Note:## Using the script-home-dir as wd does not work because plot pngs would not make it into the final document. Also
+## It's better to not clutter the directory containing the script since it might be under version control.
+
+RENDR_SCRIPT_DIR=dirname(normalizePath(r_script))
+tmpScript <- tempfile(fileext=".R", tmpdir=getwd())
+print(paste("compiling tmp-script in ",tmpScript, "'"))
 #tmpScript <- "tt.R"
 
 
