@@ -63,6 +63,7 @@ require_auto(tidyr)
 
 ## needed for caching
 require_auto(digest)
+require_auto(readr)
 
 ## moved into datatable_commons because replaced almost everywhere with dplyr
 #require_auto(data.table)
@@ -264,6 +265,7 @@ trim_ext <-function(fileNames, exts=c()){
     fileNames
 }
 
+## DEPRECATED Use write_tsv instead
 write.delim <- function(df, file, header=TRUE,...){
     write.table(df, file, row.names=FALSE, col.names=header, sep="\t", ...)
 }
