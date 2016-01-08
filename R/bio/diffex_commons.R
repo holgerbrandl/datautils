@@ -17,6 +17,38 @@ filterByExpression <- function(fpkmMat, minFPKM=1, logMode=F){
 }
 
 
+retainExprGenes <- function(df, id_col="ensembl_gene_id", ...){
+    warning("DEPRECATED Use filter_expressed_genes instead")
+    filter_expressed_genes(df, id_col, ...)
+}
+
+
+filter_expressed_genes <- function(df, id_col="ensembl_gene_id", ...){
+
+    ## allows to filter for expressed genes
+
+     exprGenes <- df %>% column2rownames(id_col) %>%
+        ## see https://github.com/hadley/dplyr/issues/497
+        #iris %>% select(., which(sapply(., is.numeric))) %>% head
+        select(., which(sapply(., is.numeric))) %>%
+        filterByExpression(...) %>%
+        rownames()
+
+#    exprGenes %>% head %>% print
+#    df %>% filter_(id_col %in% exprGenes)
+
+    ## see http://stackoverflow.com/questions/26492280/non-standard-evaluation-nse-in-dplyrs-filter-pulling-data-from-mysql
+    which_column <- get(id_col, df)
+    df %>% filter_(~ which_column %in% exprGenes)
+}
+
+
+
+###
+### Biomart Utils
+###
+
+
 guess_mart <- function(gene_id){
     an_id <-gene_id[1]
 
@@ -67,27 +99,6 @@ guess_pathview_species <- function(gene_id){
     }
 }
 #guess_mart("ENSCAFG00000000043")
-
-
-retainExprGenes <- function(df, id_col="ensembl_gene_id", ...){
-    ## allows to filter for expressed genes
-
-     exprGenes <- df %>% column2rownames(id_col) %>%
-        ## see https://github.com/hadley/dplyr/issues/497
-        #iris %>% select(., which(sapply(., is.numeric))) %>% head
-        select(., which(sapply(., is.numeric))) %>%
-        filterByExpression(...) %>%
-        rownames()
-
-#    exprGenes %>% head %>% print
-#    df %>% filter_(id_col %in% exprGenes)
-
-    ## see http://stackoverflow.com/questions/26492280/non-standard-evaluation-nse-in-dplyrs-filter-pulling-data-from-mysql
-    which_column <- get(id_col, df)
-    df %>% filter_(~ which_column %in% exprGenes)
-}
-
-
 
 getGeneInfo <- function(gene_ids){
     martName <- guess_mart(gene_ids[1])
