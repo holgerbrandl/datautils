@@ -74,7 +74,7 @@ print(paste("compiling tmp-script in ",tmpScript, "'"))
 #system(paste("cat ", r_script," | sed 's/_TODAY_/'$(date +\"%m-%d-%Y\")'/g' | grep -Ev '^#+$' | grep -Fv '#!/usr/bin/env Rscript' >", tmpScript))
 
 ## see /Users/brandl/Dropbox/Public/datautils/R/rendr/test/header_after_md_text_fix.sh
-system(paste("cat ", r_script," | sed 's/_TODAY_/'$(date +\"%m-%d-%Y\")'/g' | sed 's/#\\x27 #/#\\x27\\'$'\\n#\\x27 #/g' | grep -Fv '#!/usr/bin/env Rscript' >", tmpScript))
+system(paste("cat ", r_script," | sed 's/_TODAY_/'$(date +\"%m-%d-%Y\")'/g' | grep -Ev '^#####+$' | sed 's/#\\x27 #/#\\x27\\'$'\\n#\\x27 #/g' | grep -Fv '#!/usr/bin/env Rscript' >", tmpScript))
 
 ## add yaml header (will be ignored if already present
 metadata <- paste0('#\'\n\n',
