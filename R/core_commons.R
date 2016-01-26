@@ -27,7 +27,7 @@ require_auto <-  function(x){
     if(isTRUE(x %in% .packages(all.available=TRUE))) {
         eval(parse(text=paste("require(", x, ",  quietly=T)", sep="")))
     } else {
-    #        update.packages(ask=F) # update dependencies, if any.
+        #        update.packages(ask=F) # update dependencies, if any.
         eval(parse(text=paste("install.packages('", x, "')", sep="")))
     }
 
@@ -35,7 +35,7 @@ require_auto <-  function(x){
         eval(parse(text=paste("require(", x, ",  quietly=T)", sep="")))
     } else {
         source("http://bioconductor.org/biocLite.R")
-#        biocLite(character(), ask=FALSE) # update dependencies, if any.
+        #        biocLite(character(), ask=FALSE) # update dependencies, if any.
         eval(parse(text=paste("biocLite('", x, "', ask=FALSE)", sep="")))
         eval(parse(text=paste("require(", x, ",  quietly=T)", sep="")))
     }
@@ -64,6 +64,14 @@ require_auto(tidyr)
 ## needed for caching
 require_auto(digest)
 require_auto(readr)
+require_auto(readxl)
+
+
+## common plotting requirements since they are omnipresent
+require_auto(ggplot2)
+require_auto(scales)
+require_auto(grid)
+
 
 ## moved into datatable_commons because replaced almost everywhere with dplyr
 #require_auto(data.table)
@@ -113,7 +121,7 @@ rownames2column <- function(df, colname){
 
 
 column2rownames<- function(df, colname){
-#browser()
+    #browser()
     ## force into df to avoid dplyr problems
     df <- as.df(df)
 
@@ -135,7 +143,7 @@ push_left <- function(df, pushColNames){
 
 #http://astrostatistics.psu.edu/datasets/R/html/base/html/formals.html
 set_names <- function(df, ...){
-#browser()
+    #browser()
     newnames <- as.character(unlist(list(...)))
 
     ## automatically convert matrices to data.frames (otherwise the names set would fail
@@ -159,7 +167,7 @@ print_head <- function(df, desc=NULL){
 
 fac2char <- function(mydata, convert=names(mydata)[sapply(mydata, is.factor)]){
     if(length(convert)==0)
-        return(mydata)
+    return(mydata)
 
     inputColOrder <- names(mydata)
 
@@ -179,23 +187,30 @@ replaceNA <- function(x, withValue) { x[is.na(x)] <- withValue; x }
 
 
 safe_ifelse <- function(cond, yes, no) {
-  class.y <- class(yes)
-  if ("factor" %in% class.y) {  # Note the small condition change here
+    class.y <- class(yes)
+    if ("factor" %in% class.y) {  # Note the small condition change here
     levels.y = levels(yes)
-  }
-  X <- ifelse(cond,yes,no)
-  if ("factor" %in% class.y) {  # Note the small condition change here
+    }
+    X <- ifelse(cond,yes,no)
+    if ("factor" %in% class.y) {  # Note the small condition change here
     X = as.factor(X)
     levels(X) = levels.y
-  } else {
-    class(X) <- class.y
-  }
-  return(X)
+    } else {
+        class(X) <- class.y
+    }
+    return(X)
 }
 
 ## for na instead use mutate_each with:
 empty_as_na <- function(x) safe_ifelse(x=="", NA, x)
 ## see http://stackoverflow.com/questions/24172111/change-the-blank-cells-to-na/33952598#33952598
+
+
+reload_dplyr <- function(){
+    unloadNamespace('tidyr')
+    unloadNamespace('dplyr')
+    require(tidyr);require(dplyr)
+}
 
 
 
@@ -281,25 +296,25 @@ rmLastElement <- function(vec) vec[-length(vec)]
 
 # improved list of objects
 lsos <- function (pos = 1, pattern, order.by,
-                        decreasing=FALSE, head=FALSE, n=5) {
+decreasing=FALSE, head=FALSE, n=5) {
     napply <- function(names, fn) sapply(names, function(x)
-                                         fn(get(x, pos = pos)))
+    fn(get(x, pos = pos)))
     names <- ls(pos = pos, pattern = pattern)
     obj.class <- napply(names, function(x) as.character(class(x))[1])
     obj.mode <- napply(names, mode)
     obj.type <- ifelse(is.na(obj.class), obj.mode, obj.class)
     obj.size <- napply(names, object.size)/1000000
     obj.dim <- t(napply(names, function(x)
-                        as.numeric(dim(x))[1:2]))
+    as.numeric(dim(x))[1:2]))
     vec <- is.na(obj.dim)[, 1] & (obj.type != "function")
     obj.dim[vec, 1] <- napply(names, length)[vec]
     out <- data.frame(obj.type, obj.size, obj.dim)
     names(out) <- c("Type", "Size", "Rows", "Columns")
     if (!missing(order.by))
-        out <- out[order(out[[order.by]], decreasing=decreasing), ]
+    out <- out[order(out[[order.by]], decreasing=decreasing), ]
     if (head)
-        out <- head(out, n)
-#        out
+    out <- head(out, n)
+    #        out
     out <- transform(out, var_name=rownames(out))
     rownames(out) <- NULL
     arrange(out, Size)
@@ -320,4 +335,4 @@ trim_outliers <- function(values, range=quantile(values, c(0.05, 0.95)))  pmax(r
 ## use trim_outliers instead
 #limit_range <- function(values, range)  pmax(range[1], pmin(range[2], values))
 
-se<-function(x)	sd(x, na.rm=TRUE) / sqrt(sum(!is.na(x)))
+se<-function(x)    sd(x, na.rm=TRUE) / sqrt(sum(!is.na(x)))

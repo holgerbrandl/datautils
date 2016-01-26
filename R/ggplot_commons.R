@@ -1,6 +1,6 @@
-require_auto(ggplot2)
-require_auto(scales)
-require_auto(grid)
+#require_auto(ggplot2)
+#require_auto(scales)
+#require_auto(grid)
 
 
 scale_fill_redgreed <- function() scale_fill_manual(values = c("red","darkgreen"))
