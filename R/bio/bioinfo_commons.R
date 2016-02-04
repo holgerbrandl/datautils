@@ -54,4 +54,4 @@ write.bed <- function(bedData, file){
 }
 
 ## reload to fix rename overloading
-unloadNamespace('dplyr'); require(dplyr)
+reload_dplyr()
