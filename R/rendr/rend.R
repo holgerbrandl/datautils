@@ -91,7 +91,7 @@ cat(metadata, file = tmpScript, append=TRUE)
 
 jsAddons <- tempfile(fileext=".js")
 #cat("<script src='https://raw.githubusercontent.com/holgerbrandl/datautils/master/R/rendr/toggle_code_sections.js' type='application/javascript'></script>", file=jsAddons)
-cat("<script src='https://code.jquery.com/jquery-2.1.4.min.js' type='application/javascript'></script>", file=jsAddons)
+cat("<script src='http://code.jquery.com/jquery-2.1.4.min.js' type='application/javascript'></script>", file=jsAddons)
 
 if(opts$e){
     cat("<script src='http://cdn.rawgit.com/holgerbrandl/datautils/master/R/rendr/toggle_code_sections.js' type='application/javascript'></script>", file=jsAddons, append=T)
