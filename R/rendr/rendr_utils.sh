@@ -22,7 +22,7 @@ rendr_snippet(){
     echo "rendering $tmpR..."
 
     shift
-    rend.R -e $tmpR $*
+    rend.R -E $tmpR $*
 
 #    rm -r $(dirname $tmpR)
     rm ${tmpR}
