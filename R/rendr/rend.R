@@ -37,8 +37,7 @@ Usage: rend.R [options] <r_script> [<quoted_script_args>]
 Options:
 --toc     Add a table of contents
 -c        Cache results
--e        Add collapsed code chunks
--E        Add uncollapsed code chunks
+-e        Collapse code chunks
 -w        Show warnings
 -m        Show Messages
 --keep    Keep generated Rmd and md files
@@ -89,13 +88,12 @@ cat(metadata, file = tmpScript, append=TRUE)
 
 # see http://stackoverflow.com/questions/17341122/link-and-execute-external-javascript-file-hosted-on-github
 
-jsAddons <- tempfile(fileext=".js")
-#cat("<script src='https://raw.githubusercontent.com/holgerbrandl/datautils/master/R/rendr/toggle_code_sections.js' type='application/javascript'></script>", file=jsAddons)
-cat("<script src='http://code.jquery.com/jquery-2.1.4.min.js' type='application/javascript'></script>", file=jsAddons)
-
-if(opts$e){
-    cat("<script src='http://cdn.rawgit.com/holgerbrandl/datautils/master/R/rendr/toggle_code_sections.js' type='application/javascript'></script>", file=jsAddons, append=T)
-}
+#jsAddons <- tempfile(fileext=".js")
+#cat("<script src='http://code.jquery.com/jquery-2.1.4.min.js' type='application/javascript'></script>", file=jsAddons)
+#
+#if(opts$e){
+#    cat("<script src='http://cdn.rawgit.com/holgerbrandl/datautils/master/R/rendr/toggle_code_sections.js' type='application/javascript'></script>", file=jsAddons, append=T)
+#}
 
 
 ## does not work yet
@@ -105,7 +103,7 @@ if(opts$e){
 ##    color: blue;
 #}
 #</style>", file=jsAddons, append=T)
-
+## to use --> provide as arg to html_document: pandoc_args=paste0("--include-in-header=", jsAddons)
 
 #https://groups.google.com/forum/#!topic/knitr/ojcnq5Nm298
 
@@ -121,7 +119,6 @@ opts_chunk$set(
     cache = opts$c,
     message= opts$m,
     warning= opts$w,
-    echo= opts$e | opts$E,
     out.width='100%'
 )
 
@@ -129,9 +126,8 @@ opts_chunk$set(
 knitr::opts_knit$set(
     root.dir = getwd()
 )
-
 rmarkdown::render(input=tmpScript,output_file=str_replace(basename(r_script), ".R", ".html"),
-    output_format=rmarkdown::html_document(toc = opts$toc, keep_md=keep_markdown_files, pandoc_args=paste0("--include-in-header=", jsAddons)),
+    output_format=rmarkdown::html_document(toc = opts$toc, toc_float = opts$toc, code_folding = if(opts$e) "hide" else "show", keep_md=keep_markdown_files),
     output_dir=getwd())
 
 #if(!keep_markdown_files){
