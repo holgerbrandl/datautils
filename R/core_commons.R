@@ -186,23 +186,49 @@ replaceNA <- function(x, withValue) { x[is.na(x)] <- withValue; x }
 
 
 
+## todo still needed
 safe_ifelse <- function(cond, yes, no) {
-    class.y <- class(yes)
-    if ("factor" %in% class.y) {  # Note the small condition change here
-    levels.y = levels(yes)
+#browser()
+    isfacOrChar <- function(x) class(x)  %in% c("factor", "character")
+
+    if (isfacOrChar(yes) | isfacOrChar(no)) {
+        yes <- ac(yes)
+        no <- ac(no)
     }
-    X <- ifelse(cond,yes,no)
-    if ("factor" %in% class.y) {  # Note the small condition change here
-    X = as.factor(X)
-    levels(X) = levels.y
-    } else {
-        class(X) <- class.y
-    }
-    return(X)
+
+    ifelse(cond,yes,no)
 }
 
+
 ## for na instead use mutate_each with:
-empty_as_na <- function(x) safe_ifelse(x=="", NA, x)
+#empty_as_na <- function(x) safe_ifelse(x=="", NA, x)
+#empty_as_na <- function(x) ifelse(class(x)  %in% c("factor", "character") & x=="", NA, x)
+empty_as_na <- function(x){
+    if("factor" %in% class(x)) x <- as.character(x) ## since ifelse wont work with factors
+    ifelse(as.character(x)!="", x, NA)
+}
+
+#if(F){ ## DEBUG of empty_as_na
+#cond <- allJobs %>% head %$% submit_time %>% c("")
+#empty_as_na( cond)
+#cond <- allJobs %>% head %$% resubmission_of
+#empty_as_na( cond)
+#
+#empty_as_na( c(1, 2, NA))
+#empty_as_na( c("sdf", "sdf2", NA))
+#empty_as_na( c("sdf", "sdf2", ""))
+#
+#myFac <- as.factor(c("sdf", "sdf2", NA))
+#empty_as_na( myFac)
+#ifelse(as.character(myFac)!="", myFac, NA)
+#
+#empty_as_na( c("sdf", "sdf2", ""))
+#
+#iris[1,1] <- ""
+#apply(iris, 2, function(x) gsub("^$|^ $", NA, x))
+#}
+
+
 ## see http://stackoverflow.com/questions/24172111/change-the-blank-cells-to-na/33952598#33952598
 
 
