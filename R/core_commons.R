@@ -156,6 +156,9 @@ set_names <- function(df, ...){
 #iris %>% set_names("setosa", "hallo") %>% head
 
 
+rify_names  <- function(df){ names(df) <- names(df) %>% str_replace_all(c(" "="_", "-"="_")); df}
+
+
 head_html <- function(df, n=5) head(df, n) %>% knitr::kable(format="html") %>% print()
 
 print_head <- function(df, desc=NULL){
