@@ -78,6 +78,9 @@ require_auto(ggplot2)
 require_auto(scales)
 require_auto(grid)
 
+## for table exploration without using Rstudio
+require_auto(DT)
+
 
 ## moved into datatable_commons because replaced almost everywhere with dplyr
 #require_auto(data.table)
