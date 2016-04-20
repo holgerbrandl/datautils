@@ -2,13 +2,19 @@
 #library(Biostrings, quietly=T)
 #require_auto(BiocGenerics )x
 
-require_auto(Biostrings)
+#require_auto(Biostrings)
 
 
 read.fasta <- function(fileName){
+    warning("Deprecated: use read_fasta instead!")
+    read_fasta(filename)
+}
+
+
+read_fasta <- function(fileName){
     ## read a fasta file as data.fram
 
-    fastaData <- readBStringSet(fileName, "fasta")
+    fastaData <- Biostrings::readBStringSet(fileName, "fasta")
     #	fastaDataDF <- as.data.frame(as.character(fastaData), stringsAsFactors=FALSE)
     fastaDataDF <- data.frame(Sequence=as.character(fastaData), GeneDesc=names(fastaData), stringsAsFactors=FALSE)
     rownames(fastaDataDF) <- NULL
@@ -17,10 +23,17 @@ read.fasta <- function(fileName){
 }
 
 
-write.fasta <- function(seq_names, sequences, file){
-    fastaData <- AAStringSet(sequences)
+
+write.fasta <- function(fileName){
+    warning("Deprecated: use write_fasta instead!")
+    read_fasta(filename)
+}
+
+
+write_fasta <- function(seq_names, sequences, file){
+    fastaData <- Biostrings::AAStringSet(sequences)
     names(fastaData) <- seq_names;
-    writeXStringSet(fastaData, file=file, format="fasta", width=80)
+    Biostrings::writeXStringSet(fastaData, file=file, format="fasta", width=80)
 }
 
 
@@ -54,4 +67,4 @@ write.bed <- function(bedData, file){
 }
 
 ## reload to fix rename overloading
-reload_dplyr()
+#reload_dplyr()
