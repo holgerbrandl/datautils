@@ -11,6 +11,12 @@ rot_x_45 <- function() theme(axis.text.x = element_text(angle = 45, hjust = 1))
 rotXlab <- function() theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 
+# allow for layer-wise subsetting
+# http://stackoverflow.com/questions/35806310/ggplot-plotting-layers-only-if-certain-criteria-are-met
+pick <- function(condition){
+    function(d) d %>% filter_(condition)
+}
+
 
 # Multiple plot function
 #
