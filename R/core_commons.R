@@ -298,6 +298,7 @@ mcdir <- function(dirname){
 locload <- function(fileName) local(get(load(fileName)))
 
 
+## tbd: it would be more efficient to use Reduce here (see http://stackoverflow.com/questions/34344214/how-to-join-multiple-data-frames-using-dplyr)
 rmerge <- function(LDF, by, ...){
     DF <- LDF[[1]]
     for (i in 2:length(LDF)) {
