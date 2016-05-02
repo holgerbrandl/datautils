@@ -6,6 +6,12 @@
 #https://github.com/edwindj/docopt.R
 #http://www.slideshare.net/EdwindeJonge1/docopt-user2014
 
+## set a default cran r mirror  and customize environment
+r = getOption("repos") # hard code the UK repo for CRAN 
+r["CRAN"] = "http://ftp5.gwdg.de/pub/misc/cran/"
+options(repos = r)
+rm(r)
+
 # load the docopt library
 suppressMessages(if (!require("docopt")) install.packages("docopt"))
 suppressMessages(if (!require("knitr")) install.packages("knitr"))
