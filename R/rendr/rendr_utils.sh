@@ -1,15 +1,15 @@
 
+## test if present in PATH
+if [ -z "$(which rend.R  2>/dev/null)" ]; then
+    echo "rendr.R is not installed. See https://github.com/holgerbrandl/datautils/tree/master/R/rendr for details" >&2
+    exit 1
+fi
+
+
 rendr_snippet(){
     if [ $# -lt 1 ]; then
          >&2 echo "Usage: rendr_snippet <report name> [other args]*"
          >&2 echo "The R snippet to be rendered will be read from standard input."
-        return
-    fi
-
-
-    ## test if present in PATH
-    if [ -z "$(which rend.R  2>/dev/null)" ]; then
-        echo "rendr.R is not installed. See https://github.com/holgerbrandl/datautils/tree/master/R/rendr for details" >&2
         return
     fi
 
