@@ -50,7 +50,7 @@ require_auto <-  function(x){
 }
 
 
-loadpack <-  function(x){
+loadpack <-  function(x, warn.conflicts=T){
     x <- as.character(substitute(x));
 
     if(!isTRUE(x %in% .packages(all.available=TRUE)) && any(available.packages()[,1]==x)) {
@@ -69,7 +69,7 @@ loadpack <-  function(x){
     }
 
     ## load it using a library function so that loadpack errors if package is still not ins
-    eval(parse(text=paste("library(", x, ",  quietly=T)", sep="")))
+    eval(parse(text=paste("library(", x, ",  quietly=T, warn.conflicts=", warn.conflicts, ")", sep="")))
 }
 
 check_version = function(pkg_name, min_version) {
@@ -82,33 +82,34 @@ check_version = function(pkg_name, min_version) {
 ########################################################################################################################
 ## load core packages
 
-require_auto(plyr)
-require_auto(stringr)
-require_auto(reshape2)
-#require_auto(reshape2, quietly=T, warn.conflicts=F)
+loadpack(plyr)
+loadpack(stringr)
+loadpack(reshape2)
+#loadpack(reshape2, quietly=T, warn.conflicts=F)
 
 ## load on purpose after plyr
-require_auto(dplyr)
-require_auto(magrittr)
-require_auto(tidyr)
+loadpack(dplyr, warn.conflicts=F)
+loadpack(magrittr, warn.conflicts=F)
+loadpack(tidyr, warn.conflicts=F)
 
 ## needed for caching
-require_auto(digest)
-require_auto(readr)
-require_auto(readxl)
+loadpack(digest)
+loadpack(readr)
+suppressWarnings(loadpack(readxl)) ## supress differring build number
+#loadpack(readxl) ## supress differring build number
 
 
 ## common plotting requirements since they are omnipresent
-require_auto(ggplot2)
-require_auto(scales)
-require_auto(grid)
+loadpack(ggplot2)
+loadpack(scales, warn.conflicts=F)
+loadpack(grid)
 
 ## for table exploration without using Rstudio
-require_auto(DT)
+loadpack(DT)
 
 
 ## moved into datatable_commons because replaced almost everywhere with dplyr
-#require_auto(data.table)
+#loadpack(data.table)
 
 
 
