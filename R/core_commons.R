@@ -28,6 +28,8 @@ options(gsubfn.engine = "R")
 ## automatic package installation
 
 require_auto <-  function(x){
+    warning("require_auto is deprecated, use loadpack() instead")
+
     x <- as.character(substitute(x))
 
     if(isTRUE(x %in% .packages(all.available=TRUE))) {
@@ -45,6 +47,29 @@ require_auto <-  function(x){
         eval(parse(text=paste("biocLite('", x, "', ask=FALSE)", sep="")))
         eval(parse(text=paste("require(", x, ",  quietly=T)", sep="")))
     }
+}
+
+
+loadpack <-  function(x){
+    x <- as.character(substitute(x));
+
+    if(!isTRUE(x %in% .packages(all.available=TRUE)) && any(available.packages()[,1]==x)) {
+        # update.packages(ask=F) # update dependencies, if any.
+        eval(parse(text=paste("install.packages('", x, "')", sep="")))
+    }
+
+    ## if it's still missing check if it's on bioconductor
+    if(!isTRUE(x %in% .packages(all.available=TRUE))) {
+        bcPackages <- as.vector(read.dcf(url("https://bioconductor.org/packages/3.3/bioc/src/contrib/PACKAGES"), "Package"))
+
+        if(any(bcPackages==x)){
+            source("http://bioconductor.org/biocLite.R")
+            eval(parse(text=paste("biocLite('", x, "', ask=FALSE)", sep="")))
+        }
+    }
+
+    ## load it using a library function so that loadpack errors if package is still not ins
+    eval(parse(text=paste("library(", x, ",  quietly=T)", sep="")))
 }
 
 check_version = function(pkg_name, min_version) {
@@ -378,3 +403,12 @@ trim_outliers <- function(values, range=quantile(values, c(0.05, 0.95)))  pmax(r
 #limit_range <- function(values, range)  pmax(range[1], pmin(range[2], values))
 
 se <- function(x) sd(x, na.rm=TRUE) / sqrt(sum(!is.na(x)))
+
+
+########################################################################################################################
+### Misc
+
+## inspired by http://stackoverflow.com/questions/8343509/better-error-message-for-stopifnot
+assert <- function (expr, error) {
+    if (! expr) stop(error, call. = FALSE)
+}
