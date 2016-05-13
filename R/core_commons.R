@@ -50,7 +50,7 @@ require_auto <-  function(x){
 }
 
 
-loadpack <-  function(x, warn.conflicts=T){
+loadpack <-  function(x, warn_conflicts=T){
     x <- as.character(substitute(x));
 
     if(!isTRUE(x %in% .packages(all.available=TRUE)) && any(available.packages()[,1]==x)) {
@@ -69,7 +69,7 @@ loadpack <-  function(x, warn.conflicts=T){
     }
 
     ## load it using a library function so that loadpack errors if package is still not ins
-    eval(parse(text=paste("library(", x, ",  quietly=T, warn.conflicts=", warn.conflicts, ")", sep="")))
+    eval(parse(text=paste("library(", x, ",  quietly=T, warn_conflicts=", warn_conflicts, ")", sep="")))
 }
 
 check_version = function(pkg_name, min_version) {
@@ -85,12 +85,12 @@ check_version = function(pkg_name, min_version) {
 loadpack(plyr)
 loadpack(stringr)
 loadpack(reshape2)
-#loadpack(reshape2, quietly=T, warn.conflicts=F)
+#loadpack(reshape2, quietly=T, warn_conflicts=F)
 
 ## load on purpose after plyr
-loadpack(dplyr, warn.conflicts=F)
-loadpack(magrittr, warn.conflicts=F)
-loadpack(tidyr, warn.conflicts=F)
+loadpack(dplyr, warn_conflicts=F)
+loadpack(magrittr, warn_conflicts=F)
+loadpack(tidyr, warn_conflicts=F)
 
 ## needed for caching
 loadpack(digest)
@@ -101,7 +101,7 @@ suppressWarnings(loadpack(readxl)) ## supress differring build number
 
 ## common plotting requirements since they are omnipresent
 loadpack(ggplot2)
-loadpack(scales, warn.conflicts=F)
+loadpack(scales, warn_conflicts=F)
 loadpack(grid)
 
 ## for table exploration without using Rstudio

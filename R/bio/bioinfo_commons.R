@@ -1,4 +1,4 @@
-#library(BiocGenerics, quietly=T, warn.conflicts=F )
+#library(BiocGenerics, quietly=T, warn_conflicts=F )
 #library(Biostrings, quietly=T)
 #require_auto(BiocGenerics )x
 
