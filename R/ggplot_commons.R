@@ -163,7 +163,7 @@ plotPDF <- function(fileBaseName, expr, ...){ pdf(paste0(fileBaseName, ".pdf"), 
 ## create a custom color palette for a fixed set of values
 ## scale_fill_manual(values = create_palette(unique(csWithTopoT1$t1_type)), drop = FALSE)
 create_palette <- function(x, pal = 'Set1'){
-  require_auto(RColorBrewer)
+  loadpack(RColorBrewer)
 
   ux <- sort(unique(x))
   n <-length(ux)
