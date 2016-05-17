@@ -41,12 +41,13 @@ Use rmarkdown to render R and Rmd into html documents
 Usage: rend.R [options] <r_script> [<quoted_script_args>]
 
 Options:
---toc     Add a table of contents
--c        Cache results
--e        Collapse code chunks
--w        Show warnings
--m        Show Messages
---keep    Keep generated Rmd and md files
+-e            Collapse code chunks
+-c            Cache results
+-w            Show warnings
+-m            Show Messages
+--toc         Add a table of contents
+--out <name>  Name of html report. By default the name of the R-script is used
+--keep        Keep generated Rmd and md files
 '
 
 opts <- docopt(doc, args=rendrArgs)
@@ -132,7 +133,15 @@ opts_chunk$set(
 knitr::opts_knit$set(
     root.dir = getwd()
 )
-rmarkdown::render(input=tmpScript,output_file=str_replace(basename(r_script), ".R", ".html"),
+
+
+
+reportName=opts$out
+if(is.null(reportName)){
+    reportName=str_replace(basename(r_script), ".R", "")
+}
+
+rmarkdown::render(input=tmpScript,output_file=paste0(reportName, ".html"),
     output_format=rmarkdown::html_document(toc = opts$toc, toc_float = opts$toc, code_folding = if(opts$e) "hide" else "show", keep_md=keep_markdown_files),
     output_dir=getwd())
 
@@ -142,5 +151,5 @@ rmarkdown::render(input=tmpScript,output_file=str_replace(basename(r_script), ".
 
 ## delete figures directory since all plots should be embedded anyway
 #echo("deleteing", paste0(str_replace(basename(r_script), ".R", ""), "_files"))
-unlink(paste0(str_replace(basename(r_script), ".R", ""), "_files"), recursive=T)
+unlink(paste0(reportName, "_files"), recursive=T)
 unlink(tmpScript)
