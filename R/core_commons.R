@@ -148,10 +148,8 @@ vec2df <- function(namedVec) data.frame(name=names(namedVec), value=namedVec, ro
 
 
 rownames2column <- function(df, colname){
-    df <- as.df(df)
-    df$tttt <- rownames(df);
-    rownames(df) <- NULL;
-    plyr::rename(df, c(tttt=colname))
+    warning("DEPRECATED Use dplyr::add_rownames directly")
+    add_rownames(df, var=colname)
 }
 
 
@@ -191,7 +189,13 @@ set_names <- function(df, ...){
 #iris %>% set_names("setosa", "hallo") %>% head
 
 
-rify_names  <- function(df){ names(df) <- names(df) %>% str_replace_all(c(" "="_", "-"="_")); df}
+rify_names  <- function(df){
+    warning("DEPRECATED: use pretty_columns instead");
+    names(df) <- names(df) %>% str_replace_all(c(" "="_", "-"="_"));
+    df
+}
+
+pretty_columns  <- function(df){ names(df) <- names(df) %>% str_replace_all(c(" "="_", "-"="_", "[.]"="_")) %>% tolower; df}
 
 
 head_html <- function(df, n=5) head(df, n) %>% knitr::kable(format="html") %>% print()
