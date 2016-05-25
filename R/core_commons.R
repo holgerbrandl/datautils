@@ -69,7 +69,7 @@ loadpack <-  function(x, warn_conflicts=T){
     }
 
     ## load it using a library function so that loadpack errors if package is still not ins
-    eval(parse(text=paste("library(", x, ",  quietly=T, warn_conflicts=", warn_conflicts, ")", sep="")))
+    eval(parse(text=paste("library(", x, ",  quietly=T, warn.conflicts=", warn_conflicts, ")", sep="")))
 }
 
 check_version = function(pkg_name, min_version) {
