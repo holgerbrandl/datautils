@@ -51,10 +51,8 @@ require_auto <-  function(x){
     }
 }
 
-
-loadpack <-  function(x, warn_conflicts=T){
-    x <- as.character(substitute(x));
-
+## externalized installer to also allow for installation without loading
+.instpack <- function(x){
     if(!isTRUE(x %in% .packages(all.available=TRUE)) && any(available.packages()[,1]==x)) {
         # update.packages(ask=F) # update dependencies, if any.
         eval(parse(text=paste("install.packages('", x, "')", sep="")))
@@ -69,6 +67,12 @@ loadpack <-  function(x, warn_conflicts=T){
             eval(parse(text=paste("biocLite('", x, "', ask=FALSE)", sep="")))
         }
     }
+}
+
+loadpack <-  function(x, warn_conflicts=T){
+    x <- as.character(substitute(x));
+
+   .instpack(x)
 
     ## load it using a library function so that loadpack errors if package is still not ins
     eval(parse(text=paste("library(", x, ",  quietly=T, warn.conflicts=", warn_conflicts, ")", sep="")))
