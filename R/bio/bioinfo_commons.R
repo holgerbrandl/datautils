@@ -7,7 +7,7 @@
 
 read.fasta <- function(fileName){
     warning("Deprecated: use read_fasta instead!")
-    read_fasta(filename)
+    read_fasta(fileName)
 }
 
 
@@ -26,7 +26,7 @@ read_fasta <- function(fileName){
 
 write.fasta <- function(fileName){
     warning("Deprecated: use write_fasta instead!")
-    read_fasta(filename)
+    read_fasta(fileName)
 }
 
 
@@ -38,7 +38,7 @@ write_fasta <- function(seq_names, sequences, file){
 
 
 getSeqLengthFromFasta <- function(fileName){
-    assembly <- mutate(read.fasta(fileName), seq_len=nchar(Sequence))
+    assembly <- mutate(read_fasta(fileName), seq_len=nchar(Sequence))
     assembly$Sequence = NULL
     return(assembly)
 }
