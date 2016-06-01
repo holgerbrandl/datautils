@@ -138,7 +138,7 @@ knitr::opts_knit$set(
 
 reportName=opts$out
 if(is.null(reportName)){
-    reportName=str_replace(basename(r_script), ".R", "")
+    reportName=str_replace(basename(r_script), ".R$", "")
 }
 
 rmarkdown::render(input=tmpScript,output_file=paste0(reportName, ".html"),
