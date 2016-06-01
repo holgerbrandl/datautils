@@ -201,7 +201,14 @@ rify_names  <- function(df){
     df
 }
 
-pretty_columns  <- function(df){ names(df) <- names(df) %>% str_replace_all(c(" "="_", "-"="_", "[.]"="_")) %>% tolower; df}
+pretty_columns  <- function(df){
+    names(df) <- names(df) %>%
+        str_replace_all("[#=.()-]+", "_") %>%
+        str_replace("[_]+$", "") %>%
+        str_replace("^[_]+", "") %>%
+        tolower;
+    df
+}
 
 
 head_html <- function(df, n=5) head(df, n) %>% knitr::kable(format="html") %>% print()
