@@ -21,6 +21,7 @@ options(width=150)
 ## http://stackoverflow.com/questions/29396111/dplyrtbl-df-fill-whole-screen
 options(dplyr.print_max = 20) ## num rows
 options(dplyr.width = 130) ## width
+#options(dplyr.width = 280) ## width
 
 # for sqldf to avoid the use of tckl
 options(gsubfn.engine = "R")
