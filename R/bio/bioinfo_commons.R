@@ -52,18 +52,21 @@ getSeqLengthFromFasta <- function(fileName){
 #    write.table(bedData, file=file, quote=FALSE, sep ="\t", na="NA", row.names=FALSE, col.names=FALSE)
 #}
 
-write_bed <- function(bedData, file) write.bed(bedData, file)
-
-write.bed <- function(bedData, file){
+write_bed <- function(bedData, file){
     oldScipen<-getOption("scipen")
 
-     ## necessary to disable scientific number formats for long integers
+    ## necessary to disable scientific number formats for long integers
     options(scipen=100)
 
     write.table(bedData, file=file, quote=FALSE, sep ="\t", na="NA", row.names=FALSE, col.names=FALSE)
 
     ## restore old scipen value
     options(scipen=oldScipen)
+
+}
+write.bed <- function(bedData, file){
+    warning("Deprecated: use write_bed instead!")
+    write_bed(bedData, file)
 }
 
 ## reload to fix rename overloading
