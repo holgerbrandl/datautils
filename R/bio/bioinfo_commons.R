@@ -4,6 +4,9 @@
 
 #loadpack(Biostrings)
 
+## install Biostrings if not yet there
+.instpack("Biostrings")
+
 
 read.fasta <- function(fileName){
     warning("Deprecated: use read_fasta instead!")
