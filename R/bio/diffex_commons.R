@@ -278,3 +278,37 @@ davidAnnotationChart <- function( someGenes, ontologies=DEF_DAVID_ONTOLOGIES ){
     return(annoChart)
 }
 
+
+
+## todo move to diffex commons
+guess_cp_species <- function(ensIds){
+    an_id <-ensIds[1]
+
+    if(str_detect(an_id, "ENSG")){
+        return("human")
+    }else if(str_detect(an_id, "ENSMUSG")){
+        return("mouse")
+    }else if(str_detect(an_id, "ENSDARG")){
+        return("zebrafish")
+    }else if(str_detect(an_id, "FBgn")){
+        return("fly")
+    }else{
+        stop(paste("could not clusterProfiler species name from ", an_id))
+    }
+}
+
+guess_anno_db <- function(ensIds){
+    an_id <-ensIds[1]
+
+    if(str_detect(an_id, "ENSG")){
+        return("org.Hs.eg.db")
+    }else if(str_detect(an_id, "ENSMUSG")){
+        return("org.Mm.eg.db")
+    }else if(str_detect(an_id, "ENSDARG")){
+        return("org.Dr.eg.db")
+    }else if(str_detect(an_id, "FBgn")){
+        return("org.Dm.eg.db")
+    }else{
+        stop(paste("could not anno db mart from ", an_id))
+    }
+}
