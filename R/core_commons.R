@@ -53,7 +53,7 @@ require_auto <-  function(x){
 }
 
 ## externalized installer to also allow for installation without loading
-.instpack <- function(x){
+.inst_pack <- function(x){
     if(!isTRUE(x %in% .packages(all.available=TRUE)) && any(available.packages()[,1]==x)) {
         # update.packages(ask=F) # update dependencies, if any.
         eval(parse(text=paste("install.packages('", x, "')", sep="")))
@@ -70,10 +70,21 @@ require_auto <-  function(x){
     }
 }
 
-loadpack <-  function(x, warn_conflicts=T){
+load_pack <-  function(x, warn_conflicts=T){
     x <- as.character(substitute(x));
 
-   .instpack(x)
+   .inst_pack(x)
+
+    ## load it using a library function so that loadpack errors if package is still not ins
+    eval(parse(text=paste("library(", x, ",  quietly=T, warn.conflicts=", warn_conflicts, ")", sep="")))
+}
+
+loadpack <-  function(x, warn_conflicts=T){
+    warning("DEPRECATED Use load_pack() instead")
+
+    x <- as.character(substitute(x));
+
+   .inst_pack(x)
 
     ## load it using a library function so that loadpack errors if package is still not ins
     eval(parse(text=paste("library(", x, ",  quietly=T, warn.conflicts=", warn_conflicts, ")", sep="")))
