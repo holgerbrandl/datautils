@@ -5,7 +5,7 @@
 #loadpack(Biostrings)
 
 ## install Biostrings if not yet there
-.instpack("Biostrings")
+.inst_pack("Biostrings")
 
 
 read.fasta <- function(fileName){
