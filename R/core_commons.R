@@ -254,8 +254,9 @@ replaceNA <- function(x, withValue) { x[is.na(x)] <- withValue; x }
 
 
 
-## todo still needed
+## todo still needed since there's if_else in dplyr now
 safe_ifelse <- function(cond, yes, no) {
+
 #browser()
     isfacOrChar <- function(x) class(x)  %in% c("factor", "character")
 
@@ -298,6 +299,13 @@ empty_as_na <- function(x){
 
 
 ## see http://stackoverflow.com/questions/24172111/change-the-blank-cells-to-na/33952598#33952598
+
+
+## apply dplyr::filter to df but use filter criterions for cross-tabulation beforehand
+filter_count <- function(df, ...){
+    print(count(df, ...))
+    filter(df, ...)
+}
 
 
 reload_dplyr <- function(){
