@@ -5,7 +5,7 @@
 #loadpack(Biostrings)
 
 ## install Biostrings if not yet there
-.inst_pack("Biostrings")
+install_package("Biostrings")
 
 
 read.fasta <- function(fileName){
@@ -40,7 +40,7 @@ write_fasta <- function(seq_names, sequences, file){
 }
 
 
-getSeqLengthFromFasta <- function(fileName){
+get_sequence_lengths <- function(fileName){
     assembly <- mutate(read_fasta(fileName), seq_len=nchar(Sequence))
     assembly$Sequence = NULL
     return(assembly)
@@ -66,10 +66,6 @@ write_bed <- function(bedData, file){
     ## restore old scipen value
     options(scipen=oldScipen)
 
-}
-write.bed <- function(bedData, file){
-    warning("Deprecated: use write_bed instead!")
-    write_bed(bedData, file)
 }
 
 ## reload to fix rename overloading
