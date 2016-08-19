@@ -68,9 +68,20 @@ if(!file.exists(r_script)){
 ## Note:## Using the script-home-dir as wd does not work because plot pngs would not make it into the final document. Also
 ## It's better to not clutter the directory containing the script since it might be under version control.
 
+
+
+reportName=opts$out
+if(is.null(reportName)){
+    reportName=str_replace(basename(r_script), ".R$", "")
+}
+
+
 RENDR_SCRIPT_DIR=dirname(normalizePath(r_script))
-tmpScript <- tempfile(fileext=".R", tmpdir=getwd())
-print(paste("compiling tmp-script in ",tmpScript, "'"))
+
+# use same name here since otherways caching does not seem to work
+#tmpScript <- tempfile(fileext=".R", tmpdir=getwd())
+tmpScript <- file.path(getwd(), paste0(".", reportName, ".R"))
+print(paste0("compiling tmp-script in ",tmpScript, "'"))
 #tmpScript <- "tt.R"
 
 
@@ -120,10 +131,13 @@ commandArgs <- function(trailingOnly = TRUE){ scriptArgs } ## note trailingOnly 
 #system(paste("cat ", r_script," | grep -Ev '^#+$' | grep -Fv '#!/usr/bin/env Rscript' >", basename(r_script)))
 #r_script <- basename(r_script)
 
+cacheResults=opts$c
 
 ## custom title http://stackoverflow.com/questions/14124022/setting-html-meta-elements-with-knitr
 opts_chunk$set(
-    cache = opts$c,
+    cache = cacheResults,
+    ## note that cache.dir is overridden by rmarkdown (see https://github.com/rstudio/rmarkdown/blob/c46c780d1cea4ecb744bd448dc1247923ffbf529/R/render.R#L308
+    # cache.path = file.path(getwd(), paste0(reportName, "_cache/")),
     message= opts$m,
     warning= opts$w,
     out.width='100%'
@@ -135,15 +149,11 @@ knitr::opts_knit$set(
 )
 
 
-
-reportName=opts$out
-if(is.null(reportName)){
-    reportName=str_replace(basename(r_script), ".R$", "")
-}
-
 rmarkdown::render(input=tmpScript,output_file=paste0(reportName, ".html"),
     output_format=rmarkdown::html_document(toc = opts$toc, toc_float = opts$toc, code_folding = if(opts$e) "hide" else "show", keep_md=keep_markdown_files),
     output_dir=getwd())
+
+#spin(tmpScript, knit=T)
 
 #if(!keep_markdown_files){
 #    unlink(str_replace(basename(r_script), ".R", ".md"))
@@ -151,5 +161,5 @@ rmarkdown::render(input=tmpScript,output_file=paste0(reportName, ".html"),
 
 ## delete figures directory since all plots should be embedded anyway
 #echo("deleteing", paste0(str_replace(basename(r_script), ".R", ""), "_files"))
-unlink(paste0(reportName, "_files"), recursive=T)
+if(!cacheResults) unlink(paste0(reportName, "_files"), recursive=T)
 unlink(tmpScript)
