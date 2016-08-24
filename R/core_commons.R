@@ -459,3 +459,8 @@ se <- function(x) sd(x, na.rm=TRUE) / sqrt(sum(!is.na(x)))
 assert <- function (expr, error) {
     if (! expr) stop(error, call. = FALSE)
 }
+
+### table rendering
+table_browser <- function(df){
+    datatable(df, filter = "bottom", extensions = 'Buttons', options = list( dom = 'Bfrtip', buttons = c('copy', 'csv', 'excel')))
+}
