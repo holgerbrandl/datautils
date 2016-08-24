@@ -222,6 +222,8 @@ pretty_columns  <- function(df){
     df
 }
 
+# http://stackoverflow.com/questions/23188900/view-entire-dataframe-when-wrapped-in-tbl-df
+print_all <- function(df) df %>% tbl_df %>% print(n = nrow(.))
 
 head_html <- function(df, n=5) head(df, n) %>% knitr::kable(format="html") %>% print()
 
