@@ -2,8 +2,8 @@
 #library(ggplot2)
 #library(reshape2)
 
-require_auto(ggdendro)
-require_auto(grid)
+load_pack(ggdendro)
+load_pack(grid)
 
 ## Adopted from  http://cwcode.wordpress.com/2013/01/30/ggheatmap-version-2/
 

@@ -31,7 +31,7 @@ options(gsubfn.engine = "R")
 ## automatic package installation
 
 require_auto <-  function(x){
-    warning("require_auto is deprecated, use loadpack() instead")
+    warning("require_auto is deprecated, use load_pack() instead")
 
     x <- as.character(substitute(x))
 
@@ -75,7 +75,7 @@ load_pack <-  function(x, warn_conflicts=T){
 
    install_package(x)
 
-    ## load it using a library function so that loadpack errors if package is still not ins
+    ## load it using a library function so that load_pack errors if package is still not ins
     eval(parse(text=paste("library(", x, ",  quietly=T, warn.conflicts=", warn_conflicts, ")", sep="")))
 }
 
@@ -86,7 +86,7 @@ loadpack <-  function(x, warn_conflicts=T){
 
    install_package(x)
 
-    ## load it using a library function so that loadpack errors if package is still not ins
+    ## load it using a library function so that load_pack errors if package is still not ins
     eval(parse(text=paste("library(", x, ",  quietly=T, warn.conflicts=", warn_conflicts, ")", sep="")))
 }
 
@@ -100,34 +100,34 @@ check_version = function(pkg_name, min_version) {
 ########################################################################################################################
 ## load core packages
 
-loadpack(plyr)
-loadpack(stringr)
-loadpack(reshape2)
-#loadpack(reshape2, quietly=T, warn_conflicts=F)
+load_pack(plyr)
+load_pack(stringr)
+load_pack(reshape2)
+#load_pack(reshape2, quietly=T, warn_conflicts=F)
 
 ## load on purpose after plyr
-loadpack(dplyr, warn_conflicts=F)
-loadpack(magrittr, warn_conflicts=F)
-loadpack(tidyr, warn_conflicts=F)
+load_pack(dplyr, warn_conflicts=F)
+load_pack(magrittr, warn_conflicts=F)
+load_pack(tidyr, warn_conflicts=F)
 
 ## needed for caching
-loadpack(digest)
-loadpack(readr)
-suppressWarnings(loadpack(readxl)) ## supress differring build number
-#loadpack(readxl) ## supress differring build number
+load_pack(digest)
+load_pack(readr)
+suppressWarnings(load_pack(readxl)) ## supress differring build number
+#load_pack(readxl) ## supress differring build number
 
 
 ## common plotting requirements since they are omnipresent
-loadpack(ggplot2)
-loadpack(scales, warn_conflicts=F)
-loadpack(grid)
+load_pack(ggplot2)
+load_pack(scales, warn_conflicts=F)
+load_pack(grid)
 
 ## for table exploration without using Rstudio
-loadpack(DT)
+load_pack(DT)
 
 
 ## moved into datatable_commons because replaced almost everywhere with dplyr
-#loadpack(data.table)
+#load_pack(data.table)
 
 
 
@@ -461,6 +461,6 @@ assert <- function (expr, error) {
 }
 
 ### table rendering
-table_browser <- function(df){
-    datatable(df, filter = "bottom", extensions = 'Buttons', options = list( dom = 'Bfrtip', buttons = c('copy', 'csv', 'excel')))
+table_browser <- function(df, ...){
+    datatable(df, filter = "bottom", extensions = 'Buttons', options = list( dom = 'Bfrtip', buttons = c('copy', 'csv', 'excel')), ...)
 }

@@ -2,7 +2,7 @@
 #library(Biostrings, quietly=T)
 #require_auto(BiocGenerics x
 
-#loadpack(Biostrings)
+#load_pack(Biostrings)
 
 ## install Biostrings if not yet there
 install_package("Biostrings")
