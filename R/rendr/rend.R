@@ -72,9 +72,12 @@ if(!file.exists(r_script)){
 
 reportName=opts$out
 if(is.null(reportName)){
-    reportName=str_replace(basename(r_script), ".R$", "")
+    reportName=str_replace(str_replace(basename(r_script), ".R$", ""), ".Rmd$", "")
 }
 
+requiresSpinning=!str_detect(r_script, ".Rmd$")
+
+if(requiresSpinning){
 
 RENDR_SCRIPT_DIR=dirname(normalizePath(r_script))
 
@@ -102,6 +105,10 @@ metadata <- paste0('#\'\n\n',
   '#\' ---\n\n')
 cat("\n", file = tmpScript, append=TRUE)
 cat(metadata, file = tmpScript, append=TRUE)
+
+}else{
+    tmpScript=r_script
+}
 
 
 # see http://stackoverflow.com/questions/17341122/link-and-execute-external-javascript-file-hosted-on-github
@@ -162,4 +169,5 @@ rmarkdown::render(input=tmpScript,output_file=paste0(reportName, ".html"),
 ## delete figures directory since all plots should be embedded anyway
 #echo("deleteing", paste0(str_replace(basename(r_script), ".R", ""), "_files"))
 if(!cacheResults) unlink(paste0(reportName, "_files"), recursive=T)
-unlink(tmpScript)
+
+if(requiresSpinning) unlink(tmpScript)
