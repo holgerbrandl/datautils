@@ -1,4 +1,4 @@
-install_package(clusterProfiler)
+install_package("clusterProfiler")
 
 
 ## todo move to diffex commons
