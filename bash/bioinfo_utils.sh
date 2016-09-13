@@ -185,6 +185,43 @@ BlastProgress(){
 export -f BlastProgress
 
 
+blast_progress(){
+kscript - $* <<"EOF"
+//DEPS de.mpicbg.scicomp:kutils:0.3
+//KOTLIN_OPTS -J-Xmx5g
+
+//kotlinc -J-Xmx5g -cp  $(expandcp.kts de.mpicbg.scicomp:kutils:0.3)
+
+import de.mpicbg.scicomp.bioinfo.openFasta
+import java.io.File
+import kotlin.system.exitProcess
+
+if(args.size == 0 ){
+    System.err.println("Usage: blast_progres <fasta> <blastresults>")
+    exitProcess(-1)
+}
+
+//args
+val fastaFile= File(args[0])
+val blastResults= File(args[1])
+
+//val blastResults=File("dd_Smes_v1__vs__gencodeV25P.csv"); val fastaFile = File("../dd_Smes_v1.fasta")
+
+val fastaIds = openFasta(fastaFile).map { it.id }
+
+val procIds = blastResults.useLines { it.map{ it.split("\t")[0]}.distinct().toList()}
+
+//todo part of kutils0.4
+fun Double.format(digits: Int) = java.lang.String.format("%.${digits}f", this)
+
+
+val pcDone = procIds.size.toDouble()/fastaIds.size
+println("Approximately ${pcDone.format(2)} % of ${fastaIds.size} sequences were processed by blast.")
+EOF
+}
+
+
+
 ## just retains sequences whose id is in id-file (format: 1id per line)
 FilterFastaByIDFile(){
 python -c '
