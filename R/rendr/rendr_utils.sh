@@ -35,3 +35,22 @@ export -f rendr_snippet
 # 1+1;
 # ggplot(iris, aes(Sepal.Width) + geom_histogram()
 # ' | rendr_snippet some_report
+
+
+rendr_md(){
+mdFile=$1
+if [[ ${mdFile: -3} != ".md" ]]; then
+    echo "input '${mdFile}' is not a mardkdown file. quitting..." 1>&2;
+    return;
+fi
+
+cd $(dirname ${mdFile})
+tmpRmd=.$(basename ${mdFile} .md).Rmd
+sed 's/```r/```{r}/g' ${mdFile} > ${tmpRmd}
+rend.R --toc ${tmpRmd}
+open .$(basename $1 .md).html
+}
+export -f rendr_md
+
+#rendr_md /Users/brandl/Dropbox/documents/regression/regression_basics.md
+#sed 's/```r/```{r}'  /Users/brandl/Dropbox/documents/regression/regression_basics.md
