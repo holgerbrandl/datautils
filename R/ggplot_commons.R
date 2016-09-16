@@ -153,6 +153,25 @@ makePcaPlot <- function(x = getData(), group = NA, items=rownames(x), title = ""
 
 
 ########################################################################################################################
+### ggpairs
+
+#load_pack(GGally)
+#ggpairs(tips, mapping = aes(color = sex), columns = c("total_bill", "time", "tip"))
+
+gp_alpha <- function(data, mapping, ...) {
+    ggplot(data = data, mapping=mapping) + geom_point(alpha = 0.1)
+}
+
+gp_bin2d <- function(data, mapping, ..., low = "#10721C", high = "#F11D05") {
+    ggplot(data = data, mapping = mapping) +
+    geom_bin2d(...) +
+    scale_fill_gradient(low = low, high = high)
+}
+#qModelStats %>% ungroup() %>% select(-ensembl_gene_id) %>% ggpairs(lower=list(continuous=gp_bin2d), title="plot score as regressor")
+
+
+
+########################################################################################################################
 ### Base-plot utils
 
 

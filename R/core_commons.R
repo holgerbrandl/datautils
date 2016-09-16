@@ -30,27 +30,6 @@ options(gsubfn.engine = "R")
 ########################################################################################################################
 ## automatic package installation
 
-require_auto <-  function(x){
-    warning("require_auto is deprecated, use load_pack() instead")
-
-    x <- as.character(substitute(x))
-
-    if(isTRUE(x %in% .packages(all.available=TRUE))) {
-        eval(parse(text=paste("require(", x, ",  quietly=T)", sep="")))
-    } else {
-        #        update.packages(ask=F) # update dependencies, if any.
-        eval(parse(text=paste("install.packages('", x, "')", sep="")))
-    }
-
-    if(isTRUE(x %in% .packages(all.available=TRUE))) {
-        eval(parse(text=paste("require(", x, ",  quietly=T)", sep="")))
-    } else {
-        source("http://bioconductor.org/biocLite.R")
-        #        biocLite(character(), ask=FALSE) # update dependencies, if any.
-        eval(parse(text=paste("biocLite('", x, "', ask=FALSE)", sep="")))
-        eval(parse(text=paste("require(", x, ",  quietly=T)", sep="")))
-    }
-}
 
 ## externalized installer to also allow for installation without loading
 install_package <- function(x){
@@ -79,16 +58,6 @@ load_pack <-  function(x, warn_conflicts=T){
     eval(parse(text=paste("library(", x, ",  quietly=T, warn.conflicts=", warn_conflicts, ")", sep="")))
 }
 
-loadpack <-  function(x, warn_conflicts=T){
-    warning("DEPRECATED Use load_pack() instead")
-
-    x <- as.character(substitute(x));
-
-   install_package(x)
-
-    ## load it using a library function so that load_pack errors if package is still not ins
-    eval(parse(text=paste("library(", x, ",  quietly=T, warn.conflicts=", warn_conflicts, ")", sep="")))
-}
 
 check_version = function(pkg_name, min_version) {
     cur_version = packageVersion(pkg_name)
@@ -100,20 +69,24 @@ check_version = function(pkg_name, min_version) {
 ########################################################################################################################
 ## load core packages
 
-load_pack(plyr)
-load_pack(stringr)
-load_pack(reshape2)
+#load_pack(plyr)
+#load_pack(reshape2)
 #load_pack(reshape2, quietly=T, warn_conflicts=F)
 
 ## load on purpose after plyr
 load_pack(dplyr, warn_conflicts=F)
 load_pack(magrittr, warn_conflicts=F)
 load_pack(tidyr, warn_conflicts=F)
+load_pack(stringr)
+load_pack(purrr)
+load_pack(readr)
+load_pack(readxl) ## supress differring build number
 
 ## needed for caching
 load_pack(digest)
-load_pack(readr)
-suppressWarnings(load_pack(readxl)) ## supress differring build number
+
+#suppressWarnings(load_pack(readxl)) ## supress differring build number
+
 #load_pack(readxl) ## supress differring build number
 
 
@@ -150,6 +123,11 @@ pp <- function(dat) page(dat, method = "print")
 
 as.df <- function(dt) as.data.frame(dt)
 
+
+install_package("tibble")
+
+## restore pre-tibble-v1.2 naming to creating data-frame in place
+frame_data = function(...) tibble::tribble(...)
 
 ########################################################################################################################
 #### data.frame manipulation
