@@ -288,6 +288,8 @@ filter_count <- function(df, ...){
 }
 
 
+distinct_all = function (x, ...) distinct(..., .keep_all=F)
+
 reload_dplyr <- function(){
     unloadNamespace('tidyr')
     unloadNamespace('dplyr')
@@ -439,6 +441,6 @@ assert <- function (expr, error) {
 }
 
 ### table rendering
-table_browser <- function(df, ...){
-    datatable(df, filter = "bottom", extensions = 'Buttons', options = list( dom = 'Bfrtip', buttons = c('copy', 'csv', 'excel')), ...)
+table_browser <- function(df, caption=deparse(substitute(df)), ...){
+    datatable(df, filter = "bottom", extensions = 'Buttons', options = list( dom = 'Bfrtip', buttons = c('copy', 'csv', 'excel')), caption=caption,...)
 }
