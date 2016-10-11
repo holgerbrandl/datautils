@@ -129,6 +129,9 @@ install_package("tibble")
 ## restore pre-tibble-v1.2 naming to creating data-frame in place
 frame_data = function(...) tibble::tribble(...)
 
+
+add_rownames = function(...) tibble::rownames_to_column(...)
+
 ########################################################################################################################
 #### data.frame manipulation
 
@@ -193,7 +196,7 @@ rify_names  <- function(df){
 
 pretty_columns  <- function(df){
     names(df) <- names(df) %>%
-        str_replace_all("[#=.()-]+", "_") %>%
+        str_replace_all("[#=.() -]+", "_") %>%
         str_replace("[_]+$", "") %>%
         str_replace("^[_]+", "") %>%
         tolower;

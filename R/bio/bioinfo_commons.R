@@ -70,3 +70,32 @@ write_bed <- function(bedData, file){
 
 ## reload to fix rename overloading
 #reload_dplyr()
+
+
+
+fetch_go_term = function(termId){
+    paste0("http://golr.geneontology.org/select?defType=edismax&qt=standard&indent=on&wt=csv&rows=100000&start=0&fl=source,bioentity_internal_id,bioentity_label,qualifier,annotation_class,reference,evidence_type,evidence_with,aspect,bioentity_name,synonym,type,taxon,date,assigned_by,annotation_extension_class,bioentity_isoform&facet=true&facet.mincount=1&facet.sort=count&json.nl=arrarr&facet.limit=25&csv.encapsulator=&csv.separator=%09&csv.header=false&csv.mv.separator=%7C&fq=document_category:%22annotation%22&fq=regulates_closure:%22",termId, "%22&facet.field=aspect&facet.field=taxon_subset_closure_label&facet.field=evidence_subset_closure_label&facet.field=regulates_closure_label&facet.field=annotation_class_label&facet.field=qualifier&facet.field=annotation_extension_class_closure_label&facet.field=assigned_by&facet.field=panther_family_label&q=*:*") %>% read_tsv(col_names=F) %>%
+    set_names("source", "bioentity_internal_id", "bioentity_label", "qualifier", "annotation_class", "reference", "evidence_type", "evidence_with", "aspect", "bioentity_name", "synonym", "type", "taxon", "date", "assigned_by", "annotation_extension_class", "bioentity_isoform") %>% filter_count(source=="UniProtKB") %>% rename(uniprot_id= bioentity_internal_id)
+}
+
+## example
+#ndc80 = fetch_go_term("GO:0031262")
+
+
+read_bm = function(query){
+    query %>% paste0("wget -O - 'http://www.ensembl.org/biomart/martservice?query=", . , "' 2>/dev/null") %>% pipe %>% read_tsv %>% pretty_columns
+}
+
+## example
+#ndc80Ens = read_bm('<?xml version="1.0" encoding="UTF-8"?>
+#<!DOCTYPE Query>
+#<Query  virtualSchemaName = "default" formatter = "TSV" header = "1" uniqueRows = "0" count = "" datasetConfigVersion = "0.6" >
+#<Dataset name = "hsapiens_gene_ensembl" interface = "default" >
+#<Filter name = "go_parent_term" value = "GO:0031262"/>
+#<Attribute name = "ensembl_gene_id" />
+#<Attribute name = "description" />
+#<Attribute name = "uniprot_genename" />
+#<Attribute name = "external_gene_name" />
+#</Dataset>
+#</Query>')
+

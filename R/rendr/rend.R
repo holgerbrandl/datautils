@@ -157,7 +157,7 @@ knitr::opts_knit$set(
 
 
 rmarkdown::render(input=tmpScript,output_file=paste0(reportName, ".html"),
-    output_format=rmarkdown::html_document(toc = opts$toc, toc_float = opts$toc, code_folding = if(opts$e) "hide" else "show", keep_md=keep_markdown_files),
+    output_format=rmarkdown::html_document(toc = opts$toc, toc_float = opts$toc, code_folding = if(opts$e) "hide" else "show", keep_md=keep_markdown_files, theme="united", number_sections=T),
     output_dir=getwd())
 
 #spin(tmpScript, knit=T)
