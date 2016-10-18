@@ -121,7 +121,8 @@ unlen <- function(x) length(unique(x))
 
 pp <- function(dat) page(dat, method = "print")
 
-as.df <- function(dt) as.data.frame(dt)
+as.df <- function(dt){ warning("DEPRECATED: use as_df instead of as.df"); as.data.frame(dt) }
+as_df <- function(dt) as.data.frame(dt)
 
 
 install_package("tibble")
@@ -142,8 +143,14 @@ first <- function(x, n=1) head(x,n)
 
 
 
-#vec2df <- function(namedVec) namedVec %>% {data.frame(name=names(.), value=., row.names=NULL)}
-vec2df <- function(namedVec) data.frame(name=names(namedVec), value=namedVec, row.names=NULL)
+vec2df <- function(namedVec){
+    warning("DEPRECATED use vec_as_df instead of vec2df")
+    namedVec %>% {data.frame(name=names(.), value=., row.names=NULL)}
+}
+
+vec_as_df <- function(namedVec, row_name="name", value_name="value"){
+    data_frame(name=names(namedVec), value=namedVec) %>% set_names(row_name, value_name)
+}
 
 
 rownames2column <- function(df, colname){
@@ -291,7 +298,8 @@ filter_count <- function(df, ...){
 }
 
 
-distinct_all = function (x, ...) distinct(..., .keep_all=F)
+distinct_all = function (x, ...) distinct(x, ..., .keep_all=T)
+
 
 reload_dplyr <- function(){
     unloadNamespace('tidyr')
