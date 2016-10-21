@@ -29,7 +29,7 @@ read_fasta <- function(fileName){
 
 write.fasta <- function(fileName){
     warning("Deprecated: use write_fasta instead!")
-    read_fasta(fileName)
+    write_fasta(fileName)
 }
 
 
