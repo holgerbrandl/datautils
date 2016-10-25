@@ -133,6 +133,19 @@ frame_data = function(...) tibble::tribble(...)
 
 add_rownames = function(...) tibble::rownames_to_column(...)
 
+
+## redefine dply::splat to allow for more streamlined rowwise df-processing
+## see https://groups.google.com/forum/?utm_source=digest&utm_medium=email#!topic/manipulatr/E6WOcHlRJcw
+#splat = function (flat) {
+#    function(args, ...) {
+#        do.call(flat, c(args, list(...)))
+#    }
+#}
+## for now simply import just splat from plyr namespace
+install_package("plyr")
+splat = plyr::splat
+
+
 ########################################################################################################################
 #### data.frame manipulation
 
@@ -197,13 +210,13 @@ set_names <- function(df, ...){
 
 rify_names  <- function(df){
     warning("DEPRECATED: use pretty_columns instead");
-    names(df) <- names(df) %>% str_replace_all(c(" "="_", "-"="_"));
+    names(df) <- names(df) %>% str_replace_all(c(" "="_", "-"="_", "/"="_"));
     df
 }
 
 pretty_columns  <- function(df){
     names(df) <- names(df) %>%
-        str_replace_all("[#=.() -]+", "_") %>%
+        str_replace_all("[#=.()/ -]+", "_") %>%
         str_replace("[_]+$", "") %>%
         str_replace("^[_]+", "") %>%
         tolower;
@@ -295,6 +308,12 @@ empty_as_na <- function(x){
 filter_count <- function(df, ...){
     print(count(df, ...))
     filter(df, ...)
+}
+
+# Example: publications %>% count(journal) %>% as("num_pubs")
+as = function(df, name){
+    names(df)[length(names(df))] = name
+    df
 }
 
 
