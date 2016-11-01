@@ -319,6 +319,10 @@ as = function(df, name){
 
 distinct_all = function (x, ...) distinct(x, ..., .keep_all=T)
 
+## fetch a column of a matrix in a magrittr pipe. Useful along with str_*
+get_col = function(data, col_index) data[, col_index] ## also could use magrittr::extract here
+
+
 
 reload_dplyr <- function(){
     unloadNamespace('tidyr')
