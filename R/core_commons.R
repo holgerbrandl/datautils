@@ -80,6 +80,7 @@ load_pack(tidyr, warn_conflicts=F)
 load_pack(stringr)
 load_pack(purrr)
 load_pack(readr)
+load_pack(forcats)
 load_pack(readxl) ## supress differring build number
 
 ## needed for caching
@@ -251,6 +252,10 @@ fac2char <- function(mydata, convert=names(mydata)[sapply(mydata, is.factor)]){
 
     return(newdata)
 }
+
+## convenience method to sort factor levels with decreasing frequencies
+fct_revfreq = function(x) fct_infreq(x) %>% fct_rev
+
 
 ## replace R within pipe change just use ... %>% do(replaceNA(0)) %>% ...
 replaceNA <- function(x, withValue) { x[is.na(x)] <- withValue; x }
