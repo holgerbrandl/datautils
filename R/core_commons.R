@@ -262,8 +262,27 @@ replaceNA <- function(x, withValue) { x[is.na(x)] <- withValue; x }
 
 
 
+
+## see http://stackoverflow.com/questions/17288222/r-find-value-in-multiple-data-frame-columns/40586572#40586572
+## case-insenstive search all columns of a data-frame with a fixed search term
+search_df = function(df, search_term){
+    apply(df, 1, function(r){
+        any(str_detect(as.character(r), fixed(search_term, ignore_case=T)))
+    }) %>% subset(df, .)
+}
+
+
+## filter a data-frame for those rows where at least one column is matching the given expression (that must evaluate to a boolean vector for each row).
+match_df = function(df, search_expr){
+    filter_fun = eval(substitute(function(x){search_expr}))
+
+    apply(df, 1, function(r) any(filter_fun(r))) %>% subset(df, .)
+}
+
+
 ## todo still needed since there's if_else in dplyr now
 safe_ifelse <- function(cond, yes, no) {
+    warning("DEPRECATED Use dplyr::if_else instead")
 
 #browser()
     isfacOrChar <- function(x) class(x)  %in% c("factor", "character")
