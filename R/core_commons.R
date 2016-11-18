@@ -74,11 +74,11 @@ check_version = function(pkg_name, min_version) {
 #load_pack(reshape2, quietly=T, warn_conflicts=F)
 
 ## load on purpose after plyr
+load_pack(purrr)
 load_pack(dplyr, warn_conflicts=F)
 load_pack(magrittr, warn_conflicts=F)
 load_pack(tidyr, warn_conflicts=F)
 load_pack(stringr)
-load_pack(purrr)
 load_pack(readr)
 load_pack(forcats)
 load_pack(readxl) ## supress differring build number
