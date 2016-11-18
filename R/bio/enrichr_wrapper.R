@@ -4,7 +4,7 @@
 
 
 
-enrichr = function(geneSymbols, listName, ontologies=c("GO_Biological_Process_2015", "ENCODE_TF_ChIP", "ENCODE_Histone_Modifications_2015"), suppress_logs=T, keep_genes=F){
+enrichr = function(geneSymbols, listName, ontologies=c("GO_Biological_Process_2015", "ENCODE_TF_ChIP", "ENCODE_Histone_Modifications_2015"), suppress_logs=T, keep_genes=F, padj_cutoff=0.05){
     if(system("which query_enrichr_py3.py", ignore.stdout=T) == 1){
         stop("query_enrichr_py3 is not in PATH")
     }
@@ -37,7 +37,7 @@ enrichr = function(geneSymbols, listName, ontologies=c("GO_Biological_Process_20
 
     if(!keep_genes) enrReusults %<>% dplyr::select(-genes)
 
-    enrReusults
+    enrReusults %>% filter(adj_p_value<padj_cutoff)
 }
 
 #enrichr_cached = function(...){ quote(enrichr(...)) %>% cache_it() }
