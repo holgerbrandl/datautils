@@ -105,7 +105,6 @@ load_pack(DT)
 
 
 
-
 ########################################################################################################################
 #### Convenience aliases
 
@@ -336,6 +335,12 @@ filter_count <- function(df, ...){
 
 # Example: publications %>% count(journal) %>% as("num_pubs")
 as = function(df, name){
+    warning("DEPRECATED use 'as_var' instead of 'as'")
+    names(df)[length(names(df))] = name
+    df
+}
+
+as_var = function(df, name){
     names(df)[length(names(df))] = name
     df
 }
