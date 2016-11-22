@@ -340,7 +340,7 @@ as = function(df, name){
     df
 }
 
-as_var = function(df, name){
+n_as = function(df, name){
     names(df)[length(names(df))] = name
     df
 }
