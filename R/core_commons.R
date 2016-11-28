@@ -352,6 +352,10 @@ distinct_all = function (x, ...) distinct(x, ..., .keep_all=T)
 get_col = function(data, col_index) data[, col_index] ## also could use magrittr::extract here
 
 
+## convience method to extract a column, defaults to _ as separator and the first column
+extract_col = function(x, col_index=1, sep="_", num_cols=10){ str_split_fixed(x, sep, num_cols)[,col_index] }
+
+
 
 reload_dplyr <- function(){
     unloadNamespace('tidyr')
