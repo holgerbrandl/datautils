@@ -1,6 +1,5 @@
 #require_auto(ggplot2)
 #require_auto(scales)
-#require_auto(grid)
 
 
 scale_fill_redgreed <- function() scale_fill_manual(values = c("red","darkgreen"))
@@ -49,7 +48,8 @@ multiplot <- function(..., plotlist=NULL, file, cols=1, layout=NULL) {
 
   } else {
     # Set up the page
-    grid.newpage()
+
+    grid::grid.newpage()
     pushViewport(viewport(layout = grid.layout(nrow(layout), ncol(layout))))
 
     # Make each plot, in the correct location
