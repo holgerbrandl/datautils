@@ -54,3 +54,13 @@ export -f rendr_md
 
 #rendr_md /Users/brandl/Dropbox/documents/regression/regression_basics.md
 #sed 's/```r/```{r}'  /Users/brandl/Dropbox/documents/regression/regression_basics.md
+
+
+just_spin(){
+
+echo '
+require(knitr)
+spin(commandArgs(T)[1], knit=F)
+' | Rscript - $1
+
+}
