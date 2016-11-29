@@ -345,6 +345,16 @@ n_as = function(df, name){
     df
 }
 
+#count_occ = function(df, ...) count(df, ...) %>% n_as("num_occ")
+
+dcount= function(df, ...) count(df, ...) %>% n_as("num_occ") %>% count(num_occ)
+
+count_as= function(df, n_name, ...) count(df, ...) %>% n_as(n_name)
+#iris %>% count_as("num_occ", Species)
+#iris %>% dcross_tab(Species)
+
+
+
 
 distinct_all = function (x, ...) distinct(x, ..., .keep_all=T)
 
