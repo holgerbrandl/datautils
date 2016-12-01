@@ -46,6 +46,7 @@ guess_anno_db <- function(ensIds){
 
 #load_pack(ReactomePA)
 
+
 ## clusterProfiler convenience wrapper for ensembl ids
 find_enr_terms = function(ensemblIds, ...){
     #browser()
@@ -54,6 +55,11 @@ find_enr_terms = function(ensemblIds, ...){
         with(cp_test(ENTREZID, annoDb=annoDb, cp_species=guess_cp_species(ensemblIds), ...))
 }
 
+
+## does not work because of dots
+#find_enr_terms_cached = function(ensemblIds, ...){
+#    quote({find_enr_terms(ensemblIds, ...)}) %>% cache_it(paste0("cp_id_cache", digest(ensemblIds)))
+#}
 
 
 cp_test = function(geneIds, annoDb, cp_species, q_cutoff=0.05){
@@ -94,6 +100,10 @@ cp_test = function(geneIds, annoDb, cp_species, q_cutoff=0.05){
 ## example usage
 if(F){
 
+devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v1.33/R/core_commons.R")
+devtools::source_url("https://dl.dropboxusercontent.com/u/113630701/datautils/R/bio/cp_utils.R")
+
+
 someGenes = c("ENSMUSG00000002014", "ENSMUSG00000002015", "ENSMUSG00000008892",
 "ENSMUSG00000015733", "ENSMUSG00000020720", "ENSMUSG00000020869",
 "ENSMUSG00000022884", "ENSMUSG00000026202", "ENSMUSG00000026276",
@@ -102,6 +112,7 @@ someGenes = c("ENSMUSG00000002014", "ENSMUSG00000002015", "ENSMUSG00000008892",
 "ENSMUSG00000038991")
 
 ## using ensembl conveience wrapper
+#enrResults = find_enr_terms_cached(someGenes)
 enrResults = find_enr_terms(someGenes)
 
 ## or the old-style way:
