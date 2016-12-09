@@ -4,7 +4,10 @@
 
 
 
-enrichr = function(geneSymbols, listName, ontologies=c("GO_Biological_Process_2015", "ENCODE_TF_ChIP", "ENCODE_Histone_Modifications_2015"), suppress_logs=T, keep_genes=F, padj_cutoff=0.05){
+enrichr = function(geneSymbols, listName=NULL, ontologies=c("GO_Biological_Process_2015", "ENCODE_TF_ChIP", "ENCODE_Histone_Modifications_2015"), suppress_logs=T, keep_genes=F, padj_cutoff=0.05){
+    ## todo remove listName from API
+    listHash=digest(geneSymbols)
+
     if(system("which query_enrichr_py3.py", ignore.stdout=T) == 1){
         stop("query_enrichr_py3 is not in PATH")
     }
@@ -23,12 +26,15 @@ enrichr = function(geneSymbols, listName, ontologies=c("GO_Biological_Process_20
         # enrichr-api/query_enrichr_py3.py ${geneList} "wgcna module ${geneList}" ENCODE_Histone_Modifications_2015 ${geneList}.encode_hist_meth_2015.enrresults.txt
         resultsFile = tempfile(fileext=".txt")
 
-        system(paste0("query_enrichr_py3.py ", listFile, " '",listName,"' ", ontology, " ", trim_ext(resultsFile, ".txt")), ignore.stderr=T, ignore.stdout=suppress_logs)
+        system(paste0("query_enrichr_py3.py ", listFile, " '",listHash,"' ", ontology, " ", trim_ext(resultsFile, ".txt")), ignore.stderr=T, ignore.stdout=suppress_logs)
 
         if(file.exists(resultsFile)){
             read_tsv(resultsFile) %>%
                 set_names("term", "overlap", "p_value", "adj_p_value", "z_score", "combined_score", "genes") %>%
-                mutate(list_name=listName, ontology=ontology)
+                mutate(
+#                    list_name=listName,
+                    ontology=ontology
+                )
         }else{
             data_frame()
         }
