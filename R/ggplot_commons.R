@@ -128,8 +128,13 @@ makePcaPlot = function(matrixData, group = NA, items=rownames(matrixData), title
 
 #  ggplot(pc12, aes(PCA1, PCA2, colour = group)) + geom_point(size = 6, alpha = 3/4)
   pcaPlot = ggplot(pc12, aes(PCA1, PCA2, color=group, label=items)) +
-    geom_point(alpha = 3/4)   +
-    geom_text(hjust = 0, alpha = 3/4, nudge_x = 1)    +
+    geom_point(alpha = .4)   +
+#    geom_text(hjust = "inward", alpha = 3/4)    +
+    geom_text(alpha = 3/4, vjust=1.5)    +
+    ## make labels to be rendered within canvas bounds --> "inward" is better
+    ## https://stackoverflow.com/questions/17241182/how-to-make-geom-text-plot-within-the-canvass-bounds#
+    scale_x_continuous(expand = c(.2, .2)) +
+
     xlab(paste("PCA1 (", percent[2], "%)", sep = "")) +
     ylab(paste("PCA2 (", percent[2], "%)", sep = ""))
 
