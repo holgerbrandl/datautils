@@ -214,9 +214,10 @@ rify_names  <- function(df){
     df
 }
 
-pretty_columns  <- function(df){
+pretty_columns = function(df){
     names(df) <- names(df) %>%
-        str_replace_all("[#=.()/ -]+", "_") %>%
+        str_replace_all("[#=.,()/*: -]+", "_") %>%
+        str_replace(fixed("["), "") %>% str_replace(fixed("]"), "") %>%
         str_replace("[_]+$", "") %>%
         str_replace("^[_]+", "") %>%
         tolower;
