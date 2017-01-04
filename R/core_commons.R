@@ -220,6 +220,8 @@ pretty_columns = function(df){
         str_replace(fixed("["), "") %>% str_replace(fixed("]"), "") %>%
         str_replace("[_]+$", "") %>%
         str_replace("^[_]+", "") %>%
+        ## remove unicode characters
+        iconv(to='ASCII', sub='') %>%  ## http://stackoverflow.com/questions/24807147/removing-unicode-symbols-from-column-names
         tolower;
     df
 }
@@ -522,3 +524,10 @@ assert <- function (expr, error) {
 table_browser <- function(df, caption=deparse(substitute(df)), ...){
     datatable(df, filter = "bottom", extensions = 'Buttons', options = list( dom = 'Bfrtip', buttons = c('copy', 'csv', 'excel')), caption=caption,...)
 }
+
+#prj_name = "env_data_prep"
+prj_file = function(filename) {
+    ## prefix a name with a project-prefix. Requires that prj_name to be defined
+    file.path(dirname(filename), paste0(prj_name, ".", basename(filename)))
+}
+

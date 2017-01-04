@@ -111,6 +111,9 @@ ggsave2 <- function(gplot=last_plot(), width=8, height=6, prefix="", saveData=FA
     return(fileName)
 }
 
+## toggle active output device (see ggplot_devel.R for auto-toggeling plot)
+toggle_plot_window = function() dev.set(dev.next())
+
 
 ########################################################################################################################
 ### pca plots (http://largedata.blogspot.de/2011/07/plotting-pca-results-in-ggplot2.html)
