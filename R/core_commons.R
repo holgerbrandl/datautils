@@ -55,7 +55,7 @@ load_pack <-  function(x, warn_conflicts=T){
    install_package(x)
 
     ## load it using a library function so that load_pack errors if package is still not ins
-    eval(parse(text=paste("library(", x, ",  quietly=T, warn.conflicts=", warn_conflicts, ")", sep="")))
+    eval(parse(text=paste("base::library(", x, ",  quietly=T, warn.conflicts=", warn_conflicts, ")", sep="")))
 }
 
 

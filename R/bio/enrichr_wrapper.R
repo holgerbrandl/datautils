@@ -23,6 +23,7 @@ enrichr = function(geneSymbols, listName=NULL, ontologies=c("GO_Biological_Proce
 
 #    quote({
     enrReusults = ontologies %>% map_df(function(ontology){
+        # ontology = "ENCODE_TF_ChIP"
         # enrichr-api/query_enrichr_py3.py ${geneList} "wgcna module ${geneList}" ENCODE_Histone_Modifications_2015 ${geneList}.encode_hist_meth_2015.enrresults.txt
         resultsFile = tempfile(fileext=".txt")
 
