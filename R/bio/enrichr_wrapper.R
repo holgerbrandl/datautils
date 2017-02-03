@@ -4,7 +4,7 @@
 
 
 
-enrichr = function(geneSymbols, listName=NULL, ontologies=c("GO_Biological_Process_2015", "ENCODE_TF_ChIP", "ENCODE_Histone_Modifications_2015"), suppress_logs=T, keep_genes=F, padj_cutoff=0.05){
+enrichr = function(geneSymbols, listName=NULL, ontologies=c("GO_Biological_Process_2015", "ENCODE_TF_ChIP-seq_2015", "ENCODE_Histone_Modifications_2015"), suppress_logs=T, keep_genes=F, padj_cutoff=0.05){
     ## todo remove listName from API
     listHash=digest(geneSymbols)
 
@@ -23,7 +23,7 @@ enrichr = function(geneSymbols, listName=NULL, ontologies=c("GO_Biological_Proce
 
 #    quote({
     enrReusults = ontologies %>% map_df(function(ontology){
-        # ontology = "ENCODE_TF_ChIP"
+        # ontology = "ENCODE_TF_ChIP-seq_2015"
         # enrichr-api/query_enrichr_py3.py ${geneList} "wgcna module ${geneList}" ENCODE_Histone_Modifications_2015 ${geneList}.encode_hist_meth_2015.enrresults.txt
         resultsFile = tempfile(fileext=".txt")
 
@@ -31,7 +31,7 @@ enrichr = function(geneSymbols, listName=NULL, ontologies=c("GO_Biological_Proce
 
         if(file.exists(resultsFile)){
             read_tsv(resultsFile) %>%
-                set_names("term", "overlap", "p_value", "adj_p_value", "z_score", "combined_score", "genes") %>%
+                set_names("term", "overlap", "p_value", "adj_p_value", "old_p_value", "old_adj_p_value", "z_score", "combined_score", "genes") %>%
                 mutate(
 #                    list_name=listName,
                     ontology=ontology
