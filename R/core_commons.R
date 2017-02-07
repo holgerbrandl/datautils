@@ -196,6 +196,7 @@ push_left <- function(df, pushColNames){
 
 
 #http://astrostatistics.psu.edu/datasets/R/html/base/html/formals.html
+## todo does this clash with purrr::set_names
 set_names <- function(df, ...){
     #browser()
     newnames <- as.character(unlist(list(...)))
@@ -362,6 +363,12 @@ count_as= function(df, n_name, ...) count(df, ...) %>% n_as(n_name)
 
 
 distinct_all = function (x, ...) distinct(x, ..., .keep_all=T)
+
+#' Return <code>true</code> if the data.frame is distinct with respect to the provided unqoted variabled names/expressions
+is_distinct = function(x, ...){
+    distinct(x) %>% nrow == nrow(x)
+}
+
 
 ## fetch a column of a matrix in a magrittr pipe. Useful along with str_*
 get_col = function(data, col_index) data[, col_index] ## also could use magrittr::extract here
