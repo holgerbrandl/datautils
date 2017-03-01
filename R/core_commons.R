@@ -184,12 +184,14 @@ column2rownames<- function(df, colname){
     return(df)
 }
 
-## pushing some columns to the right end of a data.frame
+## pushing some columns to the end of a data.frame
+## TBD how to make this possible without quoting column names?
 push_right <- function(df, pushColNames){
     df[,c(setdiff(names(df),pushColNames), pushColNames)]
 }
 
 
+## pushing some columns to the beginning of a data.frame
 push_left <- function(df, pushColNames){
     df[,c(pushColNames, setdiff(names(df),pushColNames))]
 }
