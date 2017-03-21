@@ -105,7 +105,7 @@ ggsave2 <- function(gplot=last_plot(), width=8, height=6, prefix="", saveData=FA
     ggsave(fileName, width=width, height=height, ...)
 
     if(saveData){
-        write.delim(gplot$data, file= paste0(fileBaseName, ".txt"))
+        write_tsv(gplot$data, path=paste0(fileBaseName, ".txt"))
     }
 
     return(fileName)
@@ -119,31 +119,32 @@ toggle_plot_window = function() dev.set(dev.next())
 ### pca plots (http://largedata.blogspot.de/2011/07/plotting-pca-results-in-ggplot2.html)
 
 makePcaPlot = function(matrixData, group = NA, items=rownames(matrixData), title = NA) {
-  load_pack(ggplot2)
-  load_pack(RColorBrewer)
+    load_pack(ggplot2)
+    load_pack(RColorBrewer)
 
-  mydata.pca = prcomp(matrixData, retx=TRUE, center=TRUE, scale.=TRUE)
+    mydata.pca = prcomp(matrixData, retx = TRUE, center = TRUE, scale. = TRUE)
 
-  percent <- round((((mydata.pca$sdev)^2 / sum(mydata.pca$sdev^2))*100)[1:2])
+    percent <- round((((mydata.pca$sdev) ^ 2 / sum(mydata.pca$sdev ^ 2)) * 100)[1 : 2])
 
-  scores <- mydata.pca$x
-  pc12 <- data.frame(PCA1=scores[,1], PCA2=scores[,2], group=group)
+    scores <- mydata.pca$x
+    pc12 <- data.frame(PCA1 = scores[, 1], PCA2 = scores[, 2], group = group)
 
-#  ggplot(pc12, aes(PCA1, PCA2, colour = group)) + geom_point(size = 6, alpha = 3/4)
-  pcaPlot = ggplot(pc12, aes(PCA1, PCA2, color=group, label=items)) +
-    geom_point(alpha = .4)   +
-#    geom_text(hjust = "inward", alpha = 3/4)    +
-    geom_text(alpha = 3/4, vjust=1.5)    +
+    #  ggplot(pc12, aes(PCA1, PCA2, colour = group)) + geom_point(size = 6, alpha = 3/4)
+    pcaPlot = ggplot(pc12, aes(PCA1, PCA2, color = group)) + geom_point(alpha = .4)
+    #    geom_text(hjust = "inward", alpha = 3/4)    +
+
+    if (!is.null(items)) {
+        pcaPlot = pcaPlot + geom_text(aes(label = items), alpha = 3 / 4, vjust = 1.5)
+    }
+
     ## make labels to be rendered within canvas bounds --> "inward" is better
     ## https://stackoverflow.com/questions/17241182/how-to-make-geom-text-plot-within-the-canvass-bounds#
-    scale_x_continuous(expand = c(.2, .2)) +
+    pcaPlot = pcaPlot + scale_x_continuous(expand = c(.2, .2)) +
+        xlab(paste("PCA1 (", percent[2], "%)", sep = "")) +
+        ylab(paste("PCA2 (", percent[2], "%)", sep = ""))
 
-    xlab(paste("PCA1 (", percent[2], "%)", sep = "")) +
-    ylab(paste("PCA2 (", percent[2], "%)", sep = ""))
 
-
-    if(!is.na(title))
-        pcaPlot = pcaPlot + ggtitle(title)
+    if (! is.na(title)) pcaPlot = pcaPlot + ggtitle(title)
 
     pcaPlot
 }
@@ -152,6 +153,7 @@ makePcaPlot = function(matrixData, group = NA, items=rownames(matrixData), title
 ## example
 # makePcaPlot(getData(30,4,2,distort = 0.7))
 
+## todo learn from http://rpubs.com/sinhrks/plot_pca
 
 ########################################################################################################################
 ### ggpairs
