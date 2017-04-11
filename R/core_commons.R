@@ -133,7 +133,7 @@ install_package("tibble")
 frame_data = function(...) tibble::tribble(...)
 
 
-add_rownames = function(...) tibble::rownames_to_column(...)
+add_rownames = function(...){ warning("DEPRECATED: Use tibble::rownames_to_column directly"); tibble::rownames_to_column(...) }
 
 
 ## redefine dply::splat to allow for more streamlined rowwise df-processing
@@ -198,17 +198,20 @@ push_left <- function(df, pushColNames){
 
 
 #http://astrostatistics.psu.edu/datasets/R/html/base/html/formals.html
-## todo does this clash with purrr::set_names
-set_names <- function(df, ...){
-    #browser()
-    newnames <- as.character(unlist(list(...)))
-
-    ## automatically convert matrices to data.frames (otherwise the names set would fail
-    if(is.matrix(df)) df %<>% as.data.frame()
-
-    names(df) <- newnames;
-    return(df)
-}
+## disabled because purrr::set_names does the same and even has the same name
+# set_names <- function(df, ...){
+#     #browser()
+#     newnames <- as.character(unlist(list(...)))
+#
+#     ## automatically convert matrices to data.frames (otherwise the names set would fail
+#     if(is.matrix(df)) df %<>% as.data.frame()
+#
+#     names(df) <- newnames;
+#     return(df)
+# }
+# iris %>% purrr::set_names(paste(names(iris), "__")) %>% glimpse
+# iris %>% set_names(paste(names(iris), "__")) %>% glimpse
+#
 #iris %>% set_names(c("setosa", "hallo")) %>% head
 #iris %>% set_names("setosa", "hallo") %>% head
 
@@ -222,12 +225,17 @@ rify_names  <- function(df){
 pretty_columns = function(df){
     names(df) <- names(df) %>%
         str_replace_all("[#=.,()/*: -]+", "_") %>%
-        str_replace(fixed("["), "") %>% str_replace(fixed("]"), "") %>%
+        str_replace(fixed("["), "") %>%
+        str_replace(fixed("]"), "") %>%
+        ## remove leading and tailing underscores
         str_replace("[_]+$", "") %>%
         str_replace("^[_]+", "") %>%
         ## remove unicode characters
-        iconv(to='ASCII', sub='') %>%  ## http://stackoverflow.com/questions/24807147/removing-unicode-symbols-from-column-names
-        tolower;
+        iconv(to = 'ASCII', sub = '') %>% ## http://stackoverflow.com/questions/24807147/removing-unicode-symbols-from-column-names
+        tolower %>%
+        ## make duplicates unqiue
+        make.unique(sep = "_")
+
     df
 }
 
