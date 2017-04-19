@@ -11,10 +11,10 @@ rm(r)
 
 
 ## user browser for help
-options(help_type="html")
+options(help_type = "html")
 
 ## plot more characters per line
-options(width=150)
+options(width = 150)
 
 ## adjust dplyr printing settings
 ## http://stackoverflow.com/questions/22471256/overriding-variables-not-shown-in-dplyr-to-display-all-columns-from-df
@@ -33,35 +33,35 @@ options(gsubfn.engine = "R")
 
 ## externalized installer to also allow for installation without loading
 install_package <- function(x){
-    if(!isTRUE(x %in% .packages(all.available=TRUE)) && any(available.packages()[,1]==x)) {
+    if (! isTRUE(x %in% .packages(all.available = TRUE)) && any(available.packages()[, 1] == x)) {
         # update.packages(ask=F) # update dependencies, if any.
-        eval(parse(text=paste("install.packages('", x, "')", sep="")))
+        eval(parse(text = paste("install.packages('", x, "')", sep = "")))
     }
 
     ## if it's still missing check if it's on bioconductor
-    if(!isTRUE(x %in% .packages(all.available=TRUE))) {
+    if (! isTRUE(x %in% .packages(all.available = TRUE))) {
         bcPackages <- as.vector(read.dcf(url("https://bioconductor.org/packages/3.3/bioc/src/contrib/PACKAGES"), "Package"))
 
-        if(any(bcPackages==x)){
+        if (any(bcPackages == x)) {
             source("http://bioconductor.org/biocLite.R")
-            eval(parse(text=paste("biocLite('", x, "', ask=FALSE)", sep="")))
+            eval(parse(text = paste("biocLite('", x, "', ask=FALSE)", sep = "")))
         }
     }
 }
 
-load_pack <-  function(x, warn_conflicts=T){
+load_pack <- function(x, warn_conflicts=T){
     x <- as.character(substitute(x));
 
-   install_package(x)
+    install_package(x)
 
     ## load it using a library function so that load_pack errors if package is still not ins
-    eval(parse(text=paste("base::library(", x, ",  quietly=T, warn.conflicts=", warn_conflicts, ")", sep="")))
+    eval(parse(text = paste("base::library(", x, ",  quietly=T, warn.conflicts=", warn_conflicts, ")", sep = "")))
 }
 
 
 check_version = function(pkg_name, min_version) {
     cur_version = packageVersion(pkg_name)
-    if(cur_version < min_version) stop(sprintf("Package %s needs a newer version,
+    if (cur_version < min_version) stop(sprintf("Package %s needs a newer version,
                found %s, need at least %s", pkg_name, cur_version, min_version))
 }
 #check_version("dplyr", "0.4-1")
@@ -75,9 +75,9 @@ check_version = function(pkg_name, min_version) {
 
 ## load on purpose after plyr
 load_pack(purrr)
-load_pack(dplyr, warn_conflicts=F)
-load_pack(magrittr, warn_conflicts=F)
-load_pack(tidyr, warn_conflicts=F)
+load_pack(dplyr, warn_conflicts = F)
+load_pack(magrittr, warn_conflicts = F)
+load_pack(tidyr, warn_conflicts = F)
 load_pack(stringr)
 load_pack(readr)
 load_pack(forcats)
@@ -93,7 +93,7 @@ load_pack(digest)
 
 ## common plotting requirements since they are omnipresent
 load_pack(ggplot2)
-load_pack(scales, warn_conflicts=F)
+load_pack(scales, warn_conflicts = F)
 load_pack(grid)
 
 ## for table exploration without using Rstudio
@@ -109,7 +109,7 @@ load_pack(DT)
 #### Convenience aliases
 
 
-echo <- function(...) cat(paste(...), fill=T)
+echo <- function(...) cat(paste(...), fill = T)
 
 ac <- function(...) as.character(...)
 
@@ -123,7 +123,7 @@ pp <- function(dat) page(dat, method = "print")
 
 # TODO .Deprecated and .Defunct (see http://ropensci.org/blog/technotes/2017/01/05/package-evolution)
 
-as.df <- function(dt){ warning("DEPRECATED: use as_df instead of as.df"); as.data.frame(dt) }
+as.df <- function(dt){ warning("DEPRECATED: use as_df instead of as.df"); as.data.frame(dt)}
 as_df <- function(dt) as.data.frame(dt)
 
 
@@ -133,7 +133,7 @@ install_package("tibble")
 frame_data = function(...) tibble::tribble(...)
 
 
-add_rownames = function(...){ warning("DEPRECATED: Use tibble::rownames_to_column directly"); tibble::rownames_to_column(...) }
+add_rownames = function(...){ warning("DEPRECATED: Use tibble::rownames_to_column directly"); tibble::rownames_to_column(...)}
 
 
 ## redefine dply::splat to allow for more streamlined rowwise df-processing
@@ -154,32 +154,32 @@ splat = plyr::splat
 
 shuffle <- function(df) df[sample(nrow(df)),]
 
-first <- function(x, n=1) head(x,n)
+first <- function(x, n=1) head(x, n)
 
 
 
 vec2df <- function(namedVec){
     warning("DEPRECATED use vec_as_df instead of vec2df")
-    namedVec %>% {data.frame(name=names(.), value=., row.names=NULL)}
+    namedVec %>% {data.frame(name = names(.), value = ., row.names = NULL)}
 }
 
 vec_as_df <- function(namedVec, row_name="name", value_name="value"){
-    data_frame(name=names(namedVec), value=namedVec) %>% set_names(row_name, value_name)
+    data_frame(name = names(namedVec), value = namedVec) %>% set_names(row_name, value_name)
 }
 
 
 rownames2column <- function(df, colname){
     warning("DEPRECATED Use dplyr::add_rownames directly")
-    add_rownames(df, var=colname)
+    add_rownames(df, var = colname)
 }
 
 
-column2rownames<- function(df, colname){
+column2rownames <- function(df, colname){
     #browser()
     ## force into df to avoid dplyr problems
     df <- as_df(df)
 
-    rownames(df) <- ac(df[,colname])
+    rownames(df) <- ac(df[, colname])
     df[colname] <- NULL
     return(df)
 }
@@ -187,13 +187,13 @@ column2rownames<- function(df, colname){
 ## pushing some columns to the end of a data.frame
 ## TBD how to make this possible without quoting column names?
 push_right <- function(df, pushColNames){
-    df[,c(setdiff(names(df),pushColNames), pushColNames)]
+    df[, c(setdiff(names(df), pushColNames), pushColNames)]
 }
 
 
 ## pushing some columns to the beginning of a data.frame
 push_left <- function(df, pushColNames){
-    df[,c(pushColNames, setdiff(names(df),pushColNames))]
+    df[, c(pushColNames, setdiff(names(df), pushColNames))]
 }
 
 
@@ -216,9 +216,9 @@ push_left <- function(df, pushColNames){
 #iris %>% set_names("setosa", "hallo") %>% head
 
 
-rify_names  <- function(df){
+rify_names <- function(df){
     warning("DEPRECATED: use pretty_columns instead");
-    names(df) <- names(df) %>% str_replace_all(c(" "="_", "-"="_", "/"="_"));
+    names(df) <- names(df) %>% str_replace_all(c(" " = "_", "-" = "_", "/" = "_"));
     df
 }
 
@@ -227,13 +227,13 @@ pretty_columns = function(df){
         str_replace_all("[#=.,()/*: -]+", "_") %>%
         str_replace(fixed("["), "") %>%
         str_replace(fixed("]"), "") %>%
-        ## remove leading and tailing underscores
+    ## remove leading and tailing underscores
         str_replace("[_]+$", "") %>%
         str_replace("^[_]+", "") %>%
-        ## remove unicode characters
+    ## remove unicode characters
         iconv(to = 'ASCII', sub = '') %>% ## http://stackoverflow.com/questions/24807147/removing-unicode-symbols-from-column-names
         tolower %>%
-        ## make duplicates unqiue
+    ## make duplicates unqiue
         make.unique(sep = "_")
 
     df
@@ -242,7 +242,9 @@ pretty_columns = function(df){
 # http://stackoverflow.com/questions/23188900/view-entire-dataframe-when-wrapped-in-tbl-df
 print_all <- function(df) df %>% tbl_df %>% print(n = nrow(.))
 
-head_html <- function(df, n=5) head(df, n) %>% knitr::kable(format="html") %>% print()
+head_html <- function(df, n=5) head(df, n) %>%
+    knitr::kable(format = "html") %>%
+    print()
 
 print_head <- function(df, desc=NULL){
     print(head(df))
@@ -252,18 +254,18 @@ print_head <- function(df, desc=NULL){
 
 
 fac2char <- function(mydata, convert=names(mydata)[sapply(mydata, is.factor)]){
-    if(length(convert)==0){
+    if (length(convert) == 0) {
         return(mydata)
     }
 
     inputColOrder <- names(mydata)
 
-    convertData <- subset(mydata, select= names(mydata)%in%convert)
+    convertData <- subset(mydata, select = names(mydata) %in% convert)
     convertData <- as.data.frame(lapply(convertData, as.character), stringsAsFactors = FALSE)
 
-    keepData <-  subset(mydata, select=!(names(mydata)%in%convert))
+    keepData <- subset(mydata, select = ! (names(mydata) %in% convert))
     newdata <- cbind(convertData, keepData)
-    newdata <- newdata[,inputColOrder]
+    newdata <- newdata[, inputColOrder]
 
     return(newdata)
 }
@@ -273,7 +275,7 @@ fct_revfreq = function(x) fct_infreq(x) %>% fct_rev
 
 
 ## replace R within pipe change just use ... %>% do(replaceNA(0)) %>% ...
-replaceNA <- function(x, withValue) { x[is.na(x)] <- withValue; x }
+replaceNA <- function(x, withValue) { x[is.na(x)] <- withValue; x}
 
 
 
@@ -282,7 +284,7 @@ replaceNA <- function(x, withValue) { x[is.na(x)] <- withValue; x }
 ## case-insenstive search all columns of a data-frame with a fixed search term
 search_df = function(df, search_term){
     apply(df, 1, function(r){
-        any(str_detect(as.character(r), fixed(search_term, ignore_case=T)))
+        any(str_detect(as.character(r), fixed(search_term, ignore_case = T)))
     }) %>% subset(df, .)
 }
 
@@ -299,15 +301,15 @@ match_df = function(df, search_expr){
 safe_ifelse <- function(cond, yes, no) {
     warning("DEPRECATED Use dplyr::if_else instead")
 
-#browser()
-    isfacOrChar <- function(x) class(x)  %in% c("factor", "character")
+    #browser()
+    isfacOrChar <- function(x) class(x) %in% c("factor", "character")
 
     if (isfacOrChar(yes) | isfacOrChar(no)) {
         yes <- ac(yes)
         no <- ac(no)
     }
 
-    ifelse(cond,yes,no)
+    ifelse(cond, yes, no)
 }
 
 
@@ -315,8 +317,8 @@ safe_ifelse <- function(cond, yes, no) {
 #empty_as_na <- function(x) safe_ifelse(x=="", NA, x)
 #empty_as_na <- function(x) ifelse(class(x)  %in% c("factor", "character") & x=="", NA, x)
 empty_as_na <- function(x){
-    if("factor" %in% class(x)) x <- as.character(x) ## since ifelse wont work with factors
-    ifelse(as.character(x)!="", x, NA)
+    if ("factor" %in% class(x))x <- as.character(x) ## since ifelse wont work with factors
+    ifelse(as.character(x) != "", x, NA)
 }
 
 #if(F){ ## DEBUG of empty_as_na
@@ -363,16 +365,18 @@ n_as = function(df, name){
 
 #count_occ = function(df, ...) count(df, ...) %>% n_as("num_occ")
 
-dcount= function(df, ...) count(df, ...) %>% n_as("num_occ") %>% count(num_occ)
+dcount = function(df, ...) count(df, ...) %>%
+    n_as("num_occ") %>%
+    count(num_occ)
 
-count_as= function(df, n_name, ...) count(df, ...) %>% n_as(n_name)
+count_as = function(df, n_name, ...) count(df, ...) %>% n_as(n_name)
 #iris %>% count_as("num_occ", Species)
 #iris %>% dcross_tab(Species)
 
 
 
 
-distinct_all = function (x, ...) distinct(x, ..., .keep_all=T)
+distinct_all = function (x, ...) distinct(x, ..., .keep_all = T)
 
 #' Return <code>true</code> if the data.frame is distinct with respect to the provided unqoted variabled names/expressions
 is_distinct = function(x, ...){
@@ -385,7 +389,7 @@ get_col = function(data, col_index) data[, col_index] ## also could use magrittr
 
 
 ## convience method to extract a column, defaults to _ as separator and the first column
-extract_col = function(x, col_index=1, sep="_", num_cols=10){ str_split_fixed(x, sep, num_cols)[,col_index] }
+extract_col = function(x, col_index=1, sep="_", num_cols=10){ str_split_fixed(x, sep, num_cols)[, col_index]}
 
 
 
@@ -398,10 +402,10 @@ reload_dplyr <- function(){
 
 ## from http://stackoverflow.com/questions/7505547/detach-all-packages-while-working-in-r
 unload_packages <- function() {
-    basic.packages <- c("package:stats","package:graphics","package:grDevices","package:utils","package:datasets","package:methods","package:base")
-    package.list <- search()[ifelse(unlist(gregexpr("package:",search()))==1,TRUE,FALSE)]
-    package.list <- setdiff(package.list,basic.packages)
-    if (length(package.list)>0)  for (package in package.list) detach(package, character.only=TRUE)
+    basic.packages <- c("package:stats", "package:graphics", "package:grDevices", "package:utils", "package:datasets", "package:methods", "package:base")
+    package.list <- search()[ifelse(unlist(gregexpr("package:", search())) == 1, TRUE, FALSE)]
+    package.list <- setdiff(package.list, basic.packages)
+    if (length(package.list) > 0)for (package in package.list) detach(package, character.only = TRUE)
 }
 
 
@@ -416,13 +420,13 @@ unload_packages <- function() {
 ## related: http://cran.r-project.org/web/packages/R.cache/R.cache.pdf
 
 cache_it <- function(expr, filePrefix="cache"){
-    cacheFile <- paste0(filePrefix, "_", substr(digest::digest(deparse(expr)), 1,6)) %>% paste0(".", ., ".RData")
+    cacheFile <- paste0(filePrefix, "_", substr(digest::digest(deparse(expr)), 1, 6)) %>% paste0(".", ., ".RData")
 
-    if(file.exists(cacheFile)){
+    if (file.exists(cacheFile)) {
         local(get(load(cacheFile)))
     } else {
         result <- eval(expr)
-        save(result, file=cacheFile)
+        save(result, file = cacheFile)
         result
     }
 }
@@ -435,11 +439,11 @@ cache_it <- function(expr, filePrefix="cache"){
 ########################################################################################################################
 #### File System
 
-is.directory <- function(dirname) !is.na(file.info(dirname)$isdir)
+is.directory <- function(dirname) ! is.na(file.info(dirname)$isdir)
 
 
 mcdir <- function(dirname){
-    if(!file.exists(dirname)){
+    if (! file.exists(dirname)) {
         dir.create(dirname)
     }
 
@@ -452,8 +456,8 @@ locload <- function(fileName) local(get(load(fileName)))
 ## tbd: it would be more efficient to use Reduce here (see http://stackoverflow.com/questions/34344214/how-to-join-multiple-data-frames-using-dplyr)
 rmerge <- function(LDF, by, ...){
     DF <- LDF[[1]]
-    for (i in 2:length(LDF)) {
-        DF <- merge(DF, LDF[[i]], by=by)
+    for (i in 2 : length(LDF)) {
+        DF <- merge(DF, LDF[[i]], by = by)
     }
     DF
 }
@@ -463,22 +467,22 @@ rmerge <- function(LDF, by, ...){
 ## Deprecated: use trim_ext instead
 trimEnd <- function(fileNames, ...) trim_ext(fileNames, ...)
 
-trim_ext <-function(fileNames, exts=c()){
-    for(fileExt in exts){
-        fileNames <- str_replace(fileNames, paste(fileExt, "$",sep=""), "")
+trim_ext <- function(fileNames, exts=c()){
+    for (fileExt in exts) {
+        fileNames <- str_replace(fileNames, paste(fileExt, "$", sep = ""), "")
     }
 
     fileNames
 }
 
 ## DEPRECATED Use write_tsv instead
-write.delim <- function(df, file, header=TRUE,...){
-    write.table(df, file, row.names=FALSE, col.names=header, sep="\t", ...)
+write.delim <- function(df, file, header=TRUE, ...){
+    write.table(df, file, row.names = FALSE, col.names = header, sep = "\t", ...)
 }
 
-rmSomeElements <- function(vec, toDel) vec[!(vec %in% toDel)]
+rmSomeElements <- function(vec, toDel) vec[! (vec %in% toDel)]
 
-rmLastElement <- function(vec) vec[-length(vec)]
+rmLastElement <- function(vec) vec[- length(vec)]
 
 
 ########################################################################################################################
@@ -493,29 +497,29 @@ lsos <- function (pos = 1, pattern, order.by, decreasing=FALSE, head=FALSE, n=5)
     obj.class <- napply(names, function(x) as.character(class(x))[1])
     obj.mode <- napply(names, mode)
     obj.type <- ifelse(is.na(obj.class), obj.mode, obj.class)
-    obj.size <- napply(names, object.size)/1000000
+    obj.size <- napply(names, object.size) / 1000000
     obj.dim <- t(napply(names, function(x)
 
-    as.numeric(dim(x))[1:2]))
+    as.numeric(dim(x))[1 : 2]))
     vec <- is.na(obj.dim)[, 1] & (obj.type != "function")
     obj.dim[vec, 1] <- napply(names, length)[vec]
 
     out <- data.frame(obj.type, obj.size, obj.dim)
     names(out) <- c("Type", "Size", "Rows", "Columns")
 
-    if (!missing(order.by))
-    out <- out[order(out[[order.by]], decreasing=decreasing), ]
+    if (! missing(order.by))
+    out <- out[order(out[[order.by]], decreasing = decreasing),]
 
-    if (head) out <- head(out, n)
+    if (head)out <- head(out, n)
 
-    out <- transform(out, var_name=rownames(out))
+    out <- transform(out, var_name = rownames(out))
     rownames(out) <- NULL
     arrange(out, Size)
 }
 
 # shorthand that just shows top 1 results
 lsosh <- function(..., n=10) {
-    lsos(..., order.by="Size", decreasing=TRUE, head=TRUE, n=n)
+    lsos(..., order.by = "Size", decreasing = TRUE, head = TRUE, n = n)
 }
 
 ########################################################################################################################
@@ -528,7 +532,7 @@ trim_outliers <- function(values, range=quantile(values, c(0.05, 0.95)))  pmax(r
 ## use trim_outliers instead
 #limit_range <- function(values, range)  pmax(range[1], pmin(range[2], values))
 
-se <- function(x) sd(x, na.rm=TRUE) / sqrt(sum(!is.na(x)))
+se <- function(x) sd(x, na.rm = TRUE) / sqrt(sum(! is.na(x)))
 
 
 ########################################################################################################################
@@ -541,7 +545,7 @@ assert <- function (expr, error) {
 
 ### table rendering
 table_browser <- function(df, caption=deparse(substitute(df)), ...){
-    datatable(df, filter = "bottom", extensions = 'Buttons', options = list( dom = 'Bfrtip', buttons = c('copy', 'csv', 'excel')), caption=caption,...)
+    datatable(df, filter = "bottom", extensions = 'Buttons', options = list(dom = 'Bfrtip', buttons = c('copy', 'csv', 'excel')), caption = caption, ...)
 }
 
 #results_prefix = "env_data_prep"
