@@ -198,17 +198,16 @@ push_left <- function(df, pushColNames){
 
 
 #http://astrostatistics.psu.edu/datasets/R/html/base/html/formals.html
-## disabled because purrr::set_names does the same and even has the same name
-# set_names <- function(df, ...){
-#     #browser()
-#     newnames <- as.character(unlist(list(...)))
-#
-#     ## automatically convert matrices to data.frames (otherwise the names set would fail
-#     if(is.matrix(df)) df %<>% as.data.frame()
-#
-#     names(df) <- newnames;
-#     return(df)
-# }
+## conflicts with purrr::set_names but does not work with ....
+set_names <- function(df, ...){
+    newnames <- as.character(unlist(list(...)))
+
+    ## automatically convert matrices to data.frames (otherwise the names set would fail
+    if(is.matrix(df)) df %<>% as.data.frame()
+
+    names(df) <- newnames;
+    return(df)
+}
 # iris %>% purrr::set_names(paste(names(iris), "__")) %>% glimpse
 # iris %>% set_names(paste(names(iris), "__")) %>% glimpse
 #
