@@ -64,6 +64,7 @@ find_enr_terms = function(ensemblIds, ...){
 
 cp_test = function(geneIds, annoDb, cp_species, q_cutoff=0.05){
     # DEBUG geneIds <- glMapped %>% filter(cluster %in% c("cluster_9")) %$% entrez_gene_id %>% as.integer
+    # DEBUG geneIds <- glMapped %>% filter(cluster_id %in% c("nr1")) %$% entrez_gene_id %>% as.integer
     # DEBUG geneIds <- head(glMapped,30)$entrez_gene_id
     #    geneIds=.$entrez_gene_id
 
@@ -76,7 +77,7 @@ cp_test = function(geneIds, annoDb, cp_species, q_cutoff=0.05){
     #    PANTHER10_ontology <- read.delim("http://data.pantherdb.org/PANTHER10.0/ontology/Protein_Class_7.0")
     #    pantherResults <-     enricher(gene = geneIds, organism = cp_species, qvalueCutoff = q_cutoff, readable = TRUE, TERM2GENE = PANTHER10_ontology) %>% summary()
 
-    keggResults <-          clusterProfiler::enrichKEGG(gene = geneIds, organism = cp_species, qvalueCutoff = q_cutoff, use_internal_data=T) %>% as.data.frame()
+    keggResults <-          clusterProfiler::enrichKEGG(gene = geneIds, organism = cp_species, qvalueCutoff = q_cutoff) %>% as.data.frame()
     reactomeResults <-      ReactomePA::enrichPathway(gene = geneIds, organism = cp_species, qvalueCutoff = q_cutoff) %>% as.data.frame()
     goResultsCC <-          clusterProfiler::enrichGO(gene = geneIds, OrgDb = annoDb, qvalueCutoff = q_cutoff, ont = "CC") %>% as.data.frame()
     goResultsMF <-          clusterProfiler::enrichGO(gene = geneIds, OrgDb = annoDb, qvalueCutoff = q_cutoff, ont = "MF") %>% as.data.frame()
