@@ -75,6 +75,7 @@ check_version = function(pkg_name, min_version) {
 
 ## load on purpose after plyr
 load_pack(purrr)
+load_pack(tibble)
 load_pack(dplyr, warn_conflicts = F)
 load_pack(magrittr, warn_conflicts = F)
 load_pack(tidyr, warn_conflicts = F)
@@ -123,7 +124,7 @@ pp <- function(dat) page(dat, method = "print")
 
 # TODO .Deprecated and .Defunct (see http://ropensci.org/blog/technotes/2017/01/05/package-evolution)
 
-as.df <- function(dt){ warning("DEPRECATED: use as_df instead of as.df"); as.data.frame(dt)}
+# as.df <- function(dt){ warning("DEPRECATED: use as_df instead of as.df"); as.data.frame(dt)}
 as_df <- function(dt) as.data.frame(dt)
 
 
