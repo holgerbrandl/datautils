@@ -69,6 +69,11 @@ check_version = function(pkg_name, min_version) {
 ########################################################################################################################
 ## load core packages
 
+#if(!any(.packages(all.available=TRUE)=="biomaRt")){
+#    source("http://bioconductor.org/biocLite.R")
+#    biocLite("biomaRt", ask=FALSE)
+#}
+
 #load_pack(plyr)
 #load_pack(reshape2)
 #load_pack(reshape2, quietly=T, warn_conflicts=F)
@@ -527,7 +532,13 @@ lsosh <- function(..., n=10) {
 
 
 ## outlier handling
-trim_outliers <- function(values, range=quantile(values, c(0.05, 0.95)))  pmax(range[1], pmin(range[2], values))
+trim_outliers <- function(values, probs=c(0.05, 0.95)){
+    values = deResults$pvalue
+    stopifnot(length(probs) == 2)
+    quantiles = quantile(values, probs, na.rm=TRUE)
+
+    pmax(quantiles[1], pmin(quantiles[2], values))
+}
 
 ## use trim_outliers instead
 #limit_range <- function(values, range)  pmax(range[1], pmin(range[2], values))
