@@ -209,7 +209,7 @@ set_names <- function(df, ...){
     newnames <- as.character(unlist(list(...)))
 
     ## automatically convert matrices to data.frames (otherwise the names set would fail
-    if(is.matrix(df)) df %<>% as.data.frame()
+    if (is.matrix(df))df %<>% as.data.frame()
 
     names(df) <- newnames;
     return(df)
@@ -221,14 +221,10 @@ set_names <- function(df, ...){
 #iris %>% set_names("setosa", "hallo") %>% head
 
 
-rify_names <- function(df){
-    warning("DEPRECATED: use pretty_columns instead");
-    names(df) <- names(df) %>% str_replace_all(c(" " = "_", "-" = "_", "/" = "_"));
-    df
-}
+# devtools::source_url("https://www.dropbox.com/s/r6kim8kb8ohmptx/core_commons.R?dl=1")
 
-pretty_columns = function(df){
-    names(df) <- names(df) %>%
+pretty_names = function(some_names){
+    some_names %>%
         str_replace_all("[#=.,()/*: -]+", "_") %>%
         str_replace(fixed("["), "") %>%
         str_replace(fixed("]"), "") %>%
@@ -240,7 +236,10 @@ pretty_columns = function(df){
         tolower %>%
     ## make duplicates unqiue
         make.unique(sep = "_")
+}
 
+pretty_columns = function(df){
+    names(df) <- names(df) %>% pretty_names()
     df
 }
 
@@ -535,7 +534,7 @@ lsosh <- function(..., n=10) {
 trim_outliers <- function(values, probs=c(0.05, 0.95)){
     values = deResults$pvalue
     stopifnot(length(probs) == 2)
-    quantiles = quantile(values, probs, na.rm=TRUE)
+    quantiles = quantile(values, probs, na.rm = TRUE)
 
     pmax(quantiles[1], pmin(quantiles[2], values))
 }
