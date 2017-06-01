@@ -468,11 +468,14 @@ rmerge <- function(LDF, by, ...){
 
 
 
-## Deprecated: use trim_ext instead
-trimEnd <- function(fileNames, ...) trim_ext(fileNames, ...)
+## DEPRECTED: use trim_ext instead
+trimEnd <- function(fileNames, ...){
+    warning("DEPRECATED: Use trim_ext instead");
+    trim_ext(fileNames, ...)
+}
 
-trim_ext <- function(fileNames, exts=c()){
-    for (fileExt in exts) {
+trim_ext <- function(fileNames, ...){
+    for (fileExt in list(...)) {
         fileNames <- str_replace(fileNames, paste(fileExt, "$", sep = ""), "")
     }
 
