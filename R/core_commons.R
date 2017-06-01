@@ -396,6 +396,15 @@ get_col = function(data, col_index) data[, col_index] ## also could use magrittr
 extract_col = function(x, col_index=1, sep="_", num_cols=10){ str_split_fixed(x, sep, num_cols)[, col_index]}
 
 
+## Extract the first group of a grouped data-frame
+first_group = function(groupedDF){
+    # groupedDF = geneLists
+    # groupedDF = iris %>% group_by(Species)
+    # https://stackoverflow.com/questions/33775239/emulate-split-with-dplyr-group-by-return-a-list-of-data-frames
+    (groupedDF %>% do(data = (.)) %$% map(data, identity))[[1]]
+}
+
+
 
 reload_dplyr <- function(){
     unloadNamespace('tidyr')
