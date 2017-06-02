@@ -80,10 +80,10 @@ cp_test = function(geneIds, annoDb, cp_species, q_cutoff=0.05){
 
     # keggResults <-          clusterProfiler::enrichKEGG(gene = geneIds, organism = cp_species, qvalueCutoff = q_cutoff, use_internal_data=T) %>% as.data.frame()
     keggResults <-          clusterProfiler::enrichKEGG(gene = geneIds, organism = cp_species, keyType="ncbi-geneid", qvalueCutoff = q_cutoff) %>% as.data.frame()
-    reactomeResults <-      ReactomePA::enrichPathway(gene = geneIds, organism = cp_species, qvalueCutoff = q_cutoff) %>% as.data.frame()
-    goResultsCC <-          clusterProfiler::enrichGO(gene = geneIds, OrgDb = annoDb, qvalueCutoff = q_cutoff, ont = "CC") %>% as.data.frame()
-    goResultsMF <-          clusterProfiler::enrichGO(gene = geneIds, OrgDb = annoDb, qvalueCutoff = q_cutoff, ont = "MF") %>% as.data.frame()
-    goResultsBP <-          clusterProfiler::enrichGO(gene = geneIds, OrgDb = annoDb, qvalueCutoff = q_cutoff, ont = "BP") %>% as.data.frame()
+    reactomeResults <-      ReactomePA::enrichPathway(gene = geneIds, organism = cp_species, qvalueCutoff = q_cutoff, readable = TRUE) %>% as.data.frame()
+    goResultsCC <-          clusterProfiler::enrichGO(gene = geneIds, OrgDb = annoDb, qvalueCutoff = q_cutoff, ont = "CC", readable = TRUE) %>% as.data.frame()
+    goResultsMF <-          clusterProfiler::enrichGO(gene = geneIds, OrgDb = annoDb, qvalueCutoff = q_cutoff, ont = "MF", readable = TRUE) %>% as.data.frame()
+    goResultsBP <-          clusterProfiler::enrichGO(gene = geneIds, OrgDb = annoDb, qvalueCutoff = q_cutoff, ont = "BP", readable = TRUE) %>% as.data.frame()
 
     #cp-bug: if no pathways are enriched odd strucuture is retured ##todo file issue
     if(!("data.frame" %in% class(keggResults))) keggResults <- filter(goResultsBP, Description="foobar")
