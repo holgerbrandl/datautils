@@ -573,6 +573,8 @@ table_browser <- function(df, caption=deparse(substitute(df)), ...){
 #results_prefix = "env_data_prep"
 add_prefix = function(filename) {
     ## prefix a name with a project-prefix. Requires that results_prefix to be defined
-    file.path(dirname(filename), paste0(results_prefix, ".", basename(filename)))
+    prefixName=if_else(str_length(results_prefix)==0, basename(filename), paste0(results_prefix, ".", basename(filename)))
+
+    file.path(dirname(filename), prefixName)
 }
 
