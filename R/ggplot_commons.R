@@ -118,7 +118,7 @@ toggle_plot_window = function() dev.set(dev.next())
 ########################################################################################################################
 ### pca plots (http://largedata.blogspot.de/2011/07/plotting-pca-results-in-ggplot2.html)
 
-makePcaPlot = function(matrixData, group = NA, items=rownames(matrixData), title = NA) {
+makePcaPlot = function(matrixData, group = "none", items=rownames(matrixData), title = NA) {
     load_pack(ggplot2)
     load_pack(RColorBrewer)
 
