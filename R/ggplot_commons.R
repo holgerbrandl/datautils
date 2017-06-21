@@ -118,11 +118,15 @@ toggle_plot_window = function() dev.set(dev.next())
 ########################################################################################################################
 ### pca plots (http://largedata.blogspot.de/2011/07/plotting-pca-results-in-ggplot2.html)
 
+
+
 makePcaPlot = function(matrixData, group = "none", items=rownames(matrixData), title = NA) {
     load_pack(ggplot2)
     load_pack(RColorBrewer)
+    load_pack(ggrepel)
 
     mydata.pca = prcomp(matrixData, retx = TRUE, center = TRUE, scale. = TRUE)
+    # mydata.pca = prcomp(matrixData, retx = TRUE, center = FALSE, scale = FALSE)
 
     percent <- round((((mydata.pca$sdev) ^ 2 / sum(mydata.pca$sdev ^ 2)) * 100)[1 : 2])
 
@@ -134,7 +138,8 @@ makePcaPlot = function(matrixData, group = "none", items=rownames(matrixData), t
     #    geom_text(hjust = "inward", alpha = 3/4)    +
 
     if (!is.null(items)) {
-        pcaPlot = pcaPlot + geom_text(aes(label = items), alpha = 3 / 4, vjust = 1.5)
+        # pcaPlot = pcaPlot + geom_text(aes(label = items), alpha = 3 / 4, vjust = 1.5)
+        pcaPlot = pcaPlot + geom_text_repel(aes(label = items), alpha = 3 / 4, vjust = 1.5)
     }
 
     ## make labels to be rendered within canvas bounds --> "inward" is better
