@@ -120,22 +120,29 @@ toggle_plot_window = function() dev.set(dev.next())
 
 
 
-makePcaPlot = function(matrixData, group = "none", items=rownames(matrixData), title = NA) {
+makePcaPlot = function(matrixData, color_by=NA, items=rownames(matrixData), title = NA, center=TRUE, scale=FALSE) {
     load_pack(ggplot2)
     load_pack(RColorBrewer)
     load_pack(ggrepel)
 
-    mydata.pca = prcomp(matrixData, retx = TRUE, center = TRUE, scale. = TRUE)
-    # mydata.pca = prcomp(matrixData, retx = TRUE, center = FALSE, scale = FALSE)
+    if(is.na(color_by)){
+        color_by_sorted = NA
+    }else{
+        color_by_sorted = items %>% map_chr(~color_by[[.x]])
+    }
+
+    mydata.pca = prcomp(matrixData, retx = TRUE, center = center, scale. = scale)
 
     percent <- round((((mydata.pca$sdev) ^ 2 / sum(mydata.pca$sdev ^ 2)) * 100)[1 : 2])
 
     scores <- mydata.pca$x
-    pc12 <- data.frame(PCA1 = scores[, 1], PCA2 = scores[, 2], group = group)
+    pc12 <- data.frame(PCA1 = scores[, 1], PCA2 = scores[, 2], group = color_by_sorted)
 
-    #  ggplot(pc12, aes(PCA1, PCA2, colour = group)) + geom_point(size = 6, alpha = 3/4)
-    pcaPlot = ggplot(pc12, aes(PCA1, PCA2, color = group)) + geom_point(alpha = .4)
-    #    geom_text(hjust = "inward", alpha = 3/4)    +
+    if(is.na(color_by)){
+        pcaPlot = ggplot(pc12, aes(PCA1, PCA2)) + geom_point(alpha = .4)
+    }else{
+        pcaPlot = ggplot(pc12, aes(PCA1, PCA2, color = group)) + geom_point(alpha = .4)
+    }
 
     if (!is.null(items)) {
         # pcaPlot = pcaPlot + geom_text(aes(label = items), alpha = 3 / 4, vjust = 1.5)
@@ -145,7 +152,7 @@ makePcaPlot = function(matrixData, group = "none", items=rownames(matrixData), t
     ## make labels to be rendered within canvas bounds --> "inward" is better
     ## https://stackoverflow.com/questions/17241182/how-to-make-geom-text-plot-within-the-canvass-bounds#
     pcaPlot = pcaPlot + scale_x_continuous(expand = c(.2, .2)) +
-        xlab(paste("PCA1 (", percent[2], "%)", sep = "")) +
+        xlab(paste("PCA1 (", percent[1], "%)", sep = "")) +
         ylab(paste("PCA2 (", percent[2], "%)", sep = ""))
 
 
