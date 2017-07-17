@@ -119,8 +119,9 @@ toggle_plot_window = function() dev.set(dev.next())
 ### pca plots (http://largedata.blogspot.de/2011/07/plotting-pca-results-in-ggplot2.html)
 
 
+# https://tgmstat.wordpress.com/2013/11/28/computing-and-visualizing-pca-in-r/ --> use scale=TRUE as default
 
-makePcaPlot = function(matrixData, color_by=NA, items=rownames(matrixData), title = NA, center=TRUE, scale=FALSE) {
+makePcaPlot = function(matrixData, color_by=NA, items=rownames(matrixData), title = NA, center=TRUE, repel=TRUE, scale=FALSE) {
     load_pack(ggplot2)
     load_pack(RColorBrewer)
     load_pack(ggrepel)
@@ -139,14 +140,16 @@ makePcaPlot = function(matrixData, color_by=NA, items=rownames(matrixData), titl
     pc12 <- data.frame(PCA1 = scores[, 1], PCA2 = scores[, 2], group = color_by_sorted)
 
     if(is.na(color_by)){
-        pcaPlot = ggplot(pc12, aes(PCA1, PCA2)) + geom_point(alpha = .4)
+        pcaPlot = ggplot(pc12, aes(PCA1, PCA2, text= paste("Sample:", items))) + geom_point(alpha = .4)
     }else{
-        pcaPlot = ggplot(pc12, aes(PCA1, PCA2, color = group)) + geom_point(alpha = .4)
+        pcaPlot = ggplot(pc12, aes(PCA1, PCA2, color = group, text=paste("Sample:", items))) + geom_point(alpha = .4)
     }
 
-    if (!is.null(items)) {
+    if (repel) {
         # pcaPlot = pcaPlot + geom_text(aes(label = items), alpha = 3 / 4, vjust = 1.5)
         pcaPlot = pcaPlot + geom_text_repel(aes(label = items), alpha = 3 / 4, vjust = 1.5)
+    }else{
+        pcaPlot = pcaPlot + geom_text(aes(label = items), alpha = 3 / 4, vjust = 1.5)
     }
 
     ## make labels to be rendered within canvas bounds --> "inward" is better
@@ -158,11 +161,44 @@ makePcaPlot = function(matrixData, color_by=NA, items=rownames(matrixData), titl
 
     if (! is.na(title)) pcaPlot = pcaPlot + ggtitle(title)
 
+    # https://stackoverflow.com/questions/19764968/remove-point-transparency-in-ggplot2-legend
+    pcaPlot = pcaPlot + guides(colour = guide_legend(override.aes = list(alpha=1)))
+
     pcaPlot
 }
 
 
 ## example
+## DEBUG-START
+# if(F){
+# devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v1.39/R/core_commons.R")
+# load_pack(plotly)
+# pointColors = ac(iris$Species)
+# names(pointColors) = iris$Species
+#
+# # makePcaPlot(iris%>% select(-Species), items=iris$Species ) %>% ggplotly()
+# {makePcaPlot(iris%>% select(-Species), color_by=pointColors, items=ac(iris$Species) ) + ggtitle("foo")} %>% ggplotly()
+# makePcaPlot(iris%>% select(-Species), color_by=pointColors, items=ac(iris$Species))
+# makePcaPlot(iris%>% select(-Species), color_by=pointColors, items=ac(iris$Species), repel=FALSE)
+#
+# devtools::install_github("vqv/ggbiplot")
+#
+# library(ggbiplot)
+# log.ir <- log(iris[, 1:4])
+# ir.species <- iris[, 5]
+#
+# # apply PCA - scale. = TRUE is highly
+# # advisable, but default is FALSE.
+# ir.pca <- prcomp(log.ir, center = TRUE, scale. = TRUE)
+#
+# g <- ggbiplot(ir.pca, obs.scale = 1, var.scale = 1, groups = ir.species, ellipse = TRUE, circle = TRUE)
+# g <- g + scale_color_discrete(name = '')
+# g <- g + theme(legend.direction = 'horizontal', legend.position = 'top')
+# print(g)
+#
+# }
+## DEBUG-END
+
 # makePcaPlot(getData(30,4,2,distort = 0.7))
 
 ## todo learn from http://rpubs.com/sinhrks/plot_pca
