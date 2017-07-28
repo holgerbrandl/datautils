@@ -140,7 +140,7 @@ makePcaPlot = function(matrixData, color_by=NA, items=rownames(matrixData), titl
     pc12 <- data.frame(PCA1 = scores[, 1], PCA2 = scores[, 2], group = color_by_sorted)
 
     if(is.na(color_by)){
-        pcaPlot = ggplot(pc12, aes(PCA1, PCA2, text= paste("Sample:", items))) + geom_point(alpha = .4)
+        pcaPlot = ggplot(pc12, aes(PCA1, PCA2, text= paste("Sample:", items))) + geom_point(alpha = .75)
     }else{
         pcaPlot = ggplot(pc12, aes(PCA1, PCA2, color = group, text=paste("Sample:", items))) + geom_point(alpha = .4)
     }
@@ -225,7 +225,7 @@ gp_bin2d <- function(data, mapping, ..., low = "#10721C", high = "#F11D05") {
 ########################################################################################################################
 ### Base-plot utils
 
-
+# https://stackoverflow.com/questions/15282580/how-to-generate-a-number-of-most-distinctive-colors-in-r
 plotPDF <- function(fileBaseName, expr, ...){ pdf(paste0(fileBaseName, ".pdf"), ...); expr; dev.off(); }
 #plotPDF("test", plot(1:10))
 
@@ -242,4 +242,3 @@ create_palette <- function(x, pal = 'Set1'){
 
   setNames(brewer.pal(name = pal, n = n)[1:n], ux)
 }
-
