@@ -1,30 +1,14 @@
 
-#require(cummeRbund)
+filterByExpression <- function(fpkmMat, min_value=1){
+    stopifnot(is.numeric(min_value))
 
-getExpressedGenes <- function(cuff, ...){
-    warning("DEPRECATED use filterByExpression instead")
-
-    fpkmMat<-cummeRbund::repFpkmMatrix(genes(cuff))
-
-    rownames(filterByExpression(fpkmMat, ...))
-}
-
-
-filterByExpression <- function(fpkmMat, minFPKM=1, logMode=F){
-    stopifnot(is.numeric(minFPKM))
-
-    if(logMode) fpkmMat<-log10(fpkmMat+1) ## add a pseudocount
+    # if(logMode) fpkmMat<-log10(fpkmMat+1) ## add a pseudocount
 
     geneMax <- apply(fpkmMat, 1, max)
 
-    fpkmMat[geneMax>minFPKM,]
+    fpkmMat[geneMax>min_value,]
 }
 
-
-retainExprGenes <- function(df, id_col="ensembl_gene_id", ...){
-    warning("DEPRECATED Use filter_expressed_genes instead")
-    filter_expressed_genes(df, id_col, ...)
-}
 
 
 filter_expressed_genes <- function(df, id_col="ensembl_gene_id", ...){
