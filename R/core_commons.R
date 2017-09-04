@@ -223,8 +223,8 @@ set_names <- function(df, ...){
 
 # devtools::source_url("https://www.dropbox.com/s/r6kim8kb8ohmptx/core_commons.R?dl=1")
 
-pretty_names = function(some_names){
-    some_names %>%
+pretty_names = function(some_names, make_unique=FALSE){
+    new_names = some_names %>%
         str_replace_all("[#=.,()/*: -]+", "_") %>%
         str_replace(fixed("["), "") %>%
         str_replace(fixed("]"), "") %>%
@@ -233,13 +233,18 @@ pretty_names = function(some_names){
         str_replace("^[_]+", "") %>%
     ## remove unicode characters
         iconv(to = 'ASCII', sub = '') %>% ## http://stackoverflow.com/questions/24807147/removing-unicode-symbols-from-column-names
-        tolower %>%
+        tolower
+
+    if(make_unique){
     ## make duplicates unqiue
-        make.unique(sep = "_")
+      new_names %<>% make.unique(sep = "_")
+    }
+
+    new_names
 }
 
 pretty_columns = function(df){
-    names(df) <- names(df) %>% pretty_names()
+    names(df) <- names(df) %>% pretty_names(make_unique=TRUE)
     df
 }
 
