@@ -161,6 +161,7 @@ splat = plyr::splat
 shuffle <- function(df) df[sample(nrow(df)),]
 
 first <- function(x, n=1) head(x, n)
+first_group = function(x, which=1) x %>% nest %>% slice(which) %>% unnest(data)
 
 
 
