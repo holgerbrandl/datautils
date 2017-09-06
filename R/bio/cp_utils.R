@@ -1,7 +1,7 @@
 install_package("clusterProfiler")
 
 
-## todo move to diffex commons
+## species names according to http://www.genome.jp/kegg/catalog/org_list.html
 guess_cp_species <- function(ensIds){
     an_id <-ensIds[1]
 
@@ -18,6 +18,8 @@ guess_cp_species <- function(ensIds){
     }
 }
 
+
+## todo how to guess yeast ("org.Sc.sgd.db") from id?
 guess_anno_db <- function(ensIds){
     an_id <-ensIds[1]
 
@@ -34,11 +36,13 @@ guess_anno_db <- function(ensIds){
     }
 }
 
+## see http://bioconductor.org/packages/release/BiocViews.html#___OrgDb
 #source("http://bioconductor.org/biocLite.R")
 #biocLite("org.Mm.eg.db")
 #biocLite("org.Hs.eg.db")
 #biocLite("org.Dr.eg.db")
 #biocLite("org.Dm.eg.db")
+#biocLite("org.Sc.sgd.db")
 #biocLite("KEGG.db")
 #biocLite("ReactomePA")
 
@@ -61,6 +65,8 @@ find_enr_terms = function(ensemblIds, ...){
 #    quote({find_enr_terms(ensemblIds, ...)}) %>% cache_it(paste0("cp_id_cache", digest(ensemblIds)))
 #}
 
+#' TODO remove necessity for cp_species
+geneIds = glMapped %>% first() %>% pull(entrez_gene_id)
 
 cp_test = function(geneIds, annoDb, cp_species, q_cutoff=0.05){
     # DEBUG geneIds <- glMapped %>% filter(cluster %in% c("cluster_9")) %$% entrez_gene_id %>% as.integer
