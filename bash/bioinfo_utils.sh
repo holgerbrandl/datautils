@@ -7,7 +7,7 @@ devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v
 
 
 parseAlgnSummary_T2_0_11 <- function(alignSummary){
-    #alignSummary="/projects/bioinfo/holger/projects/marta_rnaseq/human_leipzig/mapping/S5382_aRG_1b_rep1/align_summary.txt"
+    #alignSummary="/projects/bioinfo/brandl/projects/marta_rnaseq/human_leipzig/mapping/S5382_aRG_1b_rep1/align_summary.txt"
     algnData <- readLines(alignSummary)
 
     data.frame(

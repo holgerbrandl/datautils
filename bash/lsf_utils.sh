@@ -70,7 +70,7 @@ jlistReport(){
     fi
 
 #    ## add spin.R
-#    export PATH=/projects/bioinfo/holger/bioinfo_templates/misc:$PATH
+#    export PATH=/projects/bioinfo/brandl/bioinfo_templates/misc:$PATH
 #    source $(which spin_utils.sh)
 
 

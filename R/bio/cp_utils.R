@@ -133,7 +133,7 @@ enrResults <- cp_test(someGenes)
 #enrResults <-  quote(glMapped %>% do(cp_test(.$entrez_gene_id))) %>% cache_it(paste0("enrdata_", digest(glMapped)))
 
 ## test custom ontology
-#enrichrFile_TFchip = "/projects/bioinfo/holger/data/enrichr_datasets/ENCODE_TF_ChIP-seq_2015.txt"
+#enrichrFile_TFchip = "/projects/bioinfo/brandl/data/enrichr_datasets/ENCODE_TF_ChIP-seq_2015.txt"
 #tfChipOnt <- convert_enrichr_cp(enrichrFile_TFchip)
 
 
