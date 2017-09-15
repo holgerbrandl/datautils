@@ -584,3 +584,13 @@ add_prefix = function(filename) {
     file.path(dirname(filename), prefixName)
 }
 
+## https://stackoverflow.com/questions/18669886/how-to-unfold-user-and-environment-variable-in-r-language/46240642#46240642
+interp_from_env = function(path){
+    e <- new.env()
+    (system("export", intern=T) %>% str_split_fixed(" ", 2))[,2] %>% map(~eval(parse(text=.), envir=e))
+    glue::glue(path, .envir=e, .open="${")
+}
+
+# #usage examples
+# read.delim(interp_from_env("${PRJ_DATA}/foo.txt") )
+# source(interp_path("${HOME}/bar.R"))
