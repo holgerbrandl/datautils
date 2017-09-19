@@ -594,7 +594,6 @@ interp_from_env = function(path){
     glue::glue(path, .envir=e, .open="${")
 }
 
-e$HOME
 # #usage examples
 # require(stringr)
 # read.delim(interp_from_env("${PRJ_DATA}/foo.txt") )
