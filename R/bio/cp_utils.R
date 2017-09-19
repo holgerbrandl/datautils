@@ -47,6 +47,30 @@ guess_anno_db <- function(ensIds){
     }
 }
 
+#guess_mart("ENSCAFG00000000043")
+
+
+guess_pathview_species <- function(ensIds){
+    an_id <-ensIds[1]
+
+    ## see http://www.genome.jp/kegg-bin/find_org_www?mode=abbr&obj=mode.map
+
+    if(str_detect(an_id, "ENSMUSG")){
+        return("mmu")
+    }else if(str_detect(an_id, "ENSDARG")){
+        return("dre")
+    }else if(str_detect(an_id, "ENSG")){
+        return("hsa")
+    }else if(str_detect(an_id, "FBgn")){
+        return("dme")
+    }else if(.is_yeast(ensIds)){
+        return("sce")
+    }else{
+        stop(paste("could not guess mart from ", an_id))
+    }
+}
+
+
 ## see http://bioconductor.org/packages/release/BiocViews.html#___OrgDb
 #source("http://bioconductor.org/biocLite.R")
 #biocLite("org.Mm.eg.db")
