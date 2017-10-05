@@ -587,7 +587,7 @@ add_prefix = function(filename) {
 ## https://stackoverflow.com/questions/18669886/how-to-unfold-user-and-environment-variable-in-r-language/46240642#46240642
 interp_from_env = function(path){
     e <- new.env()
-    env = Sys.getenv()
+    env = Sys.getenv() %>% discard(~ str_detect(.x, fixed("()")))
     paste0(make.names(names(env)), "='", gsub("'", '', env), "'") %>%
         map(~eval(parse(text=.), envir=e))
     # (system("export", intern=T) %>% str_split_fixed(" ", 2))[,2] %>% map(~eval(parse(text=.), envir=e))
