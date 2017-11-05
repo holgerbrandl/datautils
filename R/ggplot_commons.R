@@ -68,7 +68,7 @@ gg2Format="png"
 
 
 ## simplified save function for ggpltos
-ggsave2 <- function(gplot=last_plot(), width=8, height=6, prefix="", saveData=FALSE, outputFormat=gg2Format, ...){
+ggsave2 <- function(gplot=ggplot2::last_plot(), width=8, height=6, prefix="", saveData=FALSE, outputFormat=gg2Format, ...){
     title <- try(gplot$labels[["title"]])
 
     if(is.null(title)){
