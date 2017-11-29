@@ -11,7 +11,7 @@ cd /Users/brandl/Dropbox/projects/datautils/R/rnblight
 #git add chi2.md
 #git commit -m "initial commit"
 
-mdInput=chi2.md
+mdInput=example.md
 mdBase=$(basename $mdInput .md)
 
 mv $mdInput ${mdBase}.Rmd
@@ -22,4 +22,7 @@ EOF
 
 idea .
 
+
+kscript --idea strip_chunk_results.kts
+kscript  strip_chunk_results.kts ${mdBase}.md
 ```
