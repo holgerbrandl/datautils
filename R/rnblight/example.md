@@ -99,7 +99,6 @@ Confidence around proportions
 
 Formula:
  > If the samples size n and population proportion p satisfy the condition that np ≥ 5 and n(1 − p) ≥ 5, than the end points of the interval estimate at (1 − α) confidence level is defined in terms of the sample proportion as follows.
- ![](.example_images/prop_ci.png)
 
 CI math is detailed out under http://www.statisticslectures.com/topics/ciproportions/
 

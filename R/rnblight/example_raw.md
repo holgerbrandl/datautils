@@ -31,7 +31,6 @@ prop.test(x=c(19,15), n=c(34,34), correct=FALSE)
 ## also works for single proportion
 #prop.test(x=c(19), n=c(34), correct=FALSE)
 #prop.test(x=c(19,15,20), n=c(34,34,34), correct=FALSE)
-
 ```
 Also see <http://stat.ethz.ch/R-manual/R-devel/library/stats/html/prop.test.html>
 
