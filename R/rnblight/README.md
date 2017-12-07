@@ -14,7 +14,11 @@ cd /Users/brandl/Dropbox/projects/datautils/R/rnblight
 mdInput=example.md
 mdBase=$(basename $mdInput .md)
 
-mv $mdInput ${mdBase}.Rmd
+cp $mdInput ${mdBase}.Rmd
+
+
+kscript --idea strip_chunk_results.kts
+kscript  strip_chunk_results.kts ${mdBase}.md
 
 Rscript - <<EOF
 knitr::knit('${mdBase}.Rmd', '${mdBase}.md')
@@ -23,6 +27,4 @@ EOF
 idea .
 
 
-kscript --idea strip_chunk_results.kts
-kscript  strip_chunk_results.kts ${mdBase}.md
 ```
