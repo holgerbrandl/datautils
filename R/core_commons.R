@@ -411,6 +411,21 @@ first_group = function(groupedDF){
 }
 
 
+mutate_inplace <- function(data, var, expr){
+    install_package("rlang")
+
+    var <- enexpr(var)
+    var_name <- quo_name(var)
+    expr <- enexpr(expr)
+
+    call <- quo(UQ(var) %>% UQ(expr))
+    print(call)
+    mutate(data, !!var_name := UQ(call))
+}
+
+# mutate_inplace( iris, Species, str_replace("vir", "foo") )
+
+
 
 reload_dplyr <- function(){
     unloadNamespace('tidyr')
