@@ -47,13 +47,15 @@ plot_ci = function(grpData, variable, ci_interval=0.95){
         geom_jitter(alpha=0.3, height=0) +
         geom_errorbar(aes(ymin= mean-ci, ymax= mean+ci, y=NULL), data=ciData, width=.2, size=0.9)
 
+    gg = gg + xlab(groupVar1) + ylab(quo_name(variable))
+
     # if 2 grouping variables are present add facetting on second grouping attribute
     if(length(groups(grpData)) ==2){
         # https://stackoverflow.com/questions/21588096/pass-string-to-facet-grid-ggplot2
         gg =  gg + facet_wrap(as.formula(paste("~",groups(grpData)[[2]])))
     }
 
-    gg + xlab(groupVar1) + ylab()
+    gg
 }
 
 
