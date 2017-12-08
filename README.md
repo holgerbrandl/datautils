@@ -55,6 +55,64 @@ devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/m
 R -e "devtools::create('tt')" 
 # move DESCRIPTION and NAMESPACE
 
+
 ```
 
+in R we can load the package from sources with
+
+```r
+devtools::load_all()
+```
+will just load toplevel scripting directly under `R/`
+
 further reading https://uoftcoders.github.io/studyGroup/lessons/r/packages/lesson/
+
+https://github.com/jtleek/rpackages
+
+
+## module system for namespace isolation
+
+How to organize large R programs? https://stackoverflow.com/a/1319786/590437
+
+```
+util = new.env()
+
+util$bgrep = function \[...\]
+
+util$timeit = function \[...\]
+
+while("util" %in% search())
+  detach("util")
+attach(util)
+
+```
+
+
+
+## how to install package with multiple namespaces
+
+
+https://stackoverflow.com/questions/3094232/add-objects-to-package-namespace
+
+```r
+myfun <- function(x) print(x)
+environment(myfun) <- as.environment("package:foo")
+
+
+
+```
+
+https://stackoverflow.com/questions/9002544/how-to-add-functions-in-an-existing-environment
+
+docke testing
+
+```bash
+docker pull rocker/tidyverse
+docker run --rm -it rocker/tidyverse /bin/bash
+ 
+
+```
+
+```r
+devtools::install_github("vqv/ggbiplot")
+```

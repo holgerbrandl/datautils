@@ -1,7 +1,7 @@
 Package: datautils
 Title: Small Utilities to make R-scripting more fun
 Version: 1.45
-Authors@R: person("Holger", "Brandl", email = "brandl AEHT mpi-cbg.de", role = c("aut", "cre"))
+Authors@R: person("Holger", "Brandl", email = "brandl@mpi-cbg.de", role = c("aut", "cre"))
 Description: Small Utilities to make R-scripting more fun
 Depends: R (>= 3.4.0)
 License: BSD
