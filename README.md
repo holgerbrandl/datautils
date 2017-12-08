@@ -48,3 +48,13 @@ instead of the development copy form the master-branch copy
 ```
 devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/master/R/datatable_commons.R")
 ```
+
+## install as package
+
+```bash
+R -e "devtools::create('tt')" 
+# move DESCRIPTION and NAMESPACE
+
+```
+
+further reading https://uoftcoders.github.io/studyGroup/lessons/r/packages/lesson/

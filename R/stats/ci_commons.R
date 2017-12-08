@@ -28,6 +28,8 @@ iris %>% group_by(Species, Sepal.Width>3) %>% calc_ci(Sepal.Length)
 plot_ci = function(grpData, variable, ci_interval=0.95){
     variable <- enquo(variable)
 
+    # browser()
+
     # calculte ci intervals
     ciData = grpData %>% summarize(
         mean=mean(!!variable),
@@ -42,9 +44,8 @@ plot_ci = function(grpData, variable, ci_interval=0.95){
     assert(length(groups(grpData)) < 3, "more than 2 groups are not supported")
 
     groupVar1 = groups(grpData)[[1]]
-
     gg = ggplot(grpData, aes(x= eval(rlang::UQE(groupVar1)), y= eval(rlang::UQE(variable)))) +
-        geom_jitter(alpha=0.3, height=0) +
+        geom_jitter(alpha=0.3, height=0,width=0.2) +
         geom_errorbar(aes(ymin= mean-ci, ymax= mean+ci, y=NULL), data=ciData, width=.2, size=0.9)
 
     gg = gg + xlab(groupVar1) + ylab(quo_name(variable))
@@ -57,6 +58,71 @@ plot_ci = function(grpData, variable, ci_interval=0.95){
 
     gg
 }
+
+
+## todo support model formula instead of group data
+plot_interaction = function(grpData, variable, ci_interval=0.95){
+    variable <- enquo(variable)
+
+    #fail if there are more not 2 group attributes
+    assert(length(groups(grpData)) == 2, "only dfs with 2 grouping vars are supported")
+
+    # calculte ci intervals
+    ciData = grpData %>% summarize(
+        mean=mean(!!variable),
+        sd=sd(!!variable),
+        N = n(),
+        se=sd/sqrt(N),
+        ci = qt(ci_interval/2+0.5, N-1)*se,
+    )
+
+
+    groupVar1 = groups(grpData)[[1]]
+    groupVar2 = groups(grpData)[[2]]
+    dodge_with=0.2
+
+    gg = ggplot(grpData, aes(x = eval(rlang::UQE(groupVar1)), y = eval(rlang::UQE(variable)), color = eval(rlang::UQE(groupVar2)))) +
+        geom_jitter(position = position_jitterdodge(jitter.width = 0.1, dodge.width = dodge_with), alpha = 0.3) +
+        geom_errorbar(aes(ymin = mean - ci, ymax = mean + ci, y = NULL), data = ciData, width = .2, size = 0.9, position = position_dodge(width = dodge_with)) +
+        # geom_line(aes(y = mean, group = eval(rlang::UQE(groupVar2))), position = position_dodge(width = dodge_with), data = ciData) +
+        xlab(groupVar1) +
+        ylab(quo_name(variable))
+
+    gg
+}
+
+## DEBUG-START
+if(F){
+    devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v1.43/R/ggplot_commons.R")
+
+    lmModel = lm(len ~ supp*dose, data = ToothGrowth)
+    str(lmModel)
+
+    ToothGrowth %>% group_by(supp, as.factor(dose)) %>% plot_confint(len)
+    ToothGrowth %>% group_by(supp, dose) %>% plot_ci(len)
+    # ToothGrowth %>% mutate_inplace(dose, as.factor()) %>% group_by(supp, dose) %>% plot_ci(len)
+
+    .plot_confint = function(grpData, variable, ci_interval=0.95) plot_confint(grpData, quo_name(variable), ci_interval)
+
+    interaction_plot = function(grpData, variable, ci_interval=0.95){
+        ## invert the grouping
+        grpData = ToothGrowth %>% group_by(supp, as.factor(dose))
+        groupVar1 = groups(grpData)[[1]]
+        groupVar2 = groups(grpData)[[2]]
+        browser()
+        regrouped = grpData %>% group_by(eval(rlang::UQE(groupVar2)), eval(rlang::UQE(groupVar1)))
+
+        multiplot(
+            .plot_confint(grpData, rlang::UQ(variable)),
+            plot_confint(grpData, enquo(variable)),
+            plot_confint(regrouped, enquo(variable))
+        )
+    }
+
+ToothGrowth %>% group_by(supp, as.factor(dose))  %>% interaction_plot(len)
+
+}
+## DEBUG-END
 
 
 ########################################################################################################################
