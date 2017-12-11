@@ -1,6 +1,12 @@
 
 # requires
-# devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v1.45/R/core_commons.R")
+if(!exists("load_pack")){
+devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v1.45/R/core_commons.R")
+}
+
+if(!exists("multiplot")){
+devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v1.45/R/ggplot_commons.R")
+}
 
 calc_ci = function(df, variable, ci_interval=0.95){
     variable <- enquo(variable)
@@ -62,6 +68,7 @@ plot_ci = function(grpData, variable, ci_interval=0.95){
 
 ## todo support model formula instead of group data
 interaction_plot = function(grpData, variable, ci_interval=0.95){
+
     variable <- enquo(variable)
 
     #fail if there are more not 2 group attributes
@@ -86,15 +93,19 @@ interaction_plot = function(grpData, variable, ci_interval=0.95){
         geom_errorbar(aes(ymin = mean - ci, ymax = mean + ci, y = NULL), data = ciData, width = .2, size = 0.9, position = position_dodge(width = dodge_with)) +
         geom_line(aes(y = mean, group = eval(rlang::UQE(groupVar2))), position = position_dodge(width = dodge_with), data = ciData) +
         xlab(groupVar1) +
-        ylab(quo_name(variable))
+        ylab(quo_name(variable)) +
+        guides(color=guide_legend(groupVar2))
+
 
     gg
 }
 
 
 two_way_interaction = function(grpData, variable){
+    # Example:
+    # grpData = ToothGrowth %>% group_by(supp, as.factor(dose))
+
     ## invert the grouping
-    grpData = ToothGrowth %>% group_by(supp, as.factor(dose))
     groupVar1 = groups(grpData)[[1]]
     groupVar2 = groups(grpData)[[2]]
 
@@ -107,6 +118,14 @@ two_way_interaction = function(grpData, variable){
 }
 
 
+## EXAMPLES-START
+if(F){
+# interaction_plot(ToothGrowth %>% group_by(supp, as.factor(dose)),len)
+
+ToothGrowth %>% group_by(supp, as.factor(dose))  %>% interaction_plot(len)
+}
+## EXAMPLES-END
+
 
 ########################################################################################################################
 ### DEV PLAYGROUND
@@ -114,7 +133,8 @@ two_way_interaction = function(grpData, variable){
 
 ## DEBUG-START
 if(F){
-    devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v1.43/R/ggplot_commons.R")
+
+    source("/Users/brandl/Dropbox/projects/datautils/R/stats/ci_commons.R")
 
     lmModel = lm(len ~ supp*dose, data = ToothGrowth)
     varNames = attr(attr(lmModel$terms, "factors"), "dimnames")[[1]]
@@ -135,53 +155,10 @@ if(F){
         lmModel$model
     }
 
-
-
     ToothGrowth %>% group_by(supp, as.factor(dose))  %>% interaction_plot2(len)
 
 }
 ## DEBUG-END
 
 
-if(F){
-
-    # iris %>% ggplot(aes(Sepal.Width)) + geom_histogram()
-    iris %>%
-        group_by(Species) %>%
-        plot_ci(Petal.Length)
-    iris %>%
-        group_by(Sepal.Width > 3, Species) %>%
-        plot_ci(Petal.Length)
-    iris %>%
-        group_by(Sepal.Width > 3, Sepal.Width > 4, Species) %>%
-        plot_ci(Petal.Length)
-
-
-
-    ## see https://stackoverflow.com/questions/43405843/how-to-use-the-devel-version-of-dplyrs-enquo-and-quo-name-in-a-function-with-ti/43601059
-    ## also see https://stackoverflow.com/questions/45279287/use-dplyr-se-with-ggplot2
-
-    #' generic simple examples
-    some_plot = function(data, var){
-        variable <- enquo(var)
-        tt = quo_name(variable)
-        ggplot(data, aes_string(tt)) + geom_histogram()
-    }
-    some_plot(iris, Sepal.Length) -> works
-
-    ## without using aes_string
-    some_plot = function(data, var){
-        variable <- enquo(var)
-        # ggplot(data, aes(eval(rlang::UQE(variable))+eval(rlang::UQE(variable)))) + geom_histogram()
-        ggplot(data, aes(eval(rlang::UQE(variable)))) + geom_histogram()
-    }
-    some_plot(iris, Petal.Length)
-
-
-
-    foo = function(){
-
-
-    }
-}
 

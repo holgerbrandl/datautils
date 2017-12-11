@@ -1,0 +1,2 @@
+
+foo = function() prinln("bar")
