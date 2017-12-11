@@ -84,17 +84,22 @@ interaction_plot = function(grpData, variable, ci_interval=0.95){
     )
 
 
+    trimEval = function(name){
+        if(!str_detect(name, "^eval[(]")) return(name)
+        str_match(name, "eval[(](.*)[)]")[2]
+    }
     groupVar1 = groups(grpData)[[1]]
     groupVar2 = groups(grpData)[[2]]
+
     dodge_with=0.2
 
     gg = ggplot(grpData, aes(x = eval(rlang::UQE(groupVar1)), y = eval(rlang::UQE(variable)), color = eval(rlang::UQE(groupVar2)))) +
         geom_jitter(position = position_jitterdodge(jitter.width = 0.1, dodge.width = dodge_with), alpha = 0.3) +
         geom_errorbar(aes(ymin = mean - ci, ymax = mean + ci, y = NULL), data = ciData, width = .2, size = 0.9, position = position_dodge(width = dodge_with)) +
         geom_line(aes(y = mean, group = eval(rlang::UQE(groupVar2))), position = position_dodge(width = dodge_with), data = ciData) +
-        xlab(groupVar1) +
+        xlab(trimEval(groupVar1)) +
         ylab(quo_name(variable)) +
-        guides(color=guide_legend(groupVar2))
+        guides(color=guide_legend(trimEval(groupVar2)))
 
 
     gg
