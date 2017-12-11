@@ -82,6 +82,7 @@ install_github("holgerbrandl/datautils@v0.4")
 ## or from local dir
 devtools::install_local("/Users/brandl/Dropbox/projects/datautils")
 
+## adjust the search path for `modules`
 # options(import.path = "/Users/brandl/Library/R/3.4/library")
 # options(import.path = .libPaths()[1])
 options(import.path = .libPaths())
@@ -90,6 +91,10 @@ options(import.path = .libPaths())
 # modules::import_package('datautils')
 ## rather al
 modules::import('datautils/stats/ci_commons')
+
+## import all stats
+modules::import('datautils/stats/tester')
+modules::import('datautils/stats')
 
 
 ## loadd it, which will export nothing by default
