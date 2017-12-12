@@ -105,7 +105,7 @@ interaction_plot = function(grpData, variable, ci_interval=0.95){
     gg
 }
 
-
+# for interpretation see https://courses.washington.edu/smartpsy/interactions.htm
 two_way_interaction = function(grpData, variable){
     # Example:
     # grpData = ToothGrowth %>% group_by(supp, as.factor(dose))

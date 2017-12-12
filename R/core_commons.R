@@ -14,13 +14,15 @@ rm(r)
 options(help_type = "html")
 
 ## plot more characters per line
-options(width = 150)
+options(width = 120)
 
 ## adjust dplyr printing settings
 ## http://stackoverflow.com/questions/22471256/overriding-variables-not-shown-in-dplyr-to-display-all-columns-from-df
 ## http://stackoverflow.com/questions/29396111/dplyrtbl-df-fill-whole-screen
 # options(dplyr.print_min = 20) ## num rows
-options(dplyr.width = 130) ## width
+# options(dplyr.width = 130) ## width
+# options(tibble.width  = 100)
+
 #options(dplyr.width = 250); options(width=250) ## width
 
 # for sqldf to avoid the use of tckl
