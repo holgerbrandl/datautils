@@ -414,14 +414,14 @@ first_group = function(groupedDF){
 
 
 mutate_inplace <- function(data, var, expr){
-    install_package("rlang")
+    load_pack("rlang")
 
     var <- enexpr(var)
     var_name <- quo_name(var)
     expr <- enexpr(expr)
 
     call <- quo(UQ(var) %>% UQ(expr))
-    print(call)
+    # print(call)
     mutate(data, !!var_name := UQ(call))
 }
 
