@@ -45,10 +45,11 @@ if [[ ${mdFile: -3} != ".md" ]]; then
 fi
 
 cd $(dirname ${mdFile})
-tmpRmd=.$(basename ${mdFile} .md).Rmd
+tmpRmd=$(basename ${mdFile} .md).Rmd
 sed 's/```r/```{r}/g' ${mdFile} > ${tmpRmd}
 rend.R --toc ${tmpRmd}
-open .$(basename $1 .md).html
+rm ${tmpRmd}
+open $(basename $1 .md).html
 }
 export -f rendr_md
 
