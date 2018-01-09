@@ -228,7 +228,7 @@ set_names <- function(df, ...){
 
 pretty_names = function(some_names, make_unique=FALSE){
     new_names = some_names %>%
-        str_replace_all("[#=.,()/*: -]+", "_") %>%
+        str_replace_all("[#+=.,()/*: -]+", "_") %>%
         str_replace(fixed("["), "") %>%
         str_replace(fixed("]"), "") %>%
     ## remove leading and tailing underscores
