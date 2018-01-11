@@ -167,23 +167,13 @@ first_group = function(x, which=1) x %>% nest %>% slice(which) %>% unnest(data)
 
 
 
-vec2df <- function(namedVec){
-    warning("DEPRECATED use vec_as_df instead of vec2df")
-    namedVec %>% {data.frame(name = names(.), value = ., row.names = NULL)}
-}
-
 vec_as_df <- function(namedVec, row_name="name", value_name="value"){
     data_frame(name = names(namedVec), value = namedVec) %>% set_names(row_name, value_name)
 }
 
 
-rownames2column <- function(df, colname){
-    warning("DEPRECATED Use dplyr::add_rownames directly")
-    add_rownames(df, var = colname)
-}
-
-
 column2rownames <- function(df, colname){
+    warning("DEPRECATED: Use tibble::column_to_rownames directly")
     #browser()
     ## force into df to avoid dplyr problems
     df <- as_df(df)
@@ -287,7 +277,13 @@ fct_revfreq = function(x) fct_infreq(x) %>% fct_rev
 
 
 ## replace R within pipe change just use ... %>% do(replaceNA(0)) %>% ...
-replaceNA <- function(x, withValue) { x[is.na(x)] <- withValue; x}
+replaceNA <- function(x, withValue) {
+    warning("DEPRECATED Use replace_NA instead")
+    x[is.na(x)] <- withValue
+    x
+}
+
+replace_NA <- function(x, withValue) { x[is.na(x)] <- withValue; x}
 
 
 
@@ -308,21 +304,6 @@ match_df = function(df, search_expr){
     apply(df, 1, function(r) any(filter_fun(r))) %>% subset(df, .)
 }
 
-
-## todo still needed since there's if_else in dplyr now
-safe_ifelse <- function(cond, yes, no) {
-    warning("DEPRECATED Use dplyr::if_else instead")
-
-    #browser()
-    isfacOrChar <- function(x) class(x) %in% c("factor", "character")
-
-    if (isfacOrChar(yes) | isfacOrChar(no)) {
-        yes <- ac(yes)
-        no <- ac(no)
-    }
-
-    ifelse(cond, yes, no)
-}
 
 
 ## for na instead use mutate_each with:
@@ -363,12 +344,6 @@ filter_count <- function(df, ...){
     filter(df, ...)
 }
 
-# Example: publications %>% count(journal) %>% as("num_pubs")
-# as = function(df, name){
-#     warning("DEPRECATED use 'as_var' instead of 'as'")
-#     names(df)[length(names(df))] = name
-#     df
-# }
 
 n_as = function(df, name){
     names(df)[length(names(df))] = name
@@ -499,13 +474,6 @@ rmerge <- function(LDF, by, ...){
 }
 
 
-
-## DEPRECTED: use trim_ext instead
-trimEnd <- function(fileNames, ...){
-    warning("DEPRECATED: Use trim_ext instead");
-    trim_ext(fileNames, ...)
-}
-
 trim_ext <- function(fileNames, ...){
     for (fileExt in list(...)) {
         fileNames <- str_replace(fileNames, paste(fileExt, "$", sep = ""), "")
@@ -514,10 +482,6 @@ trim_ext <- function(fileNames, ...){
     fileNames
 }
 
-## DEPRECATED Use write_tsv instead
-write.delim <- function(df, file, header=TRUE, ...){
-    write.table(df, file, row.names = FALSE, col.names = header, sep = "\t", ...)
-}
 
 rmSomeElements <- function(vec, toDel) vec[! (vec %in% toDel)]
 
