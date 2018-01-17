@@ -28,6 +28,8 @@ options(width = 100)
 # for sqldf to avoid the use of tckl
 options(gsubfn.engine = "R")
 
+## fix annoying column name abbreviations in tibble/pillar
+options(pillar.min_title_chars=10000)
 
 ########################################################################################################################
 ## automatic package installation
