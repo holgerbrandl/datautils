@@ -545,6 +545,9 @@ trim_outliers <- function(values, probs=c(0.05, 0.95)){
 
 se <- function(x) sd(x, na.rm = TRUE) / sqrt(sum(! is.na(x)))
 
+# https://stackoverflow.com/questions/43627679/round-any-equivalent-for-dplyr/46489816#46489816
+round_any = function(x, accuracy, f=round){f(x/ accuracy) * accuracy}
+
 
 ########################################################################################################################
 ### Misc
