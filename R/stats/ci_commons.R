@@ -1,11 +1,11 @@
 
 # requires
 if(!exists("load_pack")){
-devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v1.45/R/core_commons.R")
+devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v1.46/R/core_commons.R")
 }
 
 if(!exists("multiplot")){
-devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v1.45/R/ggplot_commons.R")
+devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v1.46/R/ggplot_commons.R")
 }
 
 calc_ci = function(df, variable, ci_interval=0.95){
@@ -26,8 +26,8 @@ calc_ci = function(df, variable, ci_interval=0.95){
     ) %>% select(-c(mean, sd, N, se, mean))
 }
 
-iris %>% group_by(Species) %>% calc_ci(Sepal.Length)
-iris %>% group_by(Species, Sepal.Width>3) %>% calc_ci(Sepal.Length)
+# iris %>% group_by(Species) %>% calc_ci(Sepal.Length)
+# iris %>% group_by(Species, Sepal.Width>3) %>% calc_ci(Sepal.Length)
 
 
 #' now with plotting
