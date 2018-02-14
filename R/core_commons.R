@@ -14,7 +14,7 @@ rm(r)
 options(help_type = "html")
 
 ## plot more characters per line
-options(width = 100)
+# options(width = 100)
 # options(tibble.width = 110)  ## max width when not using toc
 # options( tibble.width = 90) ## max width when using toc
 
