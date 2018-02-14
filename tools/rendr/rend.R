@@ -155,6 +155,12 @@ knitr::opts_knit$set(
     root.dir = getwd()
 )
 
+if(opts$toc){ warning("adding toc config")
+    options( tibble.width = 90) ## max width when using toc
+} else{
+    options( tibble.width = 110) ## max width when using toc
+}
+
 
 rmarkdown::render(input=tmpScript,output_file=paste0(reportName, ".html"),
     output_format=rmarkdown::html_document(toc = opts$toc, toc_float = opts$toc, code_folding = if(opts$e) "hide" else "show", keep_md=keep_markdown_files, theme="united", number_sections=T),
