@@ -9,7 +9,7 @@ Download a local copy and add it to your path using
 ```
 targetDirectory=~/bin/rendr
 mkdir -p $targetDirectory
-wget -NP $targetDirectory --no-check-certificate https://raw.githubusercontent.com/holgerbrandl/datautils/master/R/rendr/rend.R
+wget -NP $targetDirectory --no-check-certificate https://raw.githubusercontent.com/holgerbrandl/datautils/master/tools/rendr/rend.R
 chmod +x $targetDirectory/rend.R
 echo 'export PATH='"$targetDirectory"':$PATH' >> ~/.bash_profile
 ```
