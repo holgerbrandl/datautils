@@ -84,6 +84,12 @@ check_version = function(pkg_name, min_version) {
 #load_pack(reshape2)
 #load_pack(reshape2, quietly=T, warn_conflicts=F)
 
+## common plotting requirements since they are omnipresent
+load_pack(ggplot2)
+load_pack(scales, warn_conflicts = F) # note this has a known conflit with purrr::discard
+load_pack(grid)
+
+
 ## load on purpose after plyr
 load_pack(purrr)
 load_pack(tibble)
@@ -101,12 +107,6 @@ load_pack(digest)
 #suppressWarnings(load_pack(readxl)) ## supress differring build number
 
 #load_pack(readxl) ## supress differring build number
-
-
-## common plotting requirements since they are omnipresent
-load_pack(ggplot2)
-load_pack(scales, warn_conflicts = F) # note this has a known conflit with purrr::discard
-load_pack(grid)
 
 ## for table exploration without using Rstudio
 load_pack(DT)
