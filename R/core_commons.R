@@ -487,6 +487,9 @@ trim_ext <- function(fileNames, ...){
 }
 
 
+# see https://stackoverflow.com/questions/7201341/how-can-2-strings-be-concatenated
+'%s+%' <- function(x, y)paste0(x,y)
+
 rmSomeElements <- function(vec, toDel) vec[! (vec %in% toDel)]
 
 rmLastElement <- function(vec) vec[- length(vec)]
