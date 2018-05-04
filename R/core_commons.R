@@ -407,6 +407,15 @@ mutate_inplace <- function(data, var, expr){
 # mutate_inplace( iris, Species, str_replace("vir", "foo") )
 
 
+# from https://stackoverflow.com/questions/34096162/dplyr-mutate-replace-on-a-subset-of-rows
+mutate_cond <- function(.data, condition, ..., envir = parent.frame()) {
+    condition <- eval(substitute(condition), .data, envir)
+    .data[condition, ] <- .data[condition, ] %>% mutate(...)
+    .data
+}
+
+
+
 
 reload_dplyr <- function(){
     unloadNamespace('tidyr')
