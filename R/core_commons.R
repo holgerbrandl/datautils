@@ -109,7 +109,14 @@ load_pack(digest)
 #load_pack(readxl) ## supress differring build number
 
 ## for table exploration without using Rstudio
+install_package("knitr")
 load_pack(DT)
+
+## cli development
+install_package("docopt")
+
+## enviroment persistence
+install_package("session")
 
 
 ## moved into datatable_commons because replaced almost everywhere with dplyr
