@@ -1,6 +1,6 @@
 #!/usr/bin/env kscript
 
-@file:DependsOn()
+//@file:DependsOn()
 
 import java.io.File
 
