@@ -1,11 +1,11 @@
 
 # requires
 if(!exists("load_pack")){
-devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v1.46/R/core_commons.R")
+devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v1.49/R/core_commons.R")
 }
 
 if(!exists("multiplot")){
-devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v1.46/R/ggplot_commons.R")
+devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/v1.49/R/ggplot_commons.R")
 }
 
 calc_ci = function(df, variable, ci_interval=0.95){
