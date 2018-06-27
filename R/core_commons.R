@@ -84,6 +84,8 @@ check_version = function(pkg_name, min_version) {
 #load_pack(reshape2)
 #load_pack(reshape2, quietly=T, warn_conflicts=F)
 
+load_pack(conflicted)
+
 ## common plotting requirements since they are omnipresent
 load_pack(ggplot2)
 load_pack(scales, warn_conflicts = F) # note this has a known conflit with purrr::discard
