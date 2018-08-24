@@ -20,7 +20,7 @@ cp $mdInput ${mdBase}.Rmd
 kscript --idea strip_chunk_results.kts
 kscript  strip_chunk_results.kts ${mdBase}.md
 
-Rscript - <<EOF
+Rscript - <<"EOF"
 knitr::knit('${mdBase}.Rmd', '${mdBase}.md')
 EOF
 
