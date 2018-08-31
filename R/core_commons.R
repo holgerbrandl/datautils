@@ -556,7 +556,7 @@ lsosh <- function(..., n=10) {
 
 ## outlier handling
 trim_outliers <- function(values, probs=c(0.05, 0.95)){
-    values = deResults$pvalue
+    # values = deResults$pvalue
     stopifnot(length(probs) == 2)
     quantiles = quantile(values, probs, na.rm = TRUE)
 
