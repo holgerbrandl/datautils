@@ -402,8 +402,6 @@ first_group = function(groupedDF){
 
 
 mutate_inplace <- function(data, var, expr){
-    load_pack("rlang")
-
     var <- enexpr(var)
     var_name <- quo_name(var)
     expr <- enexpr(expr)
