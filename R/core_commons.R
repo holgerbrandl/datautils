@@ -46,7 +46,7 @@ install_package <- function(x){
 
     ## if it's still missing check if it's on bioconductor
     if (! isTRUE(x %in% .packages(all.available = TRUE))) {
-        bcPackages <- as.vector(read.dcf(url("https://bioconductor.org/packages/3.3/bioc/src/contrib/PACKAGES"), "Package"))
+        bcPackages <- as.vector(read.dcf(url("https://bioconductor.org/packages/3.7/bioc/src/contrib/PACKAGES"), "Package"))
 
         if (any(bcPackages == x)) {
             source("http://bioconductor.org/biocLite.R")
@@ -176,6 +176,8 @@ splat = plyr::splat
 shuffle <- function(df) df[sample(nrow(df)),]
 
 first <- function(x, n=1) head(x, n)
+
+## Extract the first group of a grouped data-frame
 first_group = function(x, which=1) x %>% nest %>% slice(which) %>% unnest(data)
 
 
@@ -390,15 +392,6 @@ get_col = function(data, col_index) data[, col_index] ## also could use magrittr
 
 ## convience method to extract a column, defaults to _ as separator and the first column
 extract_col = function(x, col_index=1, sep="_", num_cols=10){ str_split_fixed(x, sep, num_cols)[, col_index]}
-
-
-## Extract the first group of a grouped data-frame
-first_group = function(groupedDF){
-    # groupedDF = geneLists
-    # groupedDF = iris %>% group_by(Species)
-    # https://stackoverflow.com/questions/33775239/emulate-split-with-dplyr-group-by-return-a-list-of-data-frames
-    (groupedDF %>% do(data = (.)) %$% map(data, identity))[[1]]
-}
 
 
 mutate_inplace <- function(data, var, expr){
