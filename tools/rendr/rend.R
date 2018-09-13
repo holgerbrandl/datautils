@@ -41,13 +41,15 @@ Use rmarkdown to render R and Rmd into html documents
 Usage: rend.R [options] <r_script> [<quoted_script_args>]
 
 Options:
--e            Collapse code chunks
--c            Cache results
--w            Show warnings
--m            Show Messages
---toc         Add a table of contents
---out <name>  Name of html report. By default the name of the R-script is used
---keep        Keep generated Rmd and md files
+-e                  Collapse code chunks
+-c                  Cache results
+-w                  Show warnings
+-m                  Show Messages
+--toc               Add a table of contents
+--out <name>        Name of html report. By default the name of the R-script is used
+--resprefix <name>  Sets a custom `results_prefix` variable for the script which can be used to prefix results
+                    files. The default is the name of the R-script
+--keep              Keep generated Rmd and md files
 '
 
 opts <- docopt(doc, args=rendrArgs)
@@ -71,8 +73,16 @@ if(!file.exists(r_script)){
 
 
 reportName=opts$out
+prettyReportName = str_replace(str_replace(basename(r_script), ".R$", ""), ".Rmd$", "")
 if(is.null(reportName)){
-    reportName=str_replace(str_replace(basename(r_script), ".R$", ""), ".Rmd$", "")
+    reportName=prettyReportName
+}
+
+## either use report-name as default `results_prefix` or user-provided one
+if(!is.null(opts$resprefix)){
+    results_prefix = opts$resprefix
+}else{
+    results_prefix = prettyReportName
 }
 
 requiresSpinning=!str_detect(r_script, ".Rmd$")

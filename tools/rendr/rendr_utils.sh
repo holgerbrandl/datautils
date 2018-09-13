@@ -22,7 +22,7 @@ rendr_snippet(){
     echo "rendering $tmpR..."
 
     shift
-    rend.R $tmpR $*
+    rend.R --resprefix "$reportName" $tmpR $*
 
 #    rm -r $(dirname $tmpR)
     rm ${tmpR}
