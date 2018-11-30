@@ -589,6 +589,8 @@ add_prefix = function(filename) {
 
 ## https://stackoverflow.com/questions/18669886/how-to-unfold-user-and-environment-variable-in-r-language/46240642#46240642
 interp_from_env = function(path){
+    warning("DEPRECATED: Use substitute_shell_vars instead")
+
     # DEBUG path="${genomeFasta}.algncounts.txt"
     e <- new.env()
     env = Sys.getenv() %>% purrr::discard(~ str_detect(.x, fixed("()")))
@@ -597,6 +599,12 @@ interp_from_env = function(path){
     # (system("export", intern=T) %>% str_split_fixed(" ", 2))[,2] %>% map(~eval(parse(text=.), envir=e))
     glue::glue(path, .envir=e, .open="${")
 }
+
+substitute_shell_vars = function(path){
+    # return(system("ls ${PRJ_DATA}/peptides/raw_intensities/siama_non_param_diffabund.da_results.txt",intern=T))
+    return(system(paste("echo", path),intern=T))
+}
+
 
 # #usage examples
 # require(stringr)
