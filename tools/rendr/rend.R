@@ -13,10 +13,20 @@ options(repos = r)
 rm(r)
 
 # load the docopt library
-suppressMessages(if (!require("docopt")) install.packages("docopt"))
-suppressMessages(if (!require("knitr")) install.packages("knitr"))
-suppressMessages(if (!require("stringr")) install.packages("stringr"))
-suppressMessages(if (!require("rmarkdown")) install.packages("rmarkdown"))
+load_pack <- function(x, warn_conflicts=T){
+    x <- as.character(substitute(x));
+
+    install.packages(x)
+
+    ## load it using a library function so that load_pack errors if package is still not ins
+    eval(parse(text = paste("base::library(", x, ",  quietly=T, warn.conflicts=", warn_conflicts, ")", sep = "")))
+}
+
+load_pack("docopt")
+load_pack("knitr")
+load_pack("stringr")
+load_pack("rmarkdown")
+
 # disabled because user script will fail if they load plyr before dplyr
 #suppressMessages(if (!require("dplyr")) install.packages("dplyr"))
 
