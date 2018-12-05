@@ -16,7 +16,11 @@ rm(r)
 load_pack <- function(x, warn_conflicts=T){
     x <- as.character(substitute(x));
 
-    install.packages(x)
+    # install.packages(x)
+    if (! isTRUE(x %in% .packages(all.available = TRUE)) && any(available.packages()[, 1] == x)) {
+        # update.packages(ask=F) # update dependencies, if any.
+        eval(parse(text = paste("install.packages('", x, "')", sep = "")))
+    }
 
     ## load it using a library function so that load_pack errors if package is still not ins
     eval(parse(text = paste("base::library(", x, ",  quietly=T, warn.conflicts=", warn_conflicts, ")", sep = "")))
