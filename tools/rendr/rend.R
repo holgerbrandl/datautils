@@ -118,7 +118,9 @@ print(paste0("compiling tmp-script in ",tmpScript, "'"))
 #system(paste("cat ", r_script," | sed 's/_TODAY_/'$(date +\"%m-%d-%Y\")'/g' | grep -Ev '^#+$' | grep -Fv '#!/usr/bin/env Rscript' >", tmpScript))
 
 ## see /Users/brandl/Dropbox/Public/datautils/R/rendr/test/header_after_md_text_fix.sh
-system(paste("cat ", r_script," | sed 's/_TODAY_/'$(date +\"%m-%d-%Y\")'/g' | grep -Ev '^#####+$' | sed 's/#\\x27 #/#\\x27\\n\\n#\\x27 #/g' | grep -Fv '#!/usr/bin/env Rscript' >", tmpScript))
+# system(paste("cat ", r_script," | sed 's/_TODAY_/'$(date +\"%m-%d-%Y\")'/g' | grep -Ev '^#####+$' | sed 's/#\\x27 #/#\\x27\\n\\n#\\x27 #/g' | grep -Fv '#!/usr/bin/env Rscript' >", tmpScript))
+file.copy(r_script, tmpScript, overwrite=T)
+
 
 ## add yaml header (will be ignored if already present
 metadata <- paste0('#\'\n\n',
@@ -187,7 +189,7 @@ if(opts$toc){ warning("adding toc config")
 
 
 rmarkdown::render(input=tmpScript,output_file=paste0(reportName, ".html"),
-    output_format=rmarkdown::html_document(toc = opts$toc, toc_float = opts$toc, code_folding = if(opts$e) "hide" else "show", keep_md=keep_markdown_files, theme="united", number_sections=T),
+    output_format=rmarkdown::html_document(toc = opts$toc, toc_float = opts$toc, code_folding = if(opts$e) "hide" else "show", keep_md=T, theme="united", number_sections=T),
     output_dir=getwd())
 
 #spin(tmpScript, knit=T)
