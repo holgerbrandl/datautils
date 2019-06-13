@@ -26,6 +26,12 @@ devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/m
 Installation
 ============
 
+To install as package run
+```
+install.packages("remotes")
+remotes::install_github("holgerbrandl/datautils")
+```
+
 To allow for reproducible research, we prefer [version tags](https://github.com/holgerbrandl/datautils/releases) over cran deployment. You can use these tags to write our workflows. Eg. you could use the stable `v1.45` tag
 
 ```
