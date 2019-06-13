@@ -605,7 +605,7 @@ interp_from_env = function(path){
 
 substitute_shell_vars = function(path){
     # return(system("ls ${PRJ_DATA}/peptides/raw_intensities/siama_non_param_diffabund.da_results.txt",intern=T))
-    return(system(paste("echo", path),intern=T))
+    return(system(paste("bash -c  'echo", path, "'"),intern=T))
 }
 
 
