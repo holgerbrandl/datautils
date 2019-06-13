@@ -580,11 +580,12 @@ table_browser <- function(df, caption=deparse(substitute(df)), ...){
     datatable(df, filter = "bottom", extensions = 'Buttons', options = list(dom = 'Bfrtip', buttons = c('copy', 'csv', 'excel')), caption = caption, ...)
 }
 
-results_prefix = function(){ if_else(existis)}
+output_prefix = function(){ ifelse(exists("results_prefix"), results_prefix, "")}
+
 #results_prefix = "env_data_prep"
 add_prefix = function(filename) {
     ## prefix a name with a project-prefix. Requires that results_prefix to be defined
-    prefixName=if_else(str_length(results_prefix)==0, basename(filename), paste0(results_prefix, ".", basename(filename)))
+    prefixName=if_else(str_length(output_prefix())==0, basename(filename), paste0(output_prefix(), ".", basename(filename)))
 
     file.path(dirname(filename), prefixName)
 }
