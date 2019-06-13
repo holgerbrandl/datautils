@@ -84,7 +84,8 @@ check_version = function(pkg_name, min_version) {
 #load_pack(reshape2)
 #load_pack(reshape2, quietly=T, warn_conflicts=F)
 
-load_pack(conflicted)
+# disabled because causing too much trouble
+# load_pack(conflicted)
 
 ## common plotting requirements since they are omnipresent
 load_pack(ggplot2)
@@ -579,6 +580,7 @@ table_browser <- function(df, caption=deparse(substitute(df)), ...){
     datatable(df, filter = "bottom", extensions = 'Buttons', options = list(dom = 'Bfrtip', buttons = c('copy', 'csv', 'excel')), caption = caption, ...)
 }
 
+results_prefix = function(){ if_else(existis)}
 #results_prefix = "env_data_prep"
 add_prefix = function(filename) {
     ## prefix a name with a project-prefix. Requires that results_prefix to be defined
