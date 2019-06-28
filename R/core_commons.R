@@ -107,6 +107,8 @@ load_pack(readxl) ## supress differring build number
 ## needed for caching
 load_pack(digest)
 
+load_pack(snakecase)
+
 #suppressWarnings(load_pack(readxl)) ## supress differring build number
 
 #load_pack(readxl) ## supress differring build number
@@ -232,6 +234,8 @@ set_names <- function(df, ...){
 
 # devtools::source_url("https://www.dropbox.com/s/r6kim8kb8ohmptx/core_commons.R?dl=1")
 
+
+
 pretty_names = function(some_names, make_unique=FALSE){
     new_names = some_names %>%
         str_replace_all("[#+=.,()/*: -]+", "_") %>%
@@ -242,7 +246,7 @@ pretty_names = function(some_names, make_unique=FALSE){
         str_replace("^[_]+", "") %>%
     ## remove unicode characters
         iconv(to = 'ASCII', sub = '') %>% ## http://stackoverflow.com/questions/24807147/removing-unicode-symbols-from-column-names
-        tolower
+        to_snake_case
 
     if(make_unique){
     ## make duplicates unqiue
