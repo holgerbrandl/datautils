@@ -585,7 +585,7 @@ table_browser <- function(df, caption=deparse(substitute(df)), ...){
     datatable(df, filter = "bottom", extensions = 'Buttons', options = list(dom = 'Bfrtip', buttons = c('copy', 'csv', 'excel')), caption = caption, ...)
 }
 
-output_prefix = function(){ ifelse(exists("results_prefix"), results_prefix, "")}
+output_prefix = function(){ ifelse(exists("results_prefix"), results_prefix, "__tmp_results_prefix")}
 
 #results_prefix = "env_data_prep"
 add_prefix = function(filename) {
