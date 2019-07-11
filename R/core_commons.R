@@ -225,12 +225,18 @@ set_names <- function(df, ...){
     names(df) <- newnames;
     return(df)
 }
+
+
 # iris %>% purrr::set_names(paste(names(iris), "__")) %>% glimpse
 # iris %>% set_names(paste(names(iris), "__")) %>% glimpse
 #
 #iris %>% set_names(c("setosa", "hallo")) %>% head
 #iris %>% set_names("setosa", "hallo") %>% head
 
+
+# see https://stackoverflow.com/questions/43935160/use-input-of-purrrs-map-function-to-create-a-named-list-as-output-in-r/56949741#56949741
+# 1 : 5 %>% { set_names(map(., ~ .x + 3), .)}
+map_named = function(x, ...) map(x, ...) %>% set_names(x)
 
 # devtools::source_url("https://www.dropbox.com/s/r6kim8kb8ohmptx/core_commons.R?dl=1")
 
@@ -507,6 +513,23 @@ trim_ext <- function(fileNames, ...){
 rmSomeElements <- function(vec, toDel) vec[! (vec %in% toDel)]
 
 rmLastElement <- function(vec) vec[- length(vec)]
+
+
+########################################################################################################################
+## Parallelization
+
+# For progress monitoring see https://github.com/tidyverse/purrr/issues/149#issuecomment-365270639 progress -> progressively
+progressively <- function(.f, .n, ...) {
+    pb <- progress::progress_bar$new(total = .n, ...)
+    function(...) {
+        pb$tick()
+        .f(...)
+    }
+}
+
+## Usage
+# progress_fun_lm <- progressively(fc_lm, n_groups(allTest))
+# progress_fun_lm <- progressively(fc_lm, 1000)
 
 
 ########################################################################################################################
