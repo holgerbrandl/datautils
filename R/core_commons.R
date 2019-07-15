@@ -133,7 +133,8 @@ install_package("session")
 #### Convenience aliases
 
 
-echo <- function(...) cat(paste(...), fill = T)
+# echo <- function(...) cat(paste(...), fill = T)
+echo <- function(...) cat(glue::glue(paste(...)), fill = T)
 
 ac <- function(...) as.character(...)
 
