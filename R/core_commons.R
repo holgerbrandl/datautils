@@ -134,7 +134,8 @@ install_package("session")
 
 
 # echo <- function(...) cat(paste(...), fill = T)
-echo <- function(...) cat(glue::glue(paste(...)), fill = T)
+echo = function(..., .envir=parent.frame()) cat(glue::glue(paste(...), .envir=.envir), fill = T)
+# foo = "bar"; echo("hello {foo}")
 
 ac <- function(...) as.character(...)
 
