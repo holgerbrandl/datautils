@@ -12,9 +12,15 @@ rotXlab <- function() theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 # allow for layer-wise subsetting
 # http://stackoverflow.com/questions/35806310/ggplot-plotting-layers-only-if-certain-criteria-are-met
+# pick <- function(condition){
+#     function(d) d %>% filter_(condition)
+# }
 pick <- function(condition){
-    function(d) d %>% filter_(condition)
+    function(d) d %>% filter(! ! enquo(condition))
 }
+# pick <- function(condition){ function(d) d %>% filter(!!enquo(condition)) }
+# lotOpGraph %>% activate(nodes) %>% pick(total_duration_op > quantile(total_duration_op, 0.95))(.)
+
 
 
 # Multiple plot function
