@@ -240,6 +240,8 @@ set_names <- function(df, ...){
 # 1 : 5 %>% { set_names(map(., ~ .x + 3), .)}
 map_named = function(x, ...) map(x, ...) %>% set_names(x)
 
+# better solution might be `letters %>% set_names() %>% map(toupper)` from https://github.com/tidyverse/purrr/issues/691#issuecomment-540944892
+
 # devtools::source_url("https://www.dropbox.com/s/r6kim8kb8ohmptx/core_commons.R?dl=1")
 
 
