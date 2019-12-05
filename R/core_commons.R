@@ -183,7 +183,8 @@ shuffle <- function(df) df[sample(nrow(df)),]
 first <- function(x, n=1) head(x, n)
 
 ## Extract the first group of a grouped data-frame
-first_group = function(x, which=1) x %>% nest %>% slice(which) %>% unnest(data)
+# https://stackoverflow.com/questions/26503350/how-to-extract-one-specific-group-in-dplyr
+first_group = function(x, which=1) x %>% nest %>% ungroup %>% slice(which) %>% unnest(data)
 
 
 
