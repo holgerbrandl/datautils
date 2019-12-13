@@ -646,3 +646,13 @@ substitute_shell_vars = function(path){
 # require(stringr)
 # read.delim(interp_from_env("${PRJ_DATA}/foo.txt") )
 # source(interp_from_env("${HOME}/bar.R"))
+
+
+getenv_or_default = function(name, default=NULL){
+    Sys.getenv(name) %>% { if (str_length(.) == 0)default else .}
+}
+
+getenv_or_fail = function(name){
+    print(length(Sys.getenv(name)))
+    Sys.getenv(name) %>% { if (str_length(.) == 0) stop(paste("Can find ", name, "in environment")); .}
+}
