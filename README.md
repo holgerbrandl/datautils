@@ -43,3 +43,18 @@ Instead to use the latest master-branch version (which is subject of constant ch
 ```
 devtools::source_url("https://raw.githubusercontent.com/holgerbrandl/datautils/master/R/datatable_commons.R")
 ```
+
+
+### How to serve locally?
+
+
+Launch local file server in directory where files are located
+```
+python -m http.server & 
+```
+
+Use the local server to source the files
+
+```
+devtools::source_url("http://localhost:8000/core_commons.R")
+```
