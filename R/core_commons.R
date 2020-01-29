@@ -653,6 +653,5 @@ getenv_or_default = function(name, default=NULL){
 }
 
 getenv_or_fail = function(name){
-    print(length(Sys.getenv(name)))
     Sys.getenv(name) %>% { if (str_length(.) == 0) stop(paste("Can find ", name, "in environment")); .}
 }
