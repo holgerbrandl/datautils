@@ -55,6 +55,7 @@ install_package <- function(x){
     }
 }
 
+# **{tbd}** seems obsolete because of pacman::p_load  https://www.statsandr.com/blog/an-efficient-way-to-install-and-load-r-packages/
 load_pack <- function(x, warn_conflicts=T){
     x <- as.character(substitute(x));
 
