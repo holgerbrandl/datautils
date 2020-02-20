@@ -194,6 +194,13 @@ first_group = function(x) x %>%
     { semi_join(x, .)}
 
 
+# https://stackoverflow.com/questions/37145863/splitting-a-data-frame-into-equal-parts
+group_n <- function(df, num_groups) df %>% group_by((row_number()-1) %/% (n()/num_groups))
+
+# num_groups = 10
+# iris %>% head(90) %>% group_by((row_number()-1) %/% (n()/num_groups)) %>% nest %>% pull(data)
+# iris %>% head(75) %>% group_by((row_number()-1) %/% (n()/num_groups)) %>% summarize(n())
+
 
 vec_as_df <- function(namedVec, row_name="name", value_name="value"){
     data_frame(name = names(namedVec), value = namedVec) %>% set_names(row_name, value_name)
@@ -662,3 +669,4 @@ getenv_or_default = function(name, default=NULL){
 getenv_or_fail = function(name){
     Sys.getenv(name) %>% { if (str_length(.) == 0) stop(paste("Can find ", name, "in environment")); .}
 }
+
