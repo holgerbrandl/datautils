@@ -186,12 +186,13 @@ first <- function(x, n=1) head(x, n)
 ## Extract the first group of a grouped data-frame
 # https://stackoverflow.com/questions/26503350/how-to-extract-one-specific-group-in-dplyr
 # first_group_OLD = function(x, which=1) x %>% nest %>% ungroup %>% slice(which) %>% unnest(data)
+# x = iris %>% group_by(Species)
 first_group = function(x) x %>%
     select(group_cols()) %>%
     distinct %>%
     ungroup %>%
     slice(1) %>%
-    { semi_join(x, .)}
+    { semi_join(x, ., by=group_vars(x))}
 
 
 # https://stackoverflow.com/questions/37145863/splitting-a-data-frame-into-equal-parts
