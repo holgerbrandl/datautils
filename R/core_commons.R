@@ -677,7 +677,8 @@ getenv_or_fail = function(name){
 # https://stackoverflow.com/questions/53157410/function-in-r-for-validating-existence-of-specific-columns-on-a-data-frame
 # for in-depth validation of column see http://www.markvanderloo.eu/yaRb/2016/03/25/easy-data-validation-with-the-validate-package/
 assert_columns <- function(df, ...){
-    columns = list(...)
+    columns = purrr::map(rlang::ensyms(...), rlang::as_string)
+
     if (! is.data.frame(df)) stop(paste("Argument", deparse(substitute(df)), "must be a data.frame."))
 
     if (! all(i <- rlang::has_name(df, columns))) {
@@ -685,7 +686,9 @@ assert_columns <- function(df, ...){
     }
 }
 
+# assert_columns(iris, Species, Sepal.Width)
 # assert_columns(iris, "Species", "Sepal.Width")
+# assert_columns(iris, "Species", "Sepal.Width2")
 
 
 
