@@ -31,7 +31,7 @@ options(help_type = "html")
 options(gsubfn.engine = "R")
 
 ## fix annoying column name abbreviations in tibble/pillar
-options(pillar.min_title_chars=10000)
+options(pillar.min_title_chars = 10000)
 
 ########################################################################################################################
 ## automatic package installation
@@ -135,7 +135,7 @@ install_package("session")
 
 
 # echo <- function(...) cat(paste(...), fill = T)
-echo = function(..., .envir=parent.frame()) cat(glue::glue(paste(...), .envir=.envir), fill = T)
+echo = function(..., .envir=parent.frame()) cat(glue::glue(paste(...), .envir = .envir), fill = T)
 # foo = "bar"; echo("hello {foo}")
 
 ac <- function(...) as.character(...)
@@ -192,11 +192,13 @@ first_group = function(x) x %>%
     distinct %>%
     ungroup %>%
     slice(1) %>%
-    { semi_join(x, ., by=group_vars(x))}
+    { semi_join(x, ., by = group_vars(x))}
 
 
 # https://stackoverflow.com/questions/37145863/splitting-a-data-frame-into-equal-parts
-group_n <- function(df, num_groups) df %>% group_by((row_number()-1) %/% (n()/num_groups))
+group_n <- function(df, num_groups) df %>% group_by((row_number() - 1) %/% (n() / num_groups))
+group_n_var <- function(df, num_groups) df %>% mutate(group_var = as.factor(1 + (row_number() - 1) %/% (n() / num_groups)))
+
 
 # num_groups = 10
 # iris %>% head(90) %>% group_by((row_number()-1) %/% (n()/num_groups)) %>% nest %>% pull(data)
@@ -274,16 +276,16 @@ pretty_names = function(some_names, make_unique=FALSE){
         iconv(to = 'ASCII', sub = '') %>% ## http://stackoverflow.com/questions/24807147/removing-unicode-symbols-from-column-names
         to_snake_case
 
-    if(make_unique){
-    ## make duplicates unqiue
-      new_names %<>% make.unique(sep = "_")
+    if (make_unique) {
+        ## make duplicates unqiue
+        new_names %<>% make.unique(sep = "_")
     }
 
     new_names
 }
 
 pretty_columns = function(df){
-    names(df) <- names(df) %>% pretty_names(make_unique=TRUE)
+    names(df) <- names(df) %>% pretty_names(make_unique = TRUE)
     df
 }
 
@@ -432,7 +434,7 @@ mutate_inplace <- function(data, var, expr){
 
     call <- quo(UQ(var) %>% UQ(expr))
     # print(call)
-    mutate(data, !!var_name := UQ(call))
+    mutate(data, ! ! var_name := UQ(call))
 }
 
 # mutate_inplace( iris, Species, str_replace("vir", "foo") )
@@ -441,7 +443,7 @@ mutate_inplace <- function(data, var, expr){
 # from https://stackoverflow.com/questions/34096162/dplyr-mutate-replace-on-a-subset-of-rows
 mutate_cond <- function(.data, condition, ..., envir = parent.frame()) {
     condition <- eval(substitute(condition), .data, envir)
-    .data[condition, ] <- .data[condition, ] %>% mutate(...)
+    .data[condition,] <- .data[condition,] %>% mutate(...)
     .data
 }
 
@@ -528,7 +530,7 @@ trim_ext <- function(fileNames, ...){
 
 
 # see https://stackoverflow.com/questions/7201341/how-can-2-strings-be-concatenated
-'%s+%' <- function(x, y)paste0(x,y)
+'%s+%' <- function(x, y)paste0(x, y)
 
 rmSomeElements <- function(vec, toDel) vec[! (vec %in% toDel)]
 
@@ -608,7 +610,7 @@ trim_outliers <- function(values, probs=c(0.05, 0.95)){
 se <- function(x) sd(x, na.rm = TRUE) / sqrt(sum(! is.na(x)))
 
 # https://stackoverflow.com/questions/43627679/round-any-equivalent-for-dplyr/46489816#46489816
-round_any = function(x, accuracy, f=round){f(x/ accuracy) * accuracy}
+round_any = function(x, accuracy, f=round){f(x / accuracy) * accuracy}
 
 
 ########################################################################################################################
@@ -633,7 +635,7 @@ output_prefix = function(){ ifelse(exists("results_prefix"), results_prefix, "__
 #results_prefix = "env_data_prep"
 add_prefix = function(filename) {
     ## prefix a name with a project-prefix. Requires that results_prefix to be defined
-    prefixName=if_else(str_length(output_prefix())==0, basename(filename), paste0(output_prefix(), ".", basename(filename)))
+    prefixName = if_else(str_length(output_prefix()) == 0, basename(filename), paste0(output_prefix(), ".", basename(filename)))
 
     file.path(dirname(filename), prefixName)
 }
@@ -646,14 +648,14 @@ interp_from_env = function(path){
     e <- new.env()
     env = Sys.getenv() %>% purrr::discard(~ str_detect(.x, fixed("()")))
     paste0(make.names(names(env)), "='", gsub("'", '', env) %>% str_replace_all(fixed("\\"), ""), "'") %>%
-        map(~eval(parse(text=.), envir=e))
+    map(~ eval(parse(text = .), envir = e))
     # (system("export", intern=T) %>% str_split_fixed(" ", 2))[,2] %>% map(~eval(parse(text=.), envir=e))
-    glue::glue(path, .envir=e, .open="${")
+    glue::glue(path, .envir = e, .open = "${")
 }
 
 substitute_shell_vars = function(path){
     # return(system("ls ${PRJ_DATA}/peptides/raw_intensities/siama_non_param_diffabund.da_results.txt",intern=T))
-    return(system(paste("bash -c  'echo", path, "'"),intern=T))
+    return(system(paste("bash -c  'echo", path, "'"), intern = T))
 }
 
 
@@ -670,4 +672,16 @@ getenv_or_default = function(name, default=NULL){
 getenv_or_fail = function(name){
     Sys.getenv(name) %>% { if (str_length(.) == 0) stop(paste("Can find ", name, "in environment")); .}
 }
+
+
+# https://stackoverflow.com/questions/53157410/function-in-r-for-validating-existence-of-specific-columns-on-a-data-frame
+assert_columns <- function(df, columns){
+    if (! is.data.frame(df)) stop(paste("Argument", deparse(substitute(df)), "must be a data.frame."))
+
+    if (! all(i <- rlang::has_name(df, columns))) {
+        stop(sprintf("%s doesn't contain: %s", deparse(substitute(df)), paste(columns[! i], collapse = ", ")))
+    }
+}
+
+
 
