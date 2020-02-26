@@ -692,7 +692,7 @@ assert_columns <- function(df, ...){
 
     if (! is.data.frame(df)) stop(paste("Argument", deparse(substitute(df)), "must be a data.frame."))
 
-    if (! all(i <- rlang::has_name(df, columns))‘) {
+    if (! all(i <- rlang::has_name(df, columns))) {
         stop(sprintf("%s doesn't contain: %s", deparse(substitute(df)), paste(columns[! i], collapse = ", ")))
     }
 }
