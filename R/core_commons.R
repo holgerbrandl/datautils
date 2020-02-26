@@ -192,7 +192,18 @@ first_group = function(x) x %>%
     distinct %>%
     ungroup %>%
     slice(1) %>%
-    { semi_join(x, ., by = group_vars(x))}
+    { semi_join(x, ., by = group_vars(x))} %>%
+    ungroup
+
+# similar to first group but more generic
+sample_groups = function(x, n) x %>%
+        select(group_cols()) %>%
+        distinct %>%
+        ungroup %>%
+        shuffle %>%
+        slice(1:n) %>%
+        { semi_join(x, ., by = group_vars(x))} %>%
+        ungroup
 
 
 # https://stackoverflow.com/questions/37145863/splitting-a-data-frame-into-equal-parts
@@ -681,7 +692,7 @@ assert_columns <- function(df, ...){
 
     if (! is.data.frame(df)) stop(paste("Argument", deparse(substitute(df)), "must be a data.frame."))
 
-    if (! all(i <- rlang::has_name(df, columns))) {
+    if (! all(i <- rlang::has_name(df, columns))‘) {
         stop(sprintf("%s doesn't contain: %s", deparse(substitute(df)), paste(columns[! i], collapse = ", ")))
     }
 }
