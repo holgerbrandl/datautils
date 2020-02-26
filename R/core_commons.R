@@ -445,7 +445,7 @@ mutate_inplace <- function(data, var, expr){
 
     call <- quo(UQ(var) %>% UQ(expr))
     # print(call)
-    mutate(data, ! ! var_name := UQ(call))
+    mutate(data, !! var_name := UQ(call))
 }
 
 # mutate_inplace( iris, Species, str_replace("vir", "foo") )
