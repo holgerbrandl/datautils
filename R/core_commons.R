@@ -701,5 +701,5 @@ assert_columns <- function(df, ...){
 # assert_columns(iris, "Species", "Sepal.Width")
 # assert_columns(iris, "Species", "Sepal.Width2")
 
-
+is_win <- function(){ Sys.info()[['sysname']] == "Windows" }
 
