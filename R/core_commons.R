@@ -703,3 +703,14 @@ assert_columns <- function(df, ...){
 
 is_win <- function(){ Sys.info()[['sysname']] == "Windows" }
 
+
+# Enable destructring when loading environments into R (requires zealot package for %<-% assignment operator)
+load_multiple <- function(rdataFile){
+    load(rdataFile, ex <- new.env());
+    mget(objects(ex, sorted = T), envir = ex)
+}
+
+# Usage example
+# a = iris; b = 2; c = "huhu";
+# save(a,b,c, file= "something.RData")
+# c(foo, bar, bla) %<-% load_multiple("something.RData")
