@@ -652,8 +652,8 @@ add_prefix = function(filename) {
 }
 
 ## https://stackoverflow.com/questions/18669886/how-to-unfold-user-and-environment-variable-in-r-language/46240642#46240642
-interp_from_env = function(path){
-    warning("DEPRECATED: Use substitute_shell_vars instead")
+substitute_env_vars = function(path){
+    # warning("DEPRECATED: Use substitute_shell_vars instead")
 
     # DEBUG path="${genomeFasta}.algncounts.txt"
     e <- new.env()
