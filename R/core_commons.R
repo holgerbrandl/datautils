@@ -629,7 +629,7 @@ round_any = function(x, accuracy, f=round){f(x / accuracy) * accuracy}
 
 ## inspired by http://stackoverflow.com/questions/8343509/better-error-message-for-stopifnot
 ## not also part of gtools with exactly the same impl --> still needed?
-assert <- function (expr, error) {
+assert <- function (expr, error="assert failed") {
     if (! expr) stop(error, call. = FALSE)
 }
 
