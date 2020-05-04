@@ -235,12 +235,14 @@ column2rownames <- function(df, colname){
 ## pushing some columns to the end of a data.frame
 ## TBD how to make this possible without quoting column names?
 push_right <- function(df, pushColNames){
+    warning("DEPRECATED: Use dplyr::relocate")
     df[, c(setdiff(names(df), pushColNames), pushColNames)]
 }
 
 
 ## pushing some columns to the beginning of a data.frame
 push_left <- function(df, pushColNames){
+    warning("DEPRECATED: Use dplyr::relocate")
     df[, c(pushColNames, setdiff(names(df), pushColNames))]
 }
 
@@ -276,6 +278,10 @@ map_named = function(x, ...) map(x, ...) %>% set_names(x)
 
 
 pretty_names = function(some_names, make_unique=FALSE){
+# TODO refactor to use janitor::make_clean_names(), dplyr::rename_with, see https://www.tidyverse.org/blog/2020/03/dplyr-1-0-0-select-rename-relocate/
+#     warning("DEPRECATED Use replace_NA instead")
+
+
     new_names = some_names %>%
         str_replace_all("[#+=.,()/*: -]+", "_") %>%
         str_replace(fixed("["), "") %>%
