@@ -216,6 +216,7 @@ group_n_var <- function(df, num_groups) df %>% mutate(group_var = as.factor(1 + 
 # iris %>% head(75) %>% group_by((row_number()-1) %/% (n()/num_groups)) %>% summarize(n())
 
 
+# todo could this be replaced with list2DF in R v4.+
 vec_as_df <- function(namedVec, row_name="name", value_name="value"){
     data_frame(name = names(namedVec), value = namedVec) %>% set_names(row_name, value_name)
 }
