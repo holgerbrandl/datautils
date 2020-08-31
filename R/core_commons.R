@@ -39,6 +39,8 @@ options(pillar.min_title_chars = 10000)
 
 ## externalized installer to also allow for installation without loading
 install_package <- function(x){
+    warning("DEPRECATED: Use packman::p_load");
+
     if (! isTRUE(x %in% .packages(all.available = TRUE)) && any(available.packages()[, 1] == x)) {
         # update.packages(ask=F) # update dependencies, if any.
         eval(parse(text = paste("install.packages('", x, "')", sep = "")))
@@ -88,41 +90,42 @@ check_version = function(pkg_name, min_version) {
 # disabled because causing too much trouble
 # load_pack(conflicted)
 
-## common plotting requirements since they are omnipresent
-load_pack(ggplot2)
-load_pack(scales, warn_conflicts = F) # note this has a known conflit with purrr::discard
-load_pack(grid)
-
-
-## load on purpose after plyr
-load_pack(purrr)
-load_pack(tibble)
-load_pack(dplyr, warn_conflicts = F)
-load_pack(magrittr, warn_conflicts = F)
-load_pack(tidyr, warn_conflicts = F)
-load_pack(stringr)
-load_pack(readr)
-load_pack(forcats)
-load_pack(readxl) ## supress differring build number
-
-## needed for caching
-load_pack(digest)
-
-load_pack(snakecase)
-
-#suppressWarnings(load_pack(readxl)) ## supress differring build number
-
-#load_pack(readxl) ## supress differring build number
-
-## for table exploration without using Rstudio
-install_package("knitr")
-load_pack(DT)
-
-## cli development
-install_package("docopt")
-
-## enviroment persistence
-install_package("session")
+#
+# ## common plotting requirements since they are omnipresent
+# load_pack(ggplot2)
+# load_pack(scales, warn_conflicts = F) # note this has a known conflit with purrr::discard
+# load_pack(grid)
+#
+#
+# ## load on purpose after plyr
+# load_pack(purrr)
+# load_pack(tibble)
+# load_pack(dplyr, warn_conflicts = F)
+# load_pack(magrittr, warn_conflicts = F)
+# load_pack(tidyr, warn_conflicts = F)
+# load_pack(stringr)
+# load_pack(readr)
+# load_pack(forcats)
+# load_pack(readxl) ## supress differring build number
+#
+# ## needed for caching
+# load_pack(digest)
+#
+# load_pack(snakecase)
+#
+# #suppressWarnings(load_pack(readxl)) ## supress differring build number
+#
+# #load_pack(readxl) ## supress differring build number
+#
+# ## for table exploration without using Rstudio
+# install_package("knitr")
+# load_pack(DT)
+#
+# ## cli development
+# install_package("docopt")
+#
+# ## enviroment persistence
+# install_package("session")
 
 
 ## moved into datatable_commons because replaced almost everywhere with dplyr

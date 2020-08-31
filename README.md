@@ -32,6 +32,13 @@ install.packages("remotes")
 remotes::install_github("holgerbrandl/datautils")
 ```
 
+or from local working copy with
+
+```
+devtools::install_local("/path/to/workingcopy")
+# devtools::install_local("d:/projects/misc/datautils")
+```
+
 To allow for reproducible research, we prefer [version tags](https://github.com/holgerbrandl/datautils/releases) over cran deployment. You can use these tags to write our workflows. Eg. you could use the stable `v1.45` tag
 
 ```
