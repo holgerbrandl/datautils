@@ -4,7 +4,7 @@
 #cat(".Rprofile: Setting Goettingen repository\n")
 #todo consider to use chooseCRANmirror(graphics=FALSE, ind=10) instead
 
-r = getOption("repos") # hard code the UK repo for CRAN 
+r = getOption("repos") # hard code the UK repo for CRAN
 r["CRAN"] = "http://ftp5.gwdg.de/pub/misc/cran/"
 options(repos = r)
 rm(r)
