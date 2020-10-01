@@ -174,8 +174,8 @@ add_rownames = function(...){ warning("DEPRECATED: Use tibble::rownames_to_colum
 #    }
 #}
 ## for now simply import just splat from plyr namespace
-install_package("plyr")
-splat = plyr::splat
+# install_package("plyr")
+# splat = plyr::splat
 
 
 ########################################################################################################################
