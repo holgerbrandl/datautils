@@ -715,9 +715,9 @@ is_win <- function(){ Sys.info()[['sysname']] == "Windows" }
 
 
 # Enable destructring when loading environments into R (requires zealot package for %<-% assignment operator)
-load_multiple <- function(rdataFile){
+load_multiple <- function(rdataFile, sorted=F){
     load(rdataFile, ex <- new.env());
-    mget(objects(ex, sorted = T), envir = ex)
+    mget(objects(ex, sorted = sorted), envir = ex)
 }
 
 # Usage example
