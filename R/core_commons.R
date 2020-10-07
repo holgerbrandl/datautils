@@ -715,6 +715,7 @@ is_win <- function(){ Sys.info()[['sysname']] == "Windows" }
 
 
 # Enable destructring when loading environments into R (requires zealot package for %<-% assignment operator)
+# https://stackoverflow.com/questions/64238939/how-to-retrieve-objects-from-rdata-file-in-insertion-order
 load_multiple <- function(rdataFile, sorted=F){
     load(rdataFile, ex <- new.env());
     mget(objects(ex, sorted = sorted), envir = ex)
