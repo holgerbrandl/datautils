@@ -647,8 +647,8 @@ all_unique = function(elements) length(unique(elements)) == length(elements)
 
 ### table rendering
 table_browser <- function(df, caption=deparse(substitute(df)), ...){
-    pacman::p_install(DT)
-    DT::datatable(df, filter = "bottom", extensions = 'Buttons', options = list(dom = 'Bfrtip', buttons = c('copy', 'csv', 'excel')), caption = caption, ...)
+    pacman::p_load(DT)
+    datatable(df, filter = "bottom", extensions = 'Buttons', options = list(dom = 'Bfrtip', buttons = c('copy', 'csv', 'excel')), caption = caption, ...)
 }
 
 output_prefix = function(){ ifelse(exists("results_prefix"), results_prefix, "__tmp_results_prefix")}
