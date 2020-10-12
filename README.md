@@ -65,3 +65,10 @@ Use the local server to source the files
 ```
 devtools::source_url("http://localhost:8000/core_commons.R")
 ```
+
+
+### Install development version locally
+
+```
+devtools::install(".")
+```
