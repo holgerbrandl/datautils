@@ -5,7 +5,7 @@ pacman::p_load(rcompanion)
 # Calculate a pairwise association between all variables in a data-frame. In particular nominal vs nominal with Chi-square, numeric vs numeric with Pearson correlation, and nominal vs numeric with ANOVA.
 # Adopted from https://stackoverflow.com/a/52557631/590437
 mixed_assoc = function(df, cor_method="spearman", adjust_cramersv_bias=TRUE){
-    df_comb = expand.grid(names(df), names(df),  stringsAsFactors = F) %>% set_names("X1", "X2")
+    df_comb = expand.grid(names(df), names(df),  stringsAsFactors = F) %>% purrr::set_names("X1", "X2")
 
     is_nominal = function(x) class(x) %in% c("factor", "character")
     # https://community.rstudio.com/t/why-is-purr-is-numeric-deprecated/3559
